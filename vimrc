@@ -46,7 +46,6 @@
 " Invisible characters {{{
 	set list                                         " Show invisible charactes.
 	set listchars=tab:￫―,nbsp:·,extends:⇀,precedes:↼ " The characters that the invisible will show as.
-
 " }}}
 
 " ctrlp {{{
@@ -64,7 +63,7 @@
 
 " Remaps {{{
 	let mapleader=","
-  " Normal mode {{{
+	" Normal mode {{{
 		" Move between split panels ctrl + movement
 		nnoremap <C-h> <C-w>h
 		nnoremap <C-j> <C-w>j
