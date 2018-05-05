@@ -62,7 +62,7 @@
 "}}}
 
 " Remaps {{{
-	let mapleader=","
+	let mapleader=" "
 	" Normal mode {{{
 		" Move between split panels ctrl + movement
 		nnoremap <C-h> <C-w>h
@@ -71,7 +71,8 @@
 		nnoremap <C-l> <C-w>l
 
 		" Edit vimrc in a split panel
-		nnoremap <Leader>ev :vsplit <CR> <C-w>l :e $MYVIMRC <CR>
+		"nnoremap <Leader>ev :vsplit <CR> :wincmd l <CR> :e $MYVIMRC <CR>
+		nnoremap <Leader>ev :botright vnew $MYVIMRC<CR>
 
 		" Toggle NerdTree
 		nnoremap <Leader>b :NERDTreeToggle <CR>
@@ -122,4 +123,12 @@
 		autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
 	augroup END
 "}}}
+
+" Airline {{{
+	let g:airline_powerline_fonts = 1 "Use powerline fonts
+	let g:airline_theme='badwolf'
+	let g:airline#extensions#tabline#enabled = 1
+	let g:airline#extensions#tabline#show_buffers = 1
+	let g:airline#extensions#tabline#buffer_nr_show = 1
+" }}}
 " vim vim:foldmethod=marker:foldlevel=0
