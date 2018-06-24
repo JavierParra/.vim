@@ -3,10 +3,17 @@
 "}}}
 
 " General Settings {{{
-	set modelines=1     "The final line of a file can contain file specific settings
-	filetype on         "Enable filetype detection
-	filetype plugin on  "Enable loading plugins based on file type
-	filetype indent on  "Enable filetype specific indentation
+	set modelines=1       "The final line of a file can contain file specific settings
+	filetype on           "Enable filetype detection
+	filetype plugin on    "Enable loading plugins based on file type
+	filetype indent on    "Enable filetype specific indentation
+	set lazyredraw        "Do not redraw during macros
+	set foldmethod=indent "Fold based on indentation
+	set foldlevel=99     "Open all folds
+	if $TERM_PROGRAM =~ "iTerm"
+		let &t_SI = "\<Esc>]1337;CursorShape=1\x7" " Vertical bar in insert mode
+		let &t_EI = "\<Esc>]1337;CursorShape=0\x7" " Block in normal mode
+	endif
 " }}}
 
 " Colors {{{
@@ -15,6 +22,9 @@
 	" " let g:rehash256 = 1
 	colorscheme jpmolokai " the color scheme
 	syntax enable         " enable syntax highlighting
+	" Set transparent background
+	" hi Normal guibg=NONE ctermbg=NONE
+
 " }}}
 
 " Tabstops {{{
@@ -34,6 +44,9 @@
 	set showmatch                  " highlights the matching parens et all
 	set backspace=indent,eol,start " backspaces everything
 	set mouse=a                    " enables mouse
+	set splitright                 " create new vertical splits to the right
+	set splitbelow                 " create new horizontal splits below
+	set scrolloff=6                " lines of margin between the cursor and top-bottom of document
 "}}}
 
 " Searching {{{
@@ -64,12 +77,28 @@
 " Remaps {{{
 	let mapleader=" "
 	" Normal mode {{{
-		" Move between split panels ctrl + movement
-		nnoremap <C-h> <C-w>h
-		nnoremap <C-j> <C-w>j
-		nnoremap <C-k> <C-w>k
-		nnoremap <C-l> <C-w>l
+		" Split panel bindings.
+		" Create splits with leader and movement key
+		noremap <Leader><C-l> :belowright vsplit<CR>
+		noremap <Leader><C-h> :aboveleft vsplit<CR>
+		noremap <Leader><C-j> :belowright split<CR>
+		noremap <Leader><C-k> :aboveleft split<CR>
 
+		"Close split with leader and shift movement key
+		noremap <Leader><S-l> <C-w><C-l> :q <CR>
+		noremap <Leader><S-h> <C-w><C-h> :q<CR>
+		noremap <Leader><S-j> <C-w><C-j> :q<CR>
+		noremap <Leader><S-k> <C-w><C-k> :q<CR>
+
+		" Move between split panels with leader + movement
+		nnoremap <Leader>h <C-w>h
+		nnoremap <Leader>j <C-w>j
+		nnoremap <Leader>k <C-w>k
+		nnoremap <Leader>l <C-w>l
+
+		"Move between buffers with leader and arrows
+		nnoremap <C-Left> :bprevious <CR>
+		nnoremap <C-Right> :bnext <CR>
 		" Edit vimrc in a split panel
 		"nnoremap <Leader>ev :vsplit <CR> :wincmd l <CR> :e $MYVIMRC <CR>
 		nnoremap <Leader>ev :botright vnew $MYVIMRC<CR>
@@ -81,36 +110,54 @@
 
 		" Re-syntax highlight
 		nnoremap <Leader>s :syntax on <CR>
-
+		" Toggle wordwrap
+		nnoremap <Leader>tw :set wrap! <CR>
 		" Clear search
 		nnoremap <Leader><Esc> :nohlsearch<CR>
+
+		" Open buffer in new tab
+		nnoremap <Leader>t :tabedit %<CR>
+
+		"Easier saving.
+		nnoremap <Leader>ww :w<CR>
+		nnoremap <Leader>w :w<CR>
+		nnoremap <Leader>wq :w<CR> :Bdelete<CR>
+
+		"Power navigation, by Andrew Radev
+		nnoremap H 5h
+		nnoremap J 5j
+		nnoremap K 5k
+		nnoremap L 5l
+
+		" Bdelete
+		nnoremap <Leader>q :Bdelete<CR>
 	" }}}
 
 	" Insert mode {{{
-		" Emacs movements
-		" Superseeded by the vim-rsi plugin
-		"inoremap <C-p> <Esc> ki
-		"inoremap <C-n> <Esc> ji
-		"inoremap <C-a> <Esc> 0i
-		"inoremap <C-e> <Esc> $i
-		"inoremap <C-b> <Esc> hi
-		"inoremap <C-f> <Esc> li
+		" Nothing to see here. Hint: inoremap
+		inoremap jj <Esc>
 	"}}}
 
+	" Visual mode {{{
+		"Power navigation, by Andrew Radev
+		xnoremap H 5h
+		xnoremap J 5j
+		xnoremap K 5k
+		xnoremap L 5l
+	"}}}
+
+
 	" Everywhere {{{
-		" Split sublime bindings.
-		noremap <C-k><Right> <C-w>l <CR>
-		noremap <C-k><C-Right> :botright vsplit<CR>
-		noremap <C-k><C-S-Right> <C-w>l :q<CR>
+		" Nothing to see here. Hint: noremap
 	" }}}
 "}}}
 
 " Linting {{{
-	set statusline +=%#warningmsg#
-	set statusline +=%{SyntasticStatuslineFlag()}
-	set statusline +=%*
+	"set statusline +=%#warningmsg#
+	"set statusline +=%{SyntasticStatuslineFlag()}
+	"set statusline +=%*
 	let g:syntastic_always_populate_loc_list = 1
-	let g:syntastic_auto_loc_list = 1
+	let g:syntastic_auto_loc_list = 0
 	let g:syntastic_loc_list_height = 3
 	let g:syntastic_check_on_open = 1
 	let g:syntastic_check_on_wq = 0
@@ -119,7 +166,7 @@
 
 " AutoCMD {{{
 	" Live reload vimrc
-	 augroup vimrc
+	augroup vimrc
 		autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
 	augroup END
 "}}}
@@ -130,5 +177,11 @@
 	let g:airline#extensions#tabline#enabled = 1
 	let g:airline#extensions#tabline#show_buffers = 1
 	let g:airline#extensions#tabline#buffer_nr_show = 1
+" }}}
+
+" ProSession {{{
+		let g:prosession_tmux_title = 1      "Report title to tmux
+		let g:prosession_on_startup = 1 "Recover last session
+		let g:prosession_last_session_dir = '~'
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0
