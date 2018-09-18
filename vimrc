@@ -9,7 +9,8 @@
 	filetype indent on    "Enable filetype specific indentation
 	set lazyredraw        "Do not redraw during macros
 	set foldmethod=indent "Fold based on indentation
-	set foldlevel=99     "Open all folds
+	set foldlevel=99      "Open all folds
+	set nowrap            "Don't wrap by default
 	if $TERM_PROGRAM =~ "iTerm"
 		let &t_SI = "\<Esc>]1337;CursorShape=1\x7" " Vertical bar in insert mode
 		let &t_EI = "\<Esc>]1337;CursorShape=0\x7" " Block in normal mode
@@ -46,7 +47,8 @@
 	set mouse=a                    " enables mouse
 	set splitright                 " create new vertical splits to the right
 	set splitbelow                 " create new horizontal splits below
-	set scrolloff=6                " lines of margin between the cursor and top-bottom of document
+	set scrolloff=4                " lines of margin between the cursor and top-bottom of document
+	set colorcolumn=79             " vertical ruler
 "}}}
 
 " Searching {{{
@@ -61,9 +63,10 @@
 	set listchars=tab:￫―,nbsp:·,extends:⇀,precedes:↼ " The characters that the invisible will show as.
 " }}}
 
-" ctrlp {{{
+" ctrlp (DISABLED) {{{
 	" Files to exclude
-	let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+	" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+	" let g:ctrlp_custom_ignore = '\/?node_modules$'
 "}}}
 
 " Fix VIM {{{
@@ -131,11 +134,21 @@
 
 		" Bdelete
 		nnoremap <Leader>q :Bdelete<CR>
+
+		" * stays in the same place
+		nnoremap * *``
+
+		" Scroll by 2 lines using ctl + movement
+		nnoremap <C-j> 2<C-e>
+		nnoremap <C-k> 2<C-y>
+
+		" Bind Command-t
+		nmap <silent> <C-p> <Plug>(CommandT)
 	" }}}
 
 	" Insert mode {{{
-		" Nothing to see here. Hint: inoremap
 		inoremap jj <Esc>
+		inoremap JJ <Esc>
 	"}}}
 
 	" Visual mode {{{
@@ -153,15 +166,11 @@
 "}}}
 
 " Linting {{{
-	"set statusline +=%#warningmsg#
-	"set statusline +=%{SyntasticStatuslineFlag()}
-	"set statusline +=%*
-	let g:syntastic_always_populate_loc_list = 1
-	let g:syntastic_auto_loc_list = 0
-	let g:syntastic_loc_list_height = 3
-	let g:syntastic_check_on_open = 1
-	let g:syntastic_check_on_wq = 0
-	let g:syntastic_javascript_checkers = ['jshint']
+	" ALE configuration
+	highlight clear ALEErrorSign   " Do not draw background color in gutter error
+	highlight clear ALEWarningSign " Do not draw background color in gutter waring
+	let g:ale_sign_error = '❗️'    " Change error sign
+	let g:ale_sign_warning = '❕'  " Change warning sign
 "}}}
 
 " AutoCMD {{{
@@ -169,7 +178,12 @@
 	augroup vimrc
 		autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
 	augroup END
+
 "}}}
+
+" Fugitive {{{
+		set diffopt+=vertical  " Force Gdiff to split vertically
+" }}}
 
 " Airline {{{
 	let g:airline_powerline_fonts = 1 "Use powerline fonts
@@ -183,5 +197,39 @@
 		let g:prosession_tmux_title = 1      "Report title to tmux
 		let g:prosession_on_startup = 1 "Recover last session
 		let g:prosession_last_session_dir = '~'
+" }}}
+
+" Emmet {{{
+		let g:user_emmet_install_global = 0 " Disable globally
+		augroup emmet
+			" Clear the current group so it doesn't pile up
+			autocmd!
+			autocmd FileType html,php EmmetInstall
+			" autocmd FileType html imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+		augroup END
+
+" }}}
+
+" Editorconfig {{{
+		let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+		let g:EditorConfig_disable_rules = ['tab_width']
+" }}}
+
+" {{{ You Complete Me
+		" Use whichever python3 is found in the path
+		let g:ycm_python_binary_path = 'python3'
+
+		" Use ctags file to autocomplete.
+		let g:ycm_collect_identifiers_from_tags_files=1
+
+		" Leave preview window open after select but close it after leaving
+		" insert mode
+		let g:ycm_autoclose_preview_window_after_completion=0
+		let g:ycm_autoclose_preview_window_after_insertion=1
+
+		" Try to always load semantic completion
+		let g:ycm_semantic_triggers =  {
+					\	'python': ['re!\w{2}']
+					\}
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0
