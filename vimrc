@@ -144,6 +144,11 @@
 
 		" Bind Command-t
 		nmap <silent> <C-p> <Plug>(CommandT)
+		nmap <silent> <Leader>p <Plug>(CommandT)
+		nmap <silent> <Leader>pp <Plug>(CommandT)
+		nmap <silent> <Leader>pb <Plug>(CommandTMRU)
+		nmap <silent> <Leader>pt <Plug>(CommandTTag)
+		nmap <silent> <Leader>ph <Plug>(CommandTHistory)
 	" }}}
 
 	" Insert mode {{{
