@@ -87,6 +87,12 @@
 		noremap <Leader><C-j> :belowright split<CR>
 		noremap <Leader><C-k> :aboveleft split<CR>
 
+		" Create 'hard splits' (I just made that up) with Alt + movement
+		" noremap <Leader><A-l> :topleft vsplit<CR>
+		noremap <Leader>™ :topleft vsplit<CR>
+		noremap <Leader>¶ :botright split<CR>
+		noremap <Leader>§ :topleft split<CR>
+
 		"Close split with leader and shift movement key
 		noremap <Leader><S-l> <C-w><C-l> :q <CR>
 		noremap <Leader><S-h> <C-w><C-h> :q<CR>
@@ -181,7 +187,17 @@
 " AutoCMD {{{
 	" Live reload vimrc
 	augroup vimrc
-		autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
+		autocmd! BufWritePost $MYVIMRC,~/.vim/vimrc source $MYVIMRC | echom "Reloaded " . $MYVIMRC | redraw
+	augroup END
+	"
+	" Always show the gutter to prevent shifting
+	augroup addsign
+		function! DummySign()
+			sign define dummy
+			execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
+		endfunction
+
+		autocmd! BufEnter * call DummySign()
 	augroup END
 
 "}}}
@@ -232,9 +248,15 @@
 		let g:ycm_autoclose_preview_window_after_completion=0
 		let g:ycm_autoclose_preview_window_after_insertion=1
 
+		let g:ycm_enable_diagnostic_signs=0 " Do not try to lint, we have ale for that
+
 		" Try to always load semantic completion
 		let g:ycm_semantic_triggers =  {
 					\	'python': ['re!\w{2}']
 					\}
+" }}}
+
+" Command T {{{
+	let g:CommandTCancelMap='<Esc>'
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0
