@@ -26,6 +26,8 @@ else
     let s:molokai_original = 0
 endif
 
+set fillchars+=vert:│
+
 
 hi Boolean         guifg=#AE81FF
 hi Character       guifg=#E6DB74

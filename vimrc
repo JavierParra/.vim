@@ -1,5 +1,5 @@
 " Pathogen {{{
-	execute pathogen#infect()
+ execute pathogen#infect()
 "}}}
 
 " General Settings {{{
@@ -75,6 +75,10 @@
 	set hidden            " Enables switching buffers without saving
 	set clipboard=unnamed " Syncs VIMs clipboard with OSX's
 	set shortmess+=c      " Hide 'user defined completion pattern not found'
+
+	" Ignore patterns in listings.
+	set wildignore+=node_modules
+	set wildignore+=*.pyc
 "}}}
 
 " Remaps {{{
@@ -88,7 +92,7 @@
 		noremap <Leader><C-k> :aboveleft split<CR>
 
 		" Create 'hard splits' (I just made that up) with Alt + movement
-		" noremap <Leader><A-l> :topleft vsplit<CR>
+		" noremap <Leader><A-l> :topright vsplit<CR>
 		noremap <Leader>™ :topleft vsplit<CR>
 		noremap <Leader>¶ :botright split<CR>
 		noremap <Leader>§ :topleft split<CR>
@@ -148,18 +152,24 @@
 		nnoremap <C-j> 2<C-e>
 		nnoremap <C-k> 2<C-y>
 
-		" Bind Command-t
-		nmap <silent> <C-p> <Plug>(CommandT)
-		nmap <silent> <Leader>p <Plug>(CommandT)
-		nmap <silent> <Leader>pp <Plug>(CommandT)
-		nmap <silent> <Leader>pb <Plug>(CommandTMRU)
-		nmap <silent> <Leader>pt <Plug>(CommandTTag)
-		nmap <silent> <Leader>ph <Plug>(CommandTHistory)
+		" Bind Denite
+		nnoremap <silent> <C-p> :Denite file/rec<CR>
+		nnoremap <silent> <Leader>d  :Denite <C-d>
+		nnoremap <silent> <Leader>dc :Denite colorscheme -auto-preview  <CR>
+		nnoremap <silent> <Leader>dd :Denite <C-d>
+		nnoremap <silent> <Leader>df :Denite file/rec<CR>
+		nnoremap <silent> <Leader>db :Denite buffer<CR>
+		nnoremap <silent> <Leader>dt :Denite outline<CR>
+		nnoremap <silent> <Leader>dh :Denite command_history<CR>
+		nnoremap <silent> <Leader>d/ :Denite grep -resume -post-action=suspend<CR>
+		nnoremap <silent> <Leader>dr :Denite register -mode=normal<CR>
 	" }}}
 
 	" Insert mode {{{
 		inoremap jj <Esc>
 		inoremap JJ <Esc>
+
+		inoremap <silent> <C-r> <Esc>:Denite register -mode=normal<CR>
 	"}}}
 
 	" Visual mode {{{
@@ -168,6 +178,11 @@
 		xnoremap J 5j
 		xnoremap K 5k
 		xnoremap L 5l
+		"
+		" Scroll by 2 lines using ctl + movement
+		xnoremap <C-j> 1<C-e>
+		xnoremap <C-k> 2<C-y>
+
 	"}}}
 
 
@@ -180,7 +195,8 @@
 	" ALE configuration
 	highlight clear ALEErrorSign   " Do not draw background color in gutter error
 	highlight clear ALEWarningSign " Do not draw background color in gutter waring
-	let g:ale_sign_error = '❗️'    " Change error sign
+	let g:ale_sign_error = '💩'    " Change error sign
+	" let g:ale_sign_error = '❗️'    " Change error sign
 	let g:ale_sign_warning = '❕'  " Change warning sign
 "}}}
 
@@ -189,7 +205,7 @@
 	augroup vimrc
 		autocmd! BufWritePost $MYVIMRC,~/.vim/vimrc source $MYVIMRC | echom "Reloaded " . $MYVIMRC | redraw
 	augroup END
-	"
+
 	" Always show the gutter to prevent shifting
 	augroup addsign
 		function! DummySign()
@@ -203,8 +219,8 @@
 "}}}
 
 " Fugitive {{{
-		set diffopt+=vertical  " Force Gdiff to split vertically
-" }}}
+	set diffopt+=vertical  " Force Gdiff to split vertically
+"}}}
 
 " Airline {{{
 	let g:airline_powerline_fonts = 1 "Use powerline fonts
@@ -212,51 +228,123 @@
 	let g:airline#extensions#tabline#enabled = 1
 	let g:airline#extensions#tabline#show_buffers = 1
 	let g:airline#extensions#tabline#buffer_nr_show = 1
-" }}}
+"}}}
 
 " ProSession {{{
-		let g:prosession_tmux_title = 1      "Report title to tmux
-		let g:prosession_on_startup = 1 "Recover last session
-		let g:prosession_last_session_dir = '~'
-" }}}
+	let g:prosession_tmux_title = 1      "Report title to tmux
+	let g:prosession_on_startup = 1 "Recover last session
+	let g:prosession_last_session_dir = '~'
+"}}}
 
 " Emmet {{{
-		let g:user_emmet_install_global = 0 " Disable globally
-		augroup emmet
-			" Clear the current group so it doesn't pile up
-			autocmd!
-			autocmd FileType html,php EmmetInstall
-			" autocmd FileType html imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
-		augroup END
-
-" }}}
+	let g:user_emmet_install_global = 0 " Disable globally
+	augroup emmet
+		" Clear the current group so it doesn't pile up
+		autocmd!
+		autocmd FileType html,php EmmetInstall
+		" autocmd FileType html imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+	augroup END
+"}}}
 
 " Editorconfig {{{
-		let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-		let g:EditorConfig_disable_rules = ['tab_width']
-" }}}
+	let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+	let g:EditorConfig_disable_rules = ['tab_width']
+"}}}
 
 " {{{ You Complete Me
-		" Use whichever python3 is found in the path
-		let g:ycm_python_binary_path = 'python3'
+	" Use whichever python3 is found in the path
+	let g:ycm_python_binary_path = 'python3'
 
-		" Use ctags file to autocomplete.
-		let g:ycm_collect_identifiers_from_tags_files=1
+	" Use ctags file to autocomplete.
+	let g:ycm_collect_identifiers_from_tags_files=1
 
-		" Leave preview window open after select but close it after leaving
-		" insert mode
-		let g:ycm_autoclose_preview_window_after_completion=0
-		let g:ycm_autoclose_preview_window_after_insertion=1
+	" Leave preview window open after select but close it after leaving
+	" insert mode
+	let g:ycm_autoclose_preview_window_after_completion=0
+	let g:ycm_autoclose_preview_window_after_insertion=1
 
-		let g:ycm_enable_diagnostic_signs=0 " Do not try to lint, we have ale for that
+	let g:ycm_enable_diagnostic_signs=0 " Do not try to lint, we have ale for that
 
-		" Try to always load semantic completion
-		let g:ycm_semantic_triggers =  {
-					\	'python': ['re!\w{2}']
-					\}
-" }}}
+	" Try to always load semantic completion
+	let g:ycm_semantic_triggers =  {
+		\	'python': ['re!\w{2}']
+	\}
+"}}}
 
-" Command T {{{
-	let g:CommandTCancelMap='<Esc>'
+" Command T (disabled) {{{
+	" let g:CommandTCancelMap='<Esc>'
+"}}}
+
+" Denite {{{
+	call denite#custom#source(
+	\ 'file/rec', 'matchers', ['matcher/fuzzy', 'matcher/ignore_globs'])
+
+	call denite#custom#source(
+	\ 'file/rec', 'sorters', ['sorter/rank'])
+
+	call denite#custom#var('file/rec', 'command',
+		\ ['find', '-L', ':directory',
+		\ '-path', '*/.git/*', '-prune', '-o',
+		\ '-path', '*/node_modules/*', '-prune', '-o',
+		\ '-path', '*/venv/*', '-prune', '-o',
+		\ '-path', '*/__pycache__/*', '-prune', '-o',
+		\ '-type', 'l', '-print', '-o',
+		\ '-type', 'f', '-print'])
+
+	call denite#custom#map(
+		\ 'insert',
+		\ '<Down>',
+		\ '<denite:move_to_next_line>',
+		\ 'noremap'
+		\)
+
+	call denite#custom#map(
+		\ 'insert',
+		\ '<Up>',
+		\ '<denite:move_to_previous_line>',
+		\ 'noremap'
+		\)
+
+	call denite#custom#map(
+		\ 'insert',
+		\ '<C-j>',
+		\ '<denite:move_to_next_line>',
+		\ 'noremap'
+		\)
+	call denite#custom#map(
+		\ 'insert',
+		\ '<C-k>',
+		\ '<denite:move_to_previous_line>',
+		\ 'noremap'
+		\)
+
+	call denite#custom#option('default', {
+		\ 'auto_accel': v:true,
+		\ 'reversed': v:true,
+		\ 'auto_resize': v:true,
+		\ 'cursor_wrap': v:true,
+		\ 'highlight_matched_char': 'Keyword',
+		\ 'highlight_matched_range': 'Comment',
+		\ })
+
+	call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+				\ [
+				\ '*~', '*.o', '*.exe', '*.bak',
+				\ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
+				\ '.hg/', '.git/', '.bzr/', '.svn/',
+				\ 'node_modules/', 'venv/', '__pycache__/',
+				\ 'tags', 'tags-*'
+				\])
+	" call denite#custom#alias('source', 'session', 'output')
+	" call denite#custom#var('session', 'command', ['ls', '~/.vim/session'])
+
+	" function! s:psa(context)
+	" 	let g:temp = a:context
+	" 	echom 'Holi'
+	" 	execute 'echom ' + a:context.targets[0].word
+	" 	execute 'rightbelow vsplit ' + a:context.targets[0].word
+	" endfunction
+
+	" call denite#custom#action('file', 'test', function('s:psa'))
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0
