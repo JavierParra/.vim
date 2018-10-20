@@ -271,10 +271,6 @@
 	\}
 "}}}
 
-" Command T (disabled) {{{
-	" let g:CommandTCancelMap='<Esc>'
-"}}}
-
 " Denite {{{
 	call denite#custom#source(
 	\ 'file/rec', 'matchers', ['matcher/fuzzy', 'matcher/ignore_globs'])

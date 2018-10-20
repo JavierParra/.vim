@@ -61,9 +61,6 @@
 [submodule "bundle/ale"]
 	path = bundle/ale
 	url = git@github.com:w0rp/ale.git
-[submodule "bundle/command-t"]
-	path = bundle/command-t
-	url = https://github.com/wincent/command-t.git
 [submodule "bundle/vim-easymotion"]
 	path = bundle/vim-easymotion
 	url = git@github.com:easymotion/vim-easymotion.git

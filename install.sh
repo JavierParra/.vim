@@ -41,24 +41,6 @@ function installYCM() {
 	return 1)
 }
 
-function installCommandT() {
-	cleanPath
-	echo "Installing CommandT"
-	(which ruby > /dev/null || \
-		(echo "Ruby needs to be installed for commandT"; \
-		return 1)\
-	) && \
-	cd ./bundle/command-t/ruby/command-t/ext/command-t && \
-	ruby extconf.rb && \
-	make && \
-	green "Success" || \
-		(red "Failed to install CommandT see: https://github.com/wincent/command-t/blob/master/doc/command-t.txt"; \
-		return 1)
-
-}
-
 initSubmodules || (echo "Failed to init submodules"; exit 1)
 generateHelpTags
 installYCM
-installCommandT
-
