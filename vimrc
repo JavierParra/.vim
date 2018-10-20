@@ -1,5 +1,5 @@
 " Pathogen {{{
- execute pathogen#infect()
+	execute pathogen#infect()
 "}}}
 
 " General Settings {{{
@@ -161,6 +161,7 @@
 		nnoremap <silent> <Leader>db :Denite buffer<CR>
 		nnoremap <silent> <Leader>dt :Denite outline<CR>
 		nnoremap <silent> <Leader>dh :Denite command_history<CR>
+		nnoremap <silent> <Leader>ds :Denite prosession<CR>
 		nnoremap <silent> <Leader>d/ :Denite grep -resume -post-action=suspend<CR>
 		nnoremap <silent> <Leader>dr :Denite register -mode=normal<CR>
 	" }}}
@@ -215,7 +216,6 @@
 
 		autocmd! BufEnter * call DummySign()
 	augroup END
-
 "}}}
 
 " Fugitive {{{
@@ -228,10 +228,22 @@
 	let g:airline#extensions#tabline#enabled = 1
 	let g:airline#extensions#tabline#show_buffers = 1
 	let g:airline#extensions#tabline#buffer_nr_show = 1
+
+	"spaces are allowed after tabs, but not in between
+	let g:airline#extensions#whitespace#mixed_indent_algo=2
+	"If fileformat is utf-8[unix] do not display it
+	let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+	"Disable YCM error reporting
+	let g:airline#extensions#ycm#enabled = 0
+	"Enable ale integration
+	let g:airline#extensions#ale#enabled = 1
+
+	" let g:airline#extensions#ale#error_symbol = get(g:, 'ale_sign_error')
+	" let g:airline#extensions#ale#warning_symbol = get(g:, 'ale_sign_warning')
 "}}}
 
 " ProSession {{{
-	let g:prosession_tmux_title = 1      "Report title to tmux
+	let g:prosession_tmux_title = 0 "Report title to tmux
 	let g:prosession_on_startup = 1 "Recover last session
 	let g:prosession_last_session_dir = '~'
 "}}}
@@ -273,10 +285,10 @@
 
 " Denite {{{
 	call denite#custom#source(
-	\ 'file/rec', 'matchers', ['matcher/fuzzy', 'matcher/ignore_globs'])
+		\ 'file/rec', 'matchers', ['matcher/fuzzy', 'matcher/ignore_globs'])
 
 	call denite#custom#source(
-	\ 'file/rec', 'sorters', ['sorter/rank'])
+		\ 'file/rec', 'sorters', ['sorter/rank'])
 
 	call denite#custom#var('file/rec', 'command',
 		\ ['find', '-L', ':directory',
@@ -286,6 +298,8 @@
 		\ '-path', '*/__pycache__/*', '-prune', '-o',
 		\ '-type', 'l', '-print', '-o',
 		\ '-type', 'f', '-print'])
+
+	call denite#custom#var('prosession', 'format', 'split')
 
 	call denite#custom#map(
 		\ 'insert',
@@ -324,23 +338,12 @@
 		\ })
 
 	call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
-				\ [
-				\ '*~', '*.o', '*.exe', '*.bak',
-				\ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
-				\ '.hg/', '.git/', '.bzr/', '.svn/',
-				\ 'node_modules/', 'venv/', '__pycache__/',
-				\ 'tags', 'tags-*'
-				\])
-	" call denite#custom#alias('source', 'session', 'output')
-	" call denite#custom#var('session', 'command', ['ls', '~/.vim/session'])
-
-	" function! s:psa(context)
-	" 	let g:temp = a:context
-	" 	echom 'Holi'
-	" 	execute 'echom ' + a:context.targets[0].word
-	" 	execute 'rightbelow vsplit ' + a:context.targets[0].word
-	" endfunction
-
-	" call denite#custom#action('file', 'test', function('s:psa'))
+		\ [
+		\ '*~', '*.o', '*.exe', '*.bak',
+		\ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
+		\ '.hg/', '.git/', '.bzr/', '.svn/',
+		\ 'node_modules/', 'venv/', '__pycache__/',
+		\ 'tags', 'tags-*'
+		\])
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0
