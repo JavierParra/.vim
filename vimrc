@@ -114,7 +114,10 @@
 		nnoremap <C-Right> :bnext <CR>
 		" Edit vimrc in a split panel
 		"nnoremap <Leader>ev :vsplit <CR> :wincmd l <CR> :e $MYVIMRC <CR>
-		nnoremap <Leader>ev :botright vnew $MYVIMRC<CR>
+		" nnoremap <Leader>ev :botright vnew $MYVIMRC<CR>
+
+		" Hardcode the path to vimrc because we use nvim interchangeably.
+		nnoremap <Leader>ev :botright vnew ~/.vim/vimrc<CR>
 
 		" Toggle NerdTree
 		nnoremap <Leader>b :NERDTreeToggle <CR>
@@ -153,7 +156,7 @@
 		nnoremap <C-k> 2<C-y>
 
 		" Bind Denite
-		nnoremap <silent> <C-p> :Denite file/rec<CR>
+		nnoremap <silent> <C-p> :Denite buffer file/rec<CR>
 		nnoremap <silent> <Leader>d  :Denite <C-d>
 		nnoremap <silent> <Leader>dc :Denite colorscheme -auto-preview  <CR>
 		nnoremap <silent> <Leader>dd :Denite <C-d>
@@ -164,6 +167,10 @@
 		nnoremap <silent> <Leader>ds :Denite prosession<CR>
 		nnoremap <silent> <Leader>d/ :Denite grep -resume -post-action=suspend<CR>
 		nnoremap <silent> <Leader>dr :Denite register -mode=normal<CR>
+
+		" VimWiki
+		nmap <Leader>vww <Plug>VimwikiIndex
+		nmap <Leader>vws <Plug>VimwikiUISelect
 	" }}}
 
 	" Insert mode {{{
@@ -345,5 +352,20 @@
 		\ 'node_modules/', 'venv/', '__pycache__/',
 		\ 'tags', 'tags-*'
 		\])
+" }}}
+
+" VimWiki {{{
+	let g:vimwiki_hl_headers=1    " Highlight headers
+	let g:vimwiki_hl_cb_checked=1 " Highlight completed items
+	let g:vimwiki_folding='expr'  " Fold sections and code
+
+	let g:vimwiki_list = [
+			\{'path': '~/Documents/Decidata/vimwiki'},
+			\{
+				\'path': '~/Documents/vimwiki',
+				\'syntax': 'markdown',
+				\ 'ext': '.md'
+			\},
+		\]
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0
