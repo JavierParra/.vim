@@ -1,4 +1,5 @@
 " Remaps {{{
-	" Format json file
-	nnoremap <Leader>jf :%!python -m json.tool<CR>
+	" We use jq (https://stedolan.github.io/jq/) to format json.
+	" Format json buffer
+	nnoremap <buffer> <Leader>jf :1,$!jq '.'<CR>
 " }}}

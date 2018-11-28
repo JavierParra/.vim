@@ -3,7 +3,6 @@
 "}}}
 
 " General Settings {{{
-	set modelines=1       "The final line of a file can contain file specific settings
 	filetype on           "Enable filetype detection
 	filetype plugin on    "Enable loading plugins based on file type
 	filetype indent on    "Enable filetype specific indentation
@@ -155,6 +154,10 @@
 		nnoremap <C-j> 2<C-e>
 		nnoremap <C-k> 2<C-y>
 
+		" Scroll horizontally
+		nnoremap <C-l> 2z<Right>
+		nnoremap <C-h> 2z<Left>
+
 		" Bind Denite
 		nnoremap <silent> <C-p> :Denite buffer file/rec<CR>
 		nnoremap <silent> <Leader>d  :Denite <C-d>
@@ -171,6 +174,14 @@
 		" VimWiki
 		nmap <Leader>vww <Plug>VimwikiIndex
 		nmap <Leader>vws <Plug>VimwikiUISelect
+
+		" Open terminal
+		if has('nvim')
+			nnoremap <Leader>< :botright split\|resize 20\|terminal<CR>
+		else
+			set termwinsize=20x0
+			nnoremap <Leader>< :botright terminal<CR>
+		endif
 	" }}}
 
 	" Insert mode {{{
@@ -186,13 +197,14 @@
 		xnoremap J 5j
 		xnoremap K 5k
 		xnoremap L 5l
-		"
+
 		" Scroll by 2 lines using ctl + movement
 		xnoremap <C-j> 1<C-e>
 		xnoremap <C-k> 2<C-y>
 
+		" Format selection as json.
+		xnoremap <buffer> <Leader>jf :'<,'>!jq '.'<CR>
 	"}}}
-
 
 	" Everywhere {{{
 		" Nothing to see here. Hint: noremap
@@ -367,5 +379,26 @@
 				\ 'ext': '.md'
 			\},
 		\]
+" }}}
+
+" Terminal {{{
+	" Remaps {{{
+		tnoremap <Esc> <C-\><C-n>
+	" }}}
+
+	" AutoCMD {{{
+		augroup insertonenter
+			function! InsertOnTerminal()
+				if &buftype ==# "terminal"
+					normal i
+				endif
+			endfunction
+
+			autocmd! BufEnter * call InsertOnTerminal()
+			if has('nvim')
+				autocmd! TermOpen * call InsertOnTerminal()
+			endif
+		augroup END
+	" }}}
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0
