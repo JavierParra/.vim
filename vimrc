@@ -20,10 +20,23 @@
 	" set t_Co=256
 	" let g:molokai_original=0
 	" " let g:rehash256 = 1
-	colorscheme jpmolokai " the color scheme
+	" colorscheme molokai " the color scheme
 	syntax enable         " enable syntax highlighting
+	colorscheme vim-monokai-tasty " the color scheme
 	" Set transparent background
 	" hi Normal guibg=NONE ctermbg=NONE
+
+	" vertical separator for panels
+	set fillchars+=vert:│
+
+	" make visual selection more prominent
+	" hi Visual ctermbg=240
+
+	" I like this colors
+	hi ColorColumn     ctermbg=238
+	hi SignColumn      ctermbg=235
+	hi CursorLineNr    ctermfg=166
+	hi LineNr          ctermfg=242
 
 " }}}
 
@@ -125,13 +138,18 @@
 
 		" Re-syntax highlight
 		nnoremap <Leader>s :syntax on <CR>
-		" Toggle wordwrap
-		nnoremap <Leader>tw :set wrap! <CR>
+
+		" Toggle wordwrap on word boundary
+		nnoremap <Leader>tw :set wrap! lbr <CR>
+		" Use j and k to move by visual lines only if there's no count modifier.
+		nnoremap <expr> j v:count ? 'j' : 'gj'
+		nnoremap <expr> k v:count ? 'k' : 'gk'
+
 		" Clear search
 		nnoremap <Leader><Esc> :nohlsearch<CR>
 
 		" Open buffer in new tab
-		nnoremap <Leader>t :tabedit %<CR>
+		nnoremap <Leader>te :tabedit %<CR>
 
 		"Easier saving.
 		nnoremap <Leader>ww :w<CR>
@@ -139,24 +157,28 @@
 		nnoremap <Leader>wq :w<CR> :Bdelete<CR>
 
 		"Power navigation, by Andrew Radev
-		nnoremap H 5h
-		nnoremap J 5j
-		nnoremap K 5k
-		nnoremap L 5l
+		nnoremap <C-h> 5h
+		nnoremap <C-j> 5j
+		nnoremap <C-k> 5k
+		nnoremap <C-l> 5l
 
-		" Bdelete
+		" Close the buffer keeping the window.
 		nnoremap <Leader>q :Bdelete<CR>
+		" Close the buffer and the window.
+		nnoremap <Leader>Q :bdelete<CR>
+		" Wipe all buffers
+		nnoremap <Leader>bw :%bwipe<CR>
 
 		" * stays in the same place
 		nnoremap * *``
 
-		" Scroll by 2 lines using ctl + movement
-		nnoremap <C-j> 2<C-e>
-		nnoremap <C-k> 2<C-y>
+		" Scroll by 2 lines using shift + movement
+		nnoremap J 2<C-e>
+		nnoremap K 2<C-y>
 
 		" Scroll horizontally
-		nnoremap <C-l> 2z<Right>
-		nnoremap <C-h> 2z<Left>
+		nnoremap L 2z<Right>
+		nnoremap H 2z<Left>
 
 		" Bind Denite
 		nnoremap <silent> <C-p> :Denite buffer file/rec<CR>
@@ -182,32 +204,44 @@
 			set termwinsize=20x0
 			nnoremap <Leader>< :botright terminal<CR>
 		endif
+
+		" It's way too easy to hit this instead of >> and we have <Leader>q
+		nnoremap ZZ <Nop>
 	" }}}
 
 	" Insert mode {{{
-		inoremap jj <Esc>
-		inoremap JJ <Esc>
+		inoremap jk <Esc>
+		inoremap JK <Esc>
 
-		inoremap <silent> <C-r> <Esc>:Denite register -mode=normal<CR>
+		" inoremap <silent> <C-r> <Esc>:Denite register -mode=normal<CR>
 	"}}}
 
 	" Visual mode {{{
 		"Power navigation, by Andrew Radev
-		xnoremap H 5h
-		xnoremap J 5j
-		xnoremap K 5k
-		xnoremap L 5l
+		xnoremap <C-h> 5h
+		xnoremap <C-j> 5j
+		xnoremap <C-k> 5k
+		xnoremap <C-l> 5l
 
-		" Scroll by 2 lines using ctl + movement
-		xnoremap <C-j> 1<C-e>
-		xnoremap <C-k> 2<C-y>
+		" Scroll by 2 lines using shift + movement
+		xnoremap J 2<C-e>
+		xnoremap K 2<C-y>
+
+		" Scroll horizontally
+		xnoremap L 2z<Right>
+		xnoremap H 2z<Left>
 
 		" Format selection as json.
-		xnoremap <buffer> <Leader>jf :'<,'>!jq '.'<CR>
+		xnoremap <Leader>jf :'<,'>!jq '.'<CR>
 	"}}}
 
 	" Everywhere {{{
 		" Nothing to see here. Hint: noremap
+	" }}}
+
+	" Command Line remaps {{{
+		" Hint: cnoremap
+		cnoremap alv qa!
 	" }}}
 "}}}
 
@@ -366,6 +400,13 @@
 		\])
 " }}}
 
+" {{{ LanguageClient
+		let g:LanguageClient_serverCommands = {
+			\ 'javascript': ['tsserver'],
+			\}
+
+" }}}
+
 " VimWiki {{{
 	let g:vimwiki_hl_headers=1    " Highlight headers
 	let g:vimwiki_hl_cb_checked=1 " Highlight completed items
@@ -384,6 +425,7 @@
 " Terminal {{{
 	" Remaps {{{
 		tnoremap <Esc> <C-\><C-n>
+		tnoremap jk <C-\><C-n>
 	" }}}
 
 	" AutoCMD {{{

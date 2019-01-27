@@ -76,3 +76,15 @@
 [submodule "bundle/targets.vim"]
 	path = bundle/targets.vim
 	url = git@github.com:wellle/targets.vim.git
+[submodule "bundle/jq.vim"]
+	path = bundle/jq.vim
+	url = git@github.com:vito-c/jq.vim.git
+[submodule "bundle/vim-monokai-tasty"]
+	path = bundle/vim-monokai-tasty
+	url = git@github.com:patstockwell/vim-monokai-tasty.git
+[submodule "bundle/vim-rockstar"]
+	path = bundle/vim-rockstar
+	url = git@github.com:sirosen/vim-rockstar.git
+[submodule "bundle/LanguageClient-neovim"]
+	path = bundle/LanguageClient-neovim
+	url = https://github.com/autozimu/LanguageClient-neovim.git
