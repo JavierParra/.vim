@@ -132,12 +132,20 @@
 		nnoremap <Leader>ev :botright vnew ~/.vim/vimrc<CR>
 
 		" Toggle NerdTree
-		nnoremap <Leader>b :NERDTreeToggle <CR>
-		" Toggle NerdTree
-		nnoremap <Leader>f :NERDTreeFind <CR>
+		nnoremap <Leader>fb :NERDTreeToggle <CR>
+		nnoremap <Leader>ft :NERDTreeToggle <CR>
+
+		" Open NerdTree
+		nnoremap <Leader>fo :NERDTreeFocus <CR>
+
+		" Open NerdTree
+		nnoremap <Leader>fc :NERDTreeClose <CR>
+
+		" Focus file in NerdTree
+		nnoremap <Leader>ff :NERDTreeFind <CR>
 
 		" Re-syntax highlight
-		nnoremap <Leader>s :syntax on <CR>
+		" nnoremap <Leader>s :syntax on <CR>
 
 		" Toggle wordwrap on word boundary
 		nnoremap <Leader>tw :set wrap! lbr <CR>
@@ -205,6 +213,21 @@
 			nnoremap <Leader>< :botright terminal<CR>
 		endif
 
+		" Common foldlevels
+		nnoremap <Leader>zl1 :set foldlevel=1<CR>
+		nnoremap <Leader>zl2 :set foldlevel=2<CR>
+		nnoremap <Leader>zl3 :set foldlevel=3<CR>
+		nnoremap <Leader>zl4 :set foldlevel=4<CR>
+
+		nnoremap <Leader>zl :set foldlevel=
+
+		" Fugitive
+		nnoremap <Leader>gs :Gstatus<CR>
+		nnoremap <Leader>gb :Gblame<CR>
+		nnoremap <Leader>gp :Git pull<CR>
+		nnoremap <Leader>gd :Gdiff<CR>
+		nnoremap <Leader>gc :Git checkout
+
 		" It's way too easy to hit this instead of >> and we have <Leader>q
 		nnoremap ZZ <Nop>
 	" }}}
@@ -252,6 +275,12 @@
 	let g:ale_sign_error = '💩'    " Change error sign
 	" let g:ale_sign_error = '❗️'    " Change error sign
 	let g:ale_sign_warning = '❕'  " Change warning sign
+
+	" Disable ALE for minified files
+	let g:ale_pattern_options = {
+	\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
+	\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
+	\}
 "}}}
 
 " AutoCMD {{{
@@ -420,6 +449,11 @@
 				\ 'ext': '.md'
 			\},
 		\]
+
+	augroup wiki_toc
+		autocmd! BufWritePre *.wiki :VimwikiTOC
+	augroup END
+
 " }}}
 
 " Terminal {{{
