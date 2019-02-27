@@ -88,3 +88,6 @@
 [submodule "bundle/LanguageClient-neovim"]
 	path = bundle/LanguageClient-neovim
 	url = https://github.com/autozimu/LanguageClient-neovim.git
+[submodule "bundle/puppet-syntax-vim"]
+	path = bundle/puppet-syntax-vim
+	url = git@github.com:puppetlabs/puppet-syntax-vim.git
