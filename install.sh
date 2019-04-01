@@ -41,6 +41,13 @@ function installYCM() {
 	return 1)
 }
 
+function installLanguageClient() {
+	pushd ./bundle/LanguageClient-neovim/
+	bash install.sh || :
+	popd
+}
+
 initSubmodules || (echo "Failed to init submodules"; exit 1)
 generateHelpTags
 installYCM
+installLanguageClient
