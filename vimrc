@@ -82,11 +82,11 @@
 "}}}
 
 " Fix VIM {{{
-	set nobackup          " Don't create backup
-	set noswapfile        " Disable swap files
-	set hidden            " Enables switching buffers without saving
-	set clipboard=unnamed " Syncs VIMs clipboard with OSX's
-	set shortmess+=c      " Hide 'user defined completion pattern not found'
+	set nobackup              " Don't create backup
+	set noswapfile            " Disable swap files
+	set hidden                " Enables switching buffers without saving
+	set clipboard=unnamedplus " Syncs VIMs clipboard with the OS's
+	set shortmess+=c          " Hide 'user defined completion pattern not found'
 
 	" Ignore patterns in listings.
 	set wildignore+=node_modules
@@ -335,7 +335,7 @@
 	augroup emmet
 		" Clear the current group so it doesn't pile up
 		autocmd!
-		autocmd FileType html,php EmmetInstall
+		autocmd FileType html,php,jsx EmmetInstall
 		" autocmd FileType html imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 	augroup END
 "}}}
@@ -442,7 +442,6 @@
 	let g:vimwiki_folding='expr'  " Fold sections and code
 
 	let g:vimwiki_list = [
-			\{'path': '~/Documents/Decidata/vimwiki'},
 			\{
 				\'path': '~/Documents/vimwiki',
 				\'syntax': 'markdown',
