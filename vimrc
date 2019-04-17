@@ -335,7 +335,7 @@
 	augroup emmet
 		" Clear the current group so it doesn't pile up
 		autocmd!
-		autocmd FileType html,php,jsx EmmetInstall
+		autocmd FileType html,php,tsx,jsx EmmetInstall
 		" autocmd FileType html imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 	augroup END
 "}}}
