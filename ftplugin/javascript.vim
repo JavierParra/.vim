@@ -1,3 +1,3 @@
 " Remaps {{{
-	nnoremap <C-]> :ALEGoToDefinition<CR>
+	nnoremap <buffer> <C-]> :ALEGoToDefinition<CR>
 " }}}

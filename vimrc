@@ -432,6 +432,8 @@
 " {{{ LanguageClient
 		let g:LanguageClient_serverCommands = {
 			\ 'javascript': ['tsserver'],
+			\ 'typescript': ['tsserver'],
+			\ 'typescript.jsx': ['tsserver'],
 			\}
 
 " }}}
