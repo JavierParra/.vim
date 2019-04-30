@@ -214,6 +214,7 @@
 		endif
 
 		" Common foldlevels
+		nnoremap <Leader>zl0 :set foldlevel=0<CR>
 		nnoremap <Leader>zl1 :set foldlevel=1<CR>
 		nnoremap <Leader>zl2 :set foldlevel=2<CR>
 		nnoremap <Leader>zl3 :set foldlevel=3<CR>
