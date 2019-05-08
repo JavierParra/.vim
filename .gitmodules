@@ -94,3 +94,6 @@
 [submodule "bundle/vim-polyglot"]
 	path = bundle/vim-polyglot
 	url = git@github.com:sheerun/vim-polyglot.git
+[submodule "bundle/vim-firestore"]
+	path = bundle/vim-firestore
+	url = git@github.com:delphinus/vim-firestore.git
