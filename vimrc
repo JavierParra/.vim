@@ -198,7 +198,9 @@
 		nnoremap <silent> <Leader>dt :Denite outline<CR>
 		nnoremap <silent> <Leader>dh :Denite command_history<CR>
 		nnoremap <silent> <Leader>ds :Denite prosession<CR>
-		nnoremap <silent> <Leader>d/ :Denite grep -resume -post-action=suspend<CR>
+		nnoremap <silent> <Leader>d/ :Denite grep -buffer-name=grep -post-action=suspend<CR>
+		nnoremap <silent> <Leader>dn :Denite grep -buffer-name=grep -resume -cursor-pos=+1 -mode=normal -post-action=suspend<CR>
+		nnoremap <silent> <Leader>dN :Denite grep -buffer-name=grep -resume -cursor-pos=-1 -mode=normal -post-action=suspend<CR>
 		nnoremap <silent> <Leader>dr :Denite register -mode=normal<CR>
 
 		" VimWiki
@@ -411,7 +413,8 @@
 		\ 'noremap'
 		\)
 
-	call denite#custom#option('default', {
+	" _ applies the options to all buffer names.
+	call denite#custom#option('_', {
 		\ 'auto_accel': v:true,
 		\ 'reversed': v:true,
 		\ 'auto_resize': v:true,
