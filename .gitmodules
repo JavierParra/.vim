@@ -64,9 +64,6 @@
 [submodule "bundle/denite.nvim"]
 	path = bundle/denite.nvim
 	url = git@github.com:Shougo/denite.nvim.git
-[submodule "bundle/YouCompleteMe"]
-	path = bundle/YouCompleteMe
-	url = git@github.com:Valloric/YouCompleteMe.git
 [submodule "bundle/vimwiki"]
 	path = bundle/vimwiki
 	url = git@github.com:vimwiki/vimwiki.git
@@ -97,3 +94,6 @@
 [submodule "bundle/vim-firestore"]
 	path = bundle/vim-firestore
 	url = git@github.com:delphinus/vim-firestore.git
+[submodule "bundle/coc.nvim"]
+	path = bundle/coc.nvim
+	url = git@github.com:neoclide/coc.nvim.git
