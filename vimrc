@@ -52,7 +52,7 @@
 	"set showcmd                    " shows the last entered command
 	set number                     " show line numbers
 	set relativenumber             " show line numbers relative to current line
-	set cursorline                 " highlights the current line
+	set nocursorline               " don't highlights the current line
 	set wildmenu                   " enables command autocompletion
 	set showmatch                  " highlights the matching parens et all
 	set backspace=indent,eol,start " backspaces everything
@@ -144,6 +144,8 @@
 		" Focus file in NerdTree
 		nnoremap <Leader>ff :NERDTreeFind <CR>
 
+		" Edit new file in the current directory
+		nnoremap <Leader>fn :edit %:h/
 		" Re-syntax highlight
 		" nnoremap <Leader>s :syntax on <CR>
 
@@ -198,7 +200,7 @@
 		nnoremap <silent> <Leader>dt :Denite outline<CR>
 		nnoremap <silent> <Leader>dh :Denite command_history<CR>
 		nnoremap <silent> <Leader>ds :Denite prosession<CR>
-		nnoremap <silent> <Leader>d/ :Denite grep -buffer-name=grep -post-action=suspend<CR>
+		nnoremap <silent> <Leader>d/ :Denite grep -buffer-name=grep<CR>
 		nnoremap <silent> <Leader>dn :Denite grep -buffer-name=grep -resume -cursor-pos=+1 -mode=normal -post-action=suspend<CR>
 		nnoremap <silent> <Leader>dN :Denite grep -buffer-name=grep -resume -cursor-pos=-1 -mode=normal -post-action=suspend<CR>
 		nnoremap <silent> <Leader>dr :Denite register -mode=normal<CR>
@@ -230,6 +232,9 @@
 		nnoremap <Leader>gp :Git pull<CR>
 		nnoremap <Leader>gd :Gdiff<CR>
 		nnoremap <Leader>gc :Git checkout
+
+		" Join the current line with the previous one.
+		nnoremap <BS> kJ
 
 		" It's way too easy to hit this instead of >> and we have <Leader>q
 		nnoremap ZZ <Nop>
