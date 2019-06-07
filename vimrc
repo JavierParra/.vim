@@ -14,6 +14,7 @@
 		let &t_SI = "\<Esc>]1337;CursorShape=1\x7" " Vertical bar in insert mode
 		let &t_EI = "\<Esc>]1337;CursorShape=0\x7" " Block in normal mode
 	endif
+	set shell=/bin/bash
 " }}}
 
 " Colors {{{
@@ -245,6 +246,22 @@
 		inoremap JK <Esc>
 
 		" inoremap <silent> <C-r> <Esc>:Denite register -mode=normal<CR>
+
+		" COC
+		" Use tab for trigger completion with characters ahead and navigate.
+		" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+		inoremap <silent><expr> <TAB>
+					\ pumvisible() ? "\<C-n>" :
+					\ <SID>check_back_space() ? "\<TAB>" :
+					\ coc#refresh()
+		inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+		" Use <c-space> to trigger completion.
+		inoremap <silent><expr> <c-space> coc#refresh()
+
+		" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+		" Coc only does snippet and additional edit on confirm.
+		inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 	"}}}
 
 	" Visual mode {{{
@@ -283,6 +300,7 @@
 	let g:ale_sign_error = '💩'    " Change error sign
 	" let g:ale_sign_error = '❗️'    " Change error sign
 	let g:ale_sign_warning = '❕'  " Change warning sign
+	let g:ale_set_highlights = 0   " Disable highlight
 
 	" Disable ALE for minified files
 	let g:ale_pattern_options = {
@@ -356,22 +374,38 @@
 " {{{ You Complete Me
 	" " Use whichever python3 is found in the path
 	" let g:ycm_python_binary_path = 'python3'
-  "
+
 	" " Use ctags file to autocomplete.
 	" let g:ycm_collect_identifiers_from_tags_files=1
-  "
+
 	" " Leave preview window open after select but close it after leaving
 	" " insert mode
 	" let g:ycm_autoclose_preview_window_after_completion=0
 	" let g:ycm_autoclose_preview_window_after_insertion=1
-  "
+
 	" let g:ycm_enable_diagnostic_signs=0 " Do not try to lint, we have ale for that
-  "
+
 	" " Try to always load semantic completion
 	" let g:ycm_semantic_triggers =  {
 	" 	\	'python': ['re!\w{2}']
 	" \}
 "}}}
+
+" {{{ COC
+
+		function! s:check_back_space() abort
+			let col = col('.') - 1
+			return !col || getline('.')[col - 1]  =~# '\s'
+		endfunction
+
+		function! s:show_documentation()
+			if (index(['vim','help'], &filetype) >= 0)
+				execute 'h '.expand('<cword>')
+			else
+				call CocAction('doHover')
+			endif
+		endfunction
+" }}}
 
 " Denite {{{
 	call denite#custom#source(
