@@ -14,7 +14,8 @@
 		let &t_SI = "\<Esc>]1337;CursorShape=1\x7" " Vertical bar in insert mode
 		let &t_EI = "\<Esc>]1337;CursorShape=0\x7" " Block in normal mode
 	endif
-	set shell=/bin/bash
+	set title              " Set the terminal's title to the current file
+	set shell=/bin/bash    " My zsh is too slow at the moment.
 " }}}
 
 " Colors {{{
@@ -122,9 +123,13 @@
 		nnoremap <Leader>k <C-w>k
 		nnoremap <Leader>l <C-w>l
 
-		"Move between buffers with leader and arrows
-		nnoremap <C-Left> :bprevious <CR>
-		nnoremap <C-Right> :bnext <CR>
+		"Move between buffers with arrows
+		nnoremap <Left> :bprevious <CR>
+		nnoremap <Right> :bnext <CR>
+
+		"Move between tabs with control and arrows
+		nnoremap <C-Left> :tabprevious <CR>
+		nnoremap <C-Right> :tabnext <CR>
 		" Edit vimrc in a split panel
 		"nnoremap <Leader>ev :vsplit <CR> :wincmd l <CR> :e $MYVIMRC <CR>
 		" nnoremap <Leader>ev :botright vnew $MYVIMRC<CR>
@@ -147,6 +152,9 @@
 
 		" Edit new file in the current directory
 		nnoremap <Leader>fn :edit %:h/
+
+		" Copy the current file's path
+		nnoremap <Leader>fp :!echo % \| pbcopy <CR>
 		" Re-syntax highlight
 		" nnoremap <Leader>s :syntax on <CR>
 
@@ -503,7 +511,7 @@
 " Terminal {{{
 	" Remaps {{{
 		tnoremap <Esc> <C-\><C-n>
-		tnoremap jk <C-\><C-n>
+		" tnoremap jk <C-\><C-n>
 	" }}}
 
 	" AutoCMD {{{

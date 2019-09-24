@@ -49,5 +49,5 @@ function installLanguageClient() {
 
 initSubmodules || (echo "Failed to init submodules"; exit 1)
 generateHelpTags
-installYCM
+# installYCM
 installLanguageClient
