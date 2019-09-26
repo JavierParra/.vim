@@ -496,7 +496,7 @@
 
 	let g:vimwiki_list = [
 			\{
-				\'path': '~/Documents/vimwiki',
+				\'path': '~/Dropbox/vimwiki',
 				\'syntax': 'markdown',
 				\ 'ext': '.md'
 			\},
