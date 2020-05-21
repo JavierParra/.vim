@@ -32,14 +32,14 @@
 	set fillchars+=vert:│
 
 	" make visual selection more prominent
-	" hi Visual ctermbg=240
+	hi Visual ctermbg=240
 
 	" I like this colors
 	hi ColorColumn     ctermbg=238
 	hi SignColumn      ctermbg=235
-	hi CursorLineNr    ctermfg=166
+	hi CursorLineNr    ctermfg=166 ctermbg=236
 	hi LineNr          ctermfg=242
-
+	hi CursorLine      ctermbg=236
 " }}}
 
 " Tabstops {{{
@@ -54,7 +54,7 @@
 	"set showcmd                    " shows the last entered command
 	set number                     " show line numbers
 	set relativenumber             " show line numbers relative to current line
-	set nocursorline               " don't highlights the current line
+	set nocursorline               " highlights the current line
 	set wildmenu                   " enables command autocompletion
 	set showmatch                  " highlights the matching parens et all
 	set backspace=indent,eol,start " backspaces everything
@@ -117,6 +117,8 @@
 		noremap <Leader><S-j> <C-w><C-j> :q<CR>
 		noremap <Leader><S-k> <C-w><C-k> :q<CR>
 
+		" Toggle spellcheck
+		nnoremap <silent><Leader>s :set spell!<CR>
 		" Move between split panels with leader + movement
 		nnoremap <Leader>h <C-w>h
 		nnoremap <Leader>j <C-w>j
@@ -214,6 +216,9 @@
 		nnoremap <silent> <Leader>dN :Denite grep -buffer-name=grep -resume -cursor-pos=-1 -mode=normal -post-action=suspend<CR>
 		nnoremap <silent> <Leader>dr :Denite register -mode=normal<CR>
 
+		" Not actually Denite but kinkd of the same.
+		nnoremap <silent> <Leader>do :CocList outline<CR>
+
 		" VimWiki
 		nmap <Leader>vww <Plug>VimwikiIndex
 		nmap <Leader>vws <Plug>VimwikiUISelect
@@ -245,13 +250,15 @@
 		" Join the current line with the previous one.
 		nnoremap <BS> kJ
 
+		" Vista outline
+		nnoremap <Leader>vo :Vista!!<CR>
+
 		" It's way too easy to hit this instead of >> and we have <Leader>q
 		nnoremap ZZ <Nop>
 	" }}}
 
 	" Insert mode {{{
 		inoremap jk <Esc>
-		inoremap JK <Esc>
 
 		" inoremap <silent> <C-r> <Esc>:Denite register -mode=normal<CR>
 
@@ -289,6 +296,13 @@
 
 		" Format selection as json.
 		xnoremap <Leader>jf :'<,'>!jq '.'<CR>
+
+		" Use j and k to move by visual lines only if there's no count modifier.
+		xnoremap <expr> j v:count ? 'j' : 'gj'
+		xnoremap <expr> k v:count ? 'k' : 'gk'
+
+		" Search for selected text
+		vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
 	"}}}
 
 	" Everywhere {{{
@@ -331,6 +345,23 @@
 		endfunction
 
 		autocmd! BufEnter * call DummySign()
+	augroup END
+
+	" Only show cursorline on the active buffer
+	augroup curline
+		autocmd! WinEnter * set cursorline
+		autocmd! WinLeave * set nocursorline
+		autocmd! WinLeave *.fugitiveblame set cursorline
+	augroup END
+
+	augroup diffsearch
+		function! SetFoldSearch()
+			if &diff
+				set fdo-=search
+			endif
+		endfunction
+
+		autocmd! BufEnter * call SetFoldSearch()
 	augroup END
 "}}}
 
@@ -417,10 +448,13 @@
 
 " Denite {{{
 	call denite#custom#source(
-		\ 'file/rec', 'matchers', ['matcher/fuzzy', 'matcher/ignore_globs'])
+		\ 'file_mru', 'matchers', ['matcher/substring', 'matcher/ignore_globs'])
 
 	call denite#custom#source(
-		\ 'file/rec', 'sorters', ['sorter/rank'])
+		\ 'file/rec', 'matchers', ['matcher/substring', 'matcher/ignore_globs'])
+
+	call denite#custom#source(
+		\ 'file/rec', 'sorters', ['sorters/sublime'])
 
 	call denite#custom#var('file/rec', 'command',
 		\ ['find', '-L', ':directory',
@@ -433,6 +467,23 @@
 
 	call denite#custom#var('prosession', 'format', 'split')
 
+	" Use ripgrep instead of grep for searching
+	call denite#custom#var('grep', 'command', ['rg'])
+
+	" Custom options for ripgrep
+	"   --vimgrep:  Show results with every match on it's own line
+	"   --hidden:   Search hidden directories and files
+	"   --heading:  Show the file name above clusters of matches from each file
+	"   --S:        Search case insensitively if the pattern is all lowercase
+	call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
+
+	" Recommended defaults for ripgrep via Denite docs
+	call denite#custom#var('grep', 'recursive_opts', [])
+	call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+	call denite#custom#var('grep', 'separator', ['--'])
+	call denite#custom#var('grep', 'final_opts', [])
+
+	" Custom maps for denite results.
 	call denite#custom#map(
 		\ 'insert',
 		\ '<Down>',
@@ -475,7 +526,7 @@
 		\ '*~', '*.o', '*.exe', '*.bak',
 		\ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
 		\ '.hg/', '.git/', '.bzr/', '.svn/',
-		\ 'node_modules/', 'venv/', '__pycache__/',
+		\ 'node_modules/', 'venv/', '__pycache__/', 'dist/', 'build/',
 		\ 'tags', 'tags-*'
 		\])
 " }}}
@@ -487,6 +538,10 @@
 			\ 'typescript.jsx': ['tsserver'],
 			\}
 
+" }}}
+
+" {{{ Vista
+	let g:vista_default_executive='coc'
 " }}}
 
 " VimWiki {{{
@@ -528,5 +583,31 @@
 			endif
 		augroup END
 	" }}}
+" }}}
+
+" Firenvim {{{
+if exists('g:started_by_firenvim')
+	" let w:test=1
+	set showtabline=0
+	let g:airline#extensions#tabline#enabled = 0
+	" let g:airline_symbols_ascii = 1
+	let g:airline_powerline_fonts = 0 "Use powerline fonts
+	let g:airline_section_b=''
+	let g:airline_section_c=''
+	" let g:airline_section_x=''
+	let g:airline_section_y=''
+	let g:airline_section_z=''
+endif
+" }}}
+
+" LaTex {{{
+	" Disable latex-box shipped with polyglot see: https://github.com/lervag/vimtex#alternatives
+	let g:polyglot_disabled = ['latex']
+" }}}
+
+" {{{ Ultisnips
+	let g:UltiSnipsExpandTrigger='<NULL>'
+	" let g:UltiSnipsJumpForwardTrigger='<tab>'
+	" let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0

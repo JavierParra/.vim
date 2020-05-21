@@ -109,3 +109,9 @@
 [submodule "bundle/firenvim"]
 	path = bundle/firenvim
 	url = git@github.com:glacambre/firenvim.git
+[submodule "bundle/vimtex"]
+	path = bundle/vimtex
+	url = git@github.com:lervag/vimtex.git
+[submodule "bundle/ultisnips"]
+	path = bundle/ultisnips
+	url = git@github.com:SirVer/ultisnips.git
