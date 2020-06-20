@@ -203,9 +203,8 @@
 
 		" Bind Denite
 		nnoremap <silent> <C-p> :Denite buffer file/rec<CR>
-		nnoremap <silent> <Leader>d  :Denite <C-d>
-		nnoremap <silent> <Leader>dc :Denite colorscheme -auto-preview  <CR>
-		nnoremap <silent> <Leader>dd :Denite <C-d>
+		nnoremap <silent> <Leader>d  :Denite source<CR>
+		nnoremap <silent> <Leader>dc :Denite colorscheme -auto-action=preview <CR>
 		nnoremap <silent> <Leader>df :Denite file/rec<CR>
 		nnoremap <silent> <Leader>db :Denite buffer<CR>
 		nnoremap <silent> <Leader>dt :Denite outline<CR>
@@ -214,7 +213,7 @@
 		nnoremap <silent> <Leader>d/ :Denite grep -buffer-name=grep<CR>
 		nnoremap <silent> <Leader>dn :Denite grep -buffer-name=grep -resume -cursor-pos=+1 -mode=normal -post-action=suspend<CR>
 		nnoremap <silent> <Leader>dN :Denite grep -buffer-name=grep -resume -cursor-pos=-1 -mode=normal -post-action=suspend<CR>
-		nnoremap <silent> <Leader>dr :Denite register -mode=normal<CR>
+		nnoremap <silent> <Leader>dr :Denite register<CR>
 
 		" Not actually Denite but kinkd of the same.
 		nnoremap <silent> <Leader>do :CocList outline<CR>
@@ -447,6 +446,40 @@
 " }}}
 
 " Denite {{{
+
+	" Mappings in options window
+	autocmd FileType denite call s:denite_my_settings()
+	function! s:denite_my_settings() abort
+		" Perform the default action on enter
+		nnoremap <silent><buffer><expr> <CR>
+		\ denite#do_map('do_action')
+		" Choose action
+		nnoremap <silent><buffer><expr> <tab>
+		\ denite#do_map('choose_action')
+		" Preview option
+		nnoremap <silent><buffer><expr> p
+		\ denite#do_map('do_action', 'preview')
+		" Close denite with
+		nnoremap <silent><buffer><expr> <Esc>
+		\ denite#do_map('quit')
+		" Go to filter
+		nnoremap <silent><buffer><expr> i
+		\ denite#do_map('open_filter_buffer')
+	endfunction
+
+	" Mappings in filter window
+	autocmd FileType denite-filter call s:denite_filter_my_settings()
+	function! s:denite_filter_my_settings() abort
+		imap <silent><buffer> <tab> <Plug>(denite_filter_update)
+		inoremap <silent><buffer><expr> <CR>
+		\ denite#do_map('do_action')
+		inoremap <silent><buffer><expr> <Esc>
+		\ denite#do_map('quit')
+		nnoremap <silent><buffer><expr> <Esc>
+		\ denite#do_map('quit')
+	endfunction
+
+
 	call denite#custom#source(
 		\ 'file_mru', 'matchers', ['matcher/substring', 'matcher/ignore_globs'])
 
@@ -460,6 +493,9 @@
 		\ ['find', '-L', ':directory',
 		\ '-path', '*/.git/*', '-prune', '-o',
 		\ '-path', '*/node_modules/*', '-prune', '-o',
+		\ '-path', '*/build/*', '-prune', '-o',
+		\ '-path', '*/.next/*', '-prune', '-o',
+		\ '-path', '*/database/data/*', '-prune', '-o',
 		\ '-path', '*/venv/*', '-prune', '-o',
 		\ '-path', '*/__pycache__/*', '-prune', '-o',
 		\ '-type', 'l', '-print', '-o',
@@ -483,40 +519,14 @@
 	call denite#custom#var('grep', 'separator', ['--'])
 	call denite#custom#var('grep', 'final_opts', [])
 
-	" Custom maps for denite results.
-	call denite#custom#map(
-		\ 'insert',
-		\ '<Down>',
-		\ '<denite:move_to_next_line>',
-		\ 'noremap'
-		\)
-
-	call denite#custom#map(
-		\ 'insert',
-		\ '<Up>',
-		\ '<denite:move_to_previous_line>',
-		\ 'noremap'
-		\)
-
-	call denite#custom#map(
-		\ 'insert',
-		\ '<C-j>',
-		\ '<denite:move_to_next_line>',
-		\ 'noremap'
-		\)
-	call denite#custom#map(
-		\ 'insert',
-		\ '<C-k>',
-		\ '<denite:move_to_previous_line>',
-		\ 'noremap'
-		\)
-
 	" _ applies the options to all buffer names.
 	call denite#custom#option('_', {
 		\ 'auto_accel': v:true,
 		\ 'reversed': v:true,
 		\ 'auto_resize': v:true,
 		\ 'cursor_wrap': v:true,
+		\ 'start_filter': v:true,
+		\ 'floating_preview': v:true,
 		\ 'highlight_matched_char': 'Keyword',
 		\ 'highlight_matched_range': 'Comment',
 		\ })
@@ -603,6 +613,10 @@ endif
 " LaTex {{{
 	" Disable latex-box shipped with polyglot see: https://github.com/lervag/vimtex#alternatives
 	let g:polyglot_disabled = ['latex']
+" }}}
+
+" {{{ Markdown Composer
+	let g:markdown_composer_autostart=0
 " }}}
 
 " {{{ Ultisnips
