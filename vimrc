@@ -25,31 +25,102 @@
 " }}}
 
 " Colors {{{
-	" set t_Co=256
-	" let g:molokai_original=0
-	" " let g:rehash256 = 1
-	" colorscheme molokai " the color scheme
 	syntax enable         " enable syntax highlighting
-	let g:vim_monokai_tasty_italic = 1
-	colorscheme vim-monokai-tasty " the color scheme
 	" Set transparent background
 	" hi Normal guibg=NONE ctermbg=NONE
 
 	" vertical separator for panels
 	set fillchars+=vert:│
 
-	" make visual selection more prominent
-	hi Visual ctermbg=240
+	" Helper function to set highlight. Stolen directly from monokai_tasty
+	" https://github.com/patstockwell/vim-monokai-tasty/blob/master/colors/vim-monokai-tasty.vim
+	function! Highlight(group, fg, bg, style)
+		exec "hi " . a:group
+					\ . " ctermfg=" . a:fg["cterm"]
+					\ . " ctermbg=" . a:bg["cterm"]
+					\ . " cterm=" . a:style["cterm"]
+					\ . " guifg=" . a:fg["gui"]
+					\ . " guibg=" . a:bg["gui"]
+					\ . " gui=" . a:style["gui"]
+	endfunction
 
-	" I like this colors
-	hi ColorColumn     ctermbg=238
-	hi SignColumn      ctermbg=235
-	hi CursorLineNr    ctermfg=166 ctermbg=236
-	hi LineNr          ctermfg=242
-	hi CursorLine      ctermbg=236
+	function! OverrideMonokai() abort
+		" Variables from monokai_tasty
+		if g:vim_monokai_tasty_italic
+			let s:italic = { "cterm": "italic", "gui": "italic" }
+		else
+			let s:italic = { "cterm": "NONE", "gui": "NONE" }
+		endif
 
-	hi def link tsxAttrib jsxAttrib
-	hi def link tsxEqual jsxEqual
+		let s:yellow = { "cterm": 228, "gui": "#ffff87" }
+		let s:purple = { "cterm": 141, "gui": "#af87ff" }
+		let s:light_green = { "cterm": 148, "gui": "#A4E400" }
+		let s:light_blue = { "cterm": 81, "gui": "#62D8F1" }
+		let s:magenta = { "cterm": 197, "gui": "#FC1A70" }
+		let s:orange = { "cterm": 208, "gui": "#FF9700" }
+
+		" Search colours. Specifically not in the monokai palette so that they will
+		" stand out.
+		let s:black = { "cterm": 0, "gui": "#000000" }
+		let s:bright_yellow = { "cterm": 11, "gui": "yellow" }
+
+		" Monochrome in order light -> dark
+		let s:white = { "cterm": 231, "gui": "#ffffff" }
+		let s:light_grey = { "cterm": 250, "gui": "#bcbcbc" }
+		let s:grey = { "cterm": 245, "gui": "#8a8a8a" }
+		let s:dark_grey = { "cterm": 59, "gui": "#5f5f5f" }
+		let s:darker_grey = { "cterm": 238, "gui": "#444444" }
+		let s:light_charcoal = { "cterm": 238, "gui": "#2b2b2b" }
+		let s:charcoal = { "cterm": 235, "gui": "#262626" }
+
+		" Git diff colours.
+		let s:danger = { "cterm": 197, "gui": "#ff005f" }
+		let s:olive = { "cterm": 64, "gui": "#5f8700" }
+		let s:dark_red = { "cterm": 88, "gui": "#870000" }
+		let s:blood_red = { "cterm": 52, "gui": "#5f0000" }
+		let s:dark_green = { "cterm": 22, "gui": "#005f00" }
+		let s:bright_blue = { "cterm": 33, "gui": "#0087ff" }
+		let s:purple_slate = { "cterm": 60, "gui": "#5f5f87" }
+
+		let s:none = { "cterm": "NONE", "gui": "NONE" }
+		let s:bold = { "cterm": "bold", "gui": "bold" }
+		let s:underline = { "cterm": "underline", "gui": "underline" }
+		let s:bold_underline = { "cterm": "bold,underline", "gui": "bold,underline" }"
+
+		" make visual selection more readable
+		hi Visual ctermbg=240 ctermfg=NONE
+		hi Search ctermbg=228 ctermfg=0 cterm=bold,italic
+
+		" I like this colors
+		hi ColorColumn     ctermbg=238
+		hi SignColumn      ctermbg=235
+		" The line number where the cursor is
+		hi CursorLineNr    ctermfg=208 ctermbg=236
+		hi LineNr          ctermfg=242
+		hi CursorLine      ctermbg=236
+
+		call Highlight("typescriptBraces", s:light_green, s:none, s:none)
+		call Highlight("tsxAttributeBraces", s:magenta, s:none, s:none)
+
+		call Highlight("gitcommitSummary", s:magenta, s:none, s:none)
+		call Highlight("gitcommitOverflow", s:white, s:none, s:none)
+
+		call Highlight("gitcommitSelectedFile", s:light_green, s:none, s:none)
+		call Highlight("gitcommitDiscardedFile", s:magenta, s:none, s:none)
+
+		hi def link tsxAttrib jsxAttrib
+		hi def link tsxEqual jsxEqual
+	endfunction
+
+	" Override colorscheme on an augroup: https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
+	augroup ColorOverride
+		autocmd!
+		autocmd! ColorScheme vim-monokai-tasty call OverrideMonokai()
+	augroup END
+
+	" Define the colorscheme after the autocmd
+	let g:vim_monokai_tasty_italic = 1
+	colorscheme vim-monokai-tasty " the color scheme
 " }}}
 
 " Tabstops {{{
@@ -64,7 +135,7 @@
 	"set showcmd                    " shows the last entered command
 	set number                     " show line numbers
 	set relativenumber             " show line numbers relative to current line
-	set nocursorline               " highlights the current line
+	set nocursorline               " highlights the current line. Disabled because it's set in an autocmd
 	set wildmenu                   " enables command autocompletion
 	set showmatch                  " highlights the matching parens et all
 	set backspace=indent,eol,start " backspaces everything
@@ -343,7 +414,7 @@
 " AutoCMD {{{
 	" Live reload vimrc
 	augroup vimrc
-		autocmd! BufWritePost $MYVIMRC,~/.vim/vimrc source $MYVIMRC | echom "Reloaded " . $MYVIMRC | redraw
+		autocmd! BufWritePost $MYVIMRC,~/.vim/vimrc nested source $MYVIMRC | echom "Reloaded " . $MYVIMRC | redraw
 	augroup END
 
 	" Always show the gutter to prevent shifting
@@ -380,7 +451,8 @@
 
 " Airline {{{
 	let g:airline_powerline_fonts = 1 "Use powerline fonts
-	let g:airline_theme='monokai_tasty'
+	" let g:airline_theme='monokai_tasty'
+	let g:airline_theme='badwolf'
 	let g:airline#extensions#tabline#enabled = 1
 	let g:airline#extensions#tabline#show_buffers = 1
 	let g:airline#extensions#tabline#buffer_nr_show = 1
