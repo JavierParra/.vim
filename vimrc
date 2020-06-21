@@ -1,3 +1,9 @@
+"{{{ Vim Polyglot
+	" disable for typescript files. Needs to load before plugin.
+	" Disable latex-box shipped with polyglot see: https://github.com/lervag/vimtex#alternatives
+	let g:polyglot_disabled = ['latex', 'typescriptreact', 'typescript', 'tsx', 'html']
+"}}}
+
 " Pathogen {{{
 	execute pathogen#infect()
 "}}}
@@ -24,6 +30,7 @@
 	" " let g:rehash256 = 1
 	" colorscheme molokai " the color scheme
 	syntax enable         " enable syntax highlighting
+	let g:vim_monokai_tasty_italic = 1
 	colorscheme vim-monokai-tasty " the color scheme
 	" Set transparent background
 	" hi Normal guibg=NONE ctermbg=NONE
@@ -40,6 +47,9 @@
 	hi CursorLineNr    ctermfg=166 ctermbg=236
 	hi LineNr          ctermfg=242
 	hi CursorLine      ctermbg=236
+
+	hi def link tsxAttrib jsxAttrib
+	hi def link tsxEqual jsxEqual
 " }}}
 
 " Tabstops {{{
@@ -370,7 +380,7 @@
 
 " Airline {{{
 	let g:airline_powerline_fonts = 1 "Use powerline fonts
-	let g:airline_theme='badwolf'
+	let g:airline_theme='monokai_tasty'
 	let g:airline#extensions#tabline#enabled = 1
 	let g:airline#extensions#tabline#show_buffers = 1
 	let g:airline#extensions#tabline#buffer_nr_show = 1
@@ -611,8 +621,6 @@ endif
 " }}}
 
 " LaTex {{{
-	" Disable latex-box shipped with polyglot see: https://github.com/lervag/vimtex#alternatives
-	let g:polyglot_disabled = ['latex']
 " }}}
 
 " {{{ Markdown Composer
@@ -623,5 +631,13 @@ endif
 	let g:UltiSnipsExpandTrigger='<NULL>'
 	" let g:UltiSnipsJumpForwardTrigger='<tab>'
 	" let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
+" }}}
+
+" {{{ Utils
+ " Show the syntax group under the cursor
+	function! g:SyntaxGroup() abort
+		let l:s = synID(line('.'), col('.'), 1)
+		echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+	endfunction
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0

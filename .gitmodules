@@ -118,3 +118,6 @@
 [submodule "bundle/typescript-vim"]
 	path = bundle/typescript-vim
 	url = git@github.com:leafgarland/typescript-vim.git
+[submodule "bundle/vim"]
+	path = bundle/vim
+	url = git@github.com:dracula/vim.git
