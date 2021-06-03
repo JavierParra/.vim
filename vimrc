@@ -1,9 +1,3 @@
-"{{{ Vim Polyglot
-	" disable for typescript files. Needs to load before plugin.
-	" Disable latex-box shipped with polyglot see: https://github.com/lervag/vimtex#alternatives
-	let g:polyglot_disabled = ['latex', 'typescriptreact', 'typescript', 'tsx', 'html']
-"}}}
-
 " Pathogen {{{
 	execute pathogen#infect()
 "}}}
@@ -61,8 +55,8 @@
 
 		" Search colours. Specifically not in the monokai palette so that they will
 		" stand out.
-		let s:black = { "cterm": 0, "gui": "#000000" }
-		let s:bright_yellow = { "cterm": 11, "gui": "yellow" }
+		let s:black = { "cterm": 232, "gui": "#000000" }
+		let s:bright_yellow = { "cterm": 220, "gui": "yellow" }
 
 		" Monochrome in order light -> dark
 		let s:white = { "cterm": 231, "gui": "#ffffff" }
@@ -89,7 +83,7 @@
 
 		" make visual selection more readable
 		hi Visual ctermbg=240 ctermfg=NONE
-		hi Search ctermbg=228 ctermfg=0 cterm=bold,italic
+		hi Search ctermbg=228 ctermfg=232 cterm=bold,italic
 
 		" I like this colors
 		hi ColorColumn     ctermbg=238
@@ -101,6 +95,8 @@
 
 		call Highlight("typescriptBraces", s:light_green, s:none, s:none)
 		call Highlight("tsxAttributeBraces", s:magenta, s:none, s:none)
+		call Highlight("tsxTag", s:light_grey, s:none, s:none)
+		call Highlight("tsxCloseTag", s:grey, s:none, s:none)
 
 		call Highlight("gitcommitSummary", s:magenta, s:none, s:none)
 		call Highlight("gitcommitOverflow", s:white, s:none, s:none)
@@ -135,7 +131,7 @@
 	"set showcmd                    " shows the last entered command
 	set number                     " show line numbers
 	set relativenumber             " show line numbers relative to current line
-	set nocursorline               " highlights the current line. Disabled because it's set in an autocmd
+	set cursorline                 " highlights the current line. Disabled because it's set in an autocmd
 	set wildmenu                   " enables command autocompletion
 	set showmatch                  " highlights the matching parens et all
 	set backspace=indent,eol,start " backspaces everything
@@ -147,10 +143,11 @@
 "}}}
 
 " Searching {{{
-	set incsearch      " immediate search
-	set hlsearch       " highlight search matches
-	set ignorecase     " case insensitive search
-	set smartcase      " ifi the search string has mixed case, search becomes case sensitive
+	set incsearch          " immediate search
+	set hlsearch           " highlight search matches
+	set ignorecase         " case insensitive search
+	set smartcase          " if the search string has mixed case, search becomes case sensitive
+	set inccommand=nosplit " preview replace inline
 " }}}
 
 " Invisible characters {{{
@@ -158,14 +155,9 @@
 	set listchars=tab:￫―,nbsp:·,extends:⇀,precedes:↼ " The characters that the invisible will show as.
 " }}}
 
-" ctrlp (DISABLED) {{{
-	" Files to exclude
-	" let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-	" let g:ctrlp_custom_ignore = '\/?node_modules$'
-"}}}
-
 " Fix VIM {{{
-	set nobackup              " Don't create backup
+	set backupdir=~/.local/share/nvim/backup
+	set backup                " Create backups in the above dir
 	set noswapfile            " Disable swap files
 	set hidden                " Enables switching buffers without saving
 	set clipboard=unnamedplus " Syncs VIMs clipboard with the OS's
@@ -234,8 +226,10 @@
 		nnoremap <Leader>ff :NERDTreeFind <CR>
 
 		" Edit new file in the current directory
-		nnoremap <Leader>fn :edit %:h/
+		nnoremap <Leader>fN :edit %:h/
 
+		" Copy the current file's name
+		nnoremap <Leader>fn :!echo -n %:t:r \| pbcopy <CR>
 		" Copy the current file's path
 		nnoremap <Leader>fp :!echo % \| pbcopy <CR>
 		" Re-syntax highlight
@@ -298,6 +292,11 @@
 
 		" Not actually Denite but kinkd of the same.
 		nnoremap <silent> <Leader>do :CocList outline<CR>
+		" Rename symbol
+		nmap <leader>rn <Plug>(coc-rename)
+		"
+		" Find references
+		nmap <leader>fr <Plug>(coc-references)
 
 		" VimWiki
 		nmap <Leader>vww <Plug>VimwikiIndex
@@ -305,10 +304,10 @@
 
 		" Open terminal
 		if has('nvim')
-			nnoremap <Leader>< :botright split\|resize 20\|terminal<CR>
+			nnoremap <Leader>< :botright split\|resize 20\|terminal zsh<CR>
 		else
 			set termwinsize=20x0
-			nnoremap <Leader>< :botright terminal<CR>
+			nnoremap <Leader>< :botright terminal zsh<CR>
 		endif
 
 		" Common foldlevels
@@ -383,6 +382,9 @@
 
 		" Search for selected text
 		vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+		" Paste without yanking the deleted text. This is buggy
+		" vnoremap p "_dP
 	"}}}
 
 	" Everywhere {{{
@@ -420,7 +422,8 @@
 	" Always show the gutter to prevent shifting
 	augroup addsign
 		function! DummySign()
-			sign define dummy
+			" define dummy sign with non breaking space
+			sign define dummy text= 
 			execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
 		endfunction
 
@@ -428,10 +431,30 @@
 	augroup END
 
 	" Only show cursorline on the active buffer
+	function! WinEnter() abort
+		let nocursor = ['denite-filter']
+
+		if index(nocursor, &ft) >= 0
+			set nocursorline
+		else
+			set cursorline
+		endif
+	endfunction
+
+	function! WinLeave() abort
+		let keepcursor = ['denite', 'fugitiveblame']
+
+		if index(keepcursor, &ft) >= 0
+			set cursorline
+		else
+			set nocursorline
+		endif
+	endfunction
+
+
 	augroup curline
-		autocmd! WinEnter * set cursorline
-		autocmd! WinLeave * set nocursorline
-		autocmd! WinLeave *.fugitiveblame set cursorline
+		autocmd! WinEnter * call WinEnter()
+		autocmd! WinLeave * call WinLeave()
 	augroup END
 
 	augroup diffsearch
@@ -443,7 +466,12 @@
 
 		autocmd! BufEnter * call SetFoldSearch()
 	augroup END
+
+	" Set .json to JSON5
+	autocmd BufRead,BufNewFile *.json set filetype=json5
+
 "}}}
+
 
 " Fugitive {{{
 	set diffopt+=vertical  " Force Gdiff to split vertically
@@ -555,10 +583,16 @@
 		imap <silent><buffer> <tab> <Plug>(denite_filter_update)
 		inoremap <silent><buffer><expr> <CR>
 		\ denite#do_map('do_action')
-		inoremap <silent><buffer><expr> <Esc>
-		\ denite#do_map('quit')
+		" inoremap <silent><buffer><expr> <Esc>
+		" \ denite#do_map('quit')
 		nnoremap <silent><buffer><expr> <Esc>
 		\ denite#do_map('quit')
+
+		" Move options window cursor in filter window.
+		inoremap <silent><buffer> <C-j>
+		\ <Esc><C-w>p:call cursor(line('.')+1,0)<CR><C-w>pA
+		inoremap <silent><buffer> <C-k>
+		\ <Esc><C-w>p:call cursor(line('.')-1,0)<CR><C-w>pA
 	endfunction
 
 
@@ -575,6 +609,7 @@
 		\ ['find', '-L', ':directory',
 		\ '-path', '*/.git/*', '-prune', '-o',
 		\ '-path', '*/node_modules/*', '-prune', '-o',
+		\ '-path', '*/vendor/*', '-prune', '-o',
 		\ '-path', '*/build/*', '-prune', '-o',
 		\ '-path', '*/.next/*', '-prune', '-o',
 		\ '-path', '*/database/data/*', '-prune', '-o',
@@ -618,7 +653,7 @@
 		\ '*~', '*.o', '*.exe', '*.bak',
 		\ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
 		\ '.hg/', '.git/', '.bzr/', '.svn/',
-		\ 'node_modules/', 'venv/', '__pycache__/', 'dist/', 'build/',
+		\ 'node_modules/', 'venv/', '__pycache__/', 'dist/', 'build/', 'vendor/',
 		\ 'tags', 'tags-*'
 		\])
 " }}}
@@ -637,9 +672,10 @@
 " }}}
 
 " VimWiki {{{
-	let g:vimwiki_hl_headers=1    " Highlight headers
-	let g:vimwiki_hl_cb_checked=1 " Highlight completed items
-	let g:vimwiki_folding='expr'  " Fold sections and code
+	let g:vimwiki_hl_headers=1       " Highlight headers
+	let g:vimwiki_hl_cb_checked=1    " Highlight completed items
+	let g:vimwiki_folding='expr'     " Fold sections and code
+	let g:vimwiki_table_mappings = 0 " Disable table maps which remap <tab>
 
 	let g:vimwiki_list = [
 			\{
@@ -689,6 +725,9 @@ if exists('g:started_by_firenvim')
 	" let g:airline_section_x=''
 	let g:airline_section_y=''
 	let g:airline_section_z=''
+	" set guifont=monospace:h14
+
+	nnoremap <Esc><Esc> :w<CR> :call firenvim#focus_page()<CR>
 endif
 " }}}
 
