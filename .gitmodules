@@ -121,3 +121,9 @@
 [submodule "bundle/vim"]
 	path = bundle/vim
 	url = git@github.com:dracula/vim.git
+[submodule "bundle/vim-prisma"]
+	path = bundle/vim-prisma
+	url = git@github.com:pantharshit00/vim-prisma.git
+[submodule "bundle/vim-table-mode"]
+	path = bundle/vim-table-mode
+	url = git@github.com:dhruvasagar/vim-table-mode.git
