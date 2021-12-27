@@ -1,0 +1,3 @@
+" Remaps {{{
+	inoremap <buffer> -> →
+" }}}

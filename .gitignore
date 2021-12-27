@@ -1,5 +1,5 @@
 .DS_Store
 .netrwhist
-.bundle.disabled
-.bundle.hard
+./bundle.disabled
+./bundle.hard
 session

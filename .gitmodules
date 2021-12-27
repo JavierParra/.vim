@@ -127,3 +127,18 @@
 [submodule "bundle/vim-table-mode"]
 	path = bundle/vim-table-mode
 	url = git@github.com:dhruvasagar/vim-table-mode.git
+[submodule "bundle/nvim-treesitter"]
+	path = bundle/nvim-treesitter
+	url = git@github.com:nvim-treesitter/nvim-treesitter.git
+[submodule "monokai.nvim"]
+	path = monokai.nvim
+	url = git@github.com:tanvirtin/monokai.nvim.git
+[submodule "bundle/monokai.nvim"]
+	path = bundle/monokai.nvim
+	url = git@github.com:tanvirtin/monokai.nvim.git
+[submodule "bundle/playground"]
+	path = bundle/playground
+	url = git@github.com:nvim-treesitter/playground.git
+[submodule "bundle/Catppuccino.nvim"]
+	path = bundle/Catppuccino.nvim
+	url = git@github.com:JavierParra/Catppuccino.nvim.git
