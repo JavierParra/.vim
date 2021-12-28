@@ -1,3 +1,3 @@
 " Remaps {{{
-	nnoremap <buffer> <C-]> :call CocActionAsync('jumpDefinition')<CR>
+	nnoremap <buffer> <C-]> :Telescope coc implementations<CR>
 " }}}

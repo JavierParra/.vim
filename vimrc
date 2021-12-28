@@ -23,10 +23,10 @@
 	" syntax enable         " enable syntax highlighting
 	" " Set transparent background
 	" " hi Normal guibg=NONE ctermbg=NONE
-  "
+
 	" " vertical separator for panels
 	" set fillchars+=vert:│
-  "
+
 	" " Helper function to set highlight. Stolen directly from monokai_tasty
 	" " https://github.com/patstockwell/vim-monokai-tasty/blob/master/colors/vim-monokai-tasty.vim
 	" function! Highlight(group, fg, bg, style)
@@ -38,7 +38,7 @@
 	" 				\ . " guibg=" . a:bg["gui"]
 	" 				\ . " gui=" . a:style["gui"]
 	" endfunction
-  "
+
 	" function! OverrideMonokai() abort
 	" 	" Variables from monokai_tasty
 	" 	if g:vim_monokai_tasty_italic
@@ -46,7 +46,7 @@
 	" 	else
 	" 		let s:italic = { "cterm": "NONE", "gui": "NONE" }
 	" 	endif
-  "
+
 	" 	let s:none = { "cterm": "NONE", "gui": "NONE" }
 	" 	let s:yellow = { "cterm": 228, "gui": "#ffff87" }
 	" 	let s:purple = { "cterm": 141, "gui": "#af87ff" }
@@ -54,14 +54,14 @@
 	" 	let s:light_blue = { "cterm": 81, "gui": "#62D8F1" }
 	" 	let s:magenta = { "cterm": 197, "gui": "#FC1A70" }
 	" 	let s:orange = { "cterm": 208, "gui": "#FF9700" }
-  "
+
 	" 	let s:bghighlight = { "cterm": 239, "gui": "#2E323C" }
-  "
+
 	" 	" Search colours. Specifically not in the monokai palette so that they will
 	" 	" stand out.
 	" 	let s:black = { "cterm": 232, "gui": "#000000" }
 	" 	let s:bright_yellow = { "cterm": 220, "gui": "yellow" }
-  "
+
 	" 	" Monochrome in order light -> dark
 	" 	let s:white = { "cterm": 231, "gui": "#ffffff" }
 	" 	let s:light_grey = { "cterm": 250, "gui": "#bcbcbc" }
@@ -70,7 +70,7 @@
 	" 	let s:darker_grey = { "cterm": 238, "gui": "#444444" }
 	" 	let s:light_charcoal = { "cterm": 238, "gui": "#2b2b2b" }
 	" 	let s:charcoal = { "cterm": 236, "gui": "#26292C" }
-  "
+
 	" 	" Git diff colours.
 	" 	let s:danger = { "cterm": 197, "gui": "#ff005f" }
 	" 	let s:olive = { "cterm": 64, "gui": "#5f8700" }
@@ -79,16 +79,16 @@
 	" 	let s:dark_green = { "cterm": 22, "gui": "#005f00" }
 	" 	let s:bright_blue = { "cterm": 33, "gui": "#0087ff" }
 	" 	let s:purple_slate = { "cterm": 60, "gui": "#5f5f87" }
-  "
+
 	" 	let s:bold = { "cterm": "bold", "gui": "bold" }
 	" 	let s:underline = { "cterm": "underline", "gui": "underline" }
 	" 	let s:bold_underline = { "cterm": "bold,underline", "gui": "bold,underline" }
-  "
-  "
+
+
 	" 	" make visual selection more readable
 	" 	" hi Visual ctermbg=240 ctermfg=NONE
 	" 	" hi Search ctermbg=228 ctermfg=232 cterm=bold,italic
-  "
+
 	" 	" I like this colors
 	" 	" hi ColorColumn     ctermbg=238
 	" 	" hi SignColumn      ctermbg=235
@@ -96,19 +96,19 @@
 	" 	" hi CursorLineNr    ctermfg=208 ctermbg=236
 	" 	" hi LineNr          ctermfg=242
 	" 	" hi CursorLine      ctermbg=236
-  "
+
 	" 	" call Highlight("typescriptBraces", s:light_green, s:none, s:none)
 	" 	" call Highlight("tsxAttributeBraces", s:magenta, s:none, s:none)
-  "
+
 	" 	" call Highlight("gitcommitSummary", s:magenta, s:none, s:none)
 	" 	" call Highlight("gitcommitOverflow", s:white, s:none, s:none)
-  "
+
 	" 	" call Highlight("gitcommitSelectedFile", s:light_green, s:none, s:none)
 	" 	" call Highlight("gitcommitDiscardedFile", s:magenta, s:none, s:none)
-  "
+
 	" 	" hi def link tsxAttrib jsxAttrib
 	" 	" hi def link tsxEqual jsxEqual
-  "
+
 	" 	" call Highlight('Normal', s:white, s:charcoal, s:none)
 	" 	call Highlight('ColorColumn', s:none, s:bghighlight, s:none)
 	" 	call Highlight('CursorLineNr', s:orange, s:bghighlight, s:none)
@@ -120,24 +120,24 @@
 	" 	" call Highlight('diffAdded', s:light_green, s:none, s:none)
 	" 	call Highlight('Directory', s:purple, s:none, s:none)
 	" 	" call Highlight("tsxCloseTag", s:grey, s:none, s:none)
-  "
+
 	" 	call Highlight("tsxTSTagDelimiter", s:light_grey, s:none, s:none)
 	" 	" For some reason, tsxTSConstructor takes precedence over TSTag. Luckily,
 	" 	" I don't want to highlight constructors.
 	" 	call Highlight("tsxTSConstructor", s:none, s:none, s:none)
 	" 	call Highlight("TSTag", s:light_blue, s:none, s:none)
-  "
+
 	" 	hi Comment gui='italic'
 	" 	hi MatchParen gui='underline'
 	" endfunction
-  "
+
 	" " Override colorscheme on an augroup: https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
 	" " augroup ColorOverride
 	" " 	autocmd!
 	" " 	" autocmd! ColorScheme vim-monokai-tasty call OverrideMonokai()
 	" " 	autocmd! ColorScheme * call OverrideMonokai()
 	" " augroup END
-  "
+
 	" " Define the colorscheme after the autocmd
 	" let g:vim_monokai_tasty_italic = 1
 	" " colorscheme monokai " the color scheme
@@ -302,27 +302,36 @@
 		nnoremap L 2z<Right>
 		nnoremap H 2z<Left>
 
-		" Bind Denite
-		nnoremap <silent> <C-p> :Denite buffer file/rec<CR>
-		nnoremap <silent> <Leader>d  :Denite source<CR>
-		nnoremap <silent> <Leader>dc :Denite colorscheme -auto-action=preview <CR>
-		nnoremap <silent> <Leader>df :Denite file/rec<CR>
-		nnoremap <silent> <Leader>db :Denite buffer<CR>
-		nnoremap <silent> <Leader>dt :Denite outline<CR>
-		nnoremap <silent> <Leader>dh :Denite command_history<CR>
+		" Bind Telescope
+		nnoremap <C-p> <cmd>Telescope git_files<CR>
+		nnoremap <Leader>db <cmd>Telescope buffers<CR>
+		nnoremap <Leader>d <cmd>Telescope builtin<CR>
+		nnoremap <Leader>dc <cmd>Telescope colorscheme<CR>
+		nnoremap <Leader>dh <cmd>Telescope command_history<CR>
+		nnoremap <Leader>d/ <cmd>Telescope live_grep<CR>
+		nnoremap <Leader>dn <cmd>Telescope resume initial_mode=normal<CR>
+		" nnoremap <Leader>dr <cmd>Telescope registers<CR> " Telescope register are bugged
+		nnoremap <Leader>do <cmd>Telescope coc document_symbols<CR>
+		nnoremap <Leader>/ <cmd>Telescope current_buffer_fuzzy_find<CR>
+
+		" Find references
+		nmap <leader>fr <cmd>Telescope coc references initial_mode=normal theme=cursor<CR>
+
+		" Bind Denite (deprecated in favor of telescope)
+		" nnoremap <silent> <C-p> :Denite buffer file/rec<CR>
+		" nnoremap <silent> <Leader>d  :Denite source<CR>
+		" nnoremap <silent> <Leader>dc :Denite colorscheme -auto-action=preview <CR>
+		" nnoremap <silent> <Leader>df :Denite file/rec<CR>
+		" nnoremap <silent> <Leader>dt :Denite outline<CR>
+		" nnoremap <silent> <Leader>dh :Denite command_history<CR>
 		nnoremap <silent> <Leader>ds :Denite prosession<CR>
-		nnoremap <silent> <Leader>d/ :Denite grep -buffer-name=grep<CR>
-		nnoremap <silent> <Leader>dn :Denite grep -buffer-name=grep -resume -cursor-pos=+1 -mode=normal -post-action=suspend<CR>
-		nnoremap <silent> <Leader>dN :Denite grep -buffer-name=grep -resume -cursor-pos=-1 -mode=normal -post-action=suspend<CR>
+		" nnoremap <silent> <Leader>d/ :Denite grep -buffer-name=grep<CR>
+		" nnoremap <silent> <Leader>dn :Denite grep -buffer-name=grep -resume -cursor-pos=+1 -mode=normal -post-action=suspend<CR>
+		" nnoremap <silent> <Leader>dN :Denite grep -buffer-name=grep -resume -cursor-pos=-1 -mode=normal -post-action=suspend<CR>
 		nnoremap <silent> <Leader>dr :Denite register<CR>
 
-		" Not actually Denite but kinkd of the same.
-		nnoremap <silent> <Leader>do :CocList outline<CR>
 		" Rename symbol
 		nmap <leader>rn <Plug>(coc-rename)
-		"
-		" Find references
-		nmap <leader>fr <Plug>(coc-references)
 
 		" VimWiki
 		nmap <Leader>vww <Plug>VimwikiIndex
@@ -346,17 +355,14 @@
 		nnoremap <Leader>zl :set foldlevel=
 
 		" Fugitive
-		nnoremap <Leader>gs :Gstatus<CR>
-		nnoremap <Leader>gb :Gblame<CR>
+		nnoremap <Leader>gs :Git<CR>
+		nnoremap <Leader>gb :Git blame<CR>
 		nnoremap <Leader>gp :Git pull<CR>
-		nnoremap <Leader>gd :Gdiff<CR>
+		nnoremap <Leader>gd :Git diff<CR>
 		nnoremap <Leader>gc :Git checkout
 
 		" Join the current line with the previous one.
 		nnoremap <BS> kJ
-
-		" Vista outline
-		nnoremap <Leader>vo :Vista!!<CR>
 
 		" It's way too easy to hit this instead of >> and we have <Leader>q
 		nnoremap ZZ <Nop>
@@ -767,13 +773,13 @@ endif
 " }}}
 
 " {{{ Utils
- " Show the syntax group under the cursor
+	" Show the syntax group under the cursor
 	function! g:SyntaxGroup() abort
 		let l:s = synID(line('.'), col('.'), 1)
 		echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 	endfunction
 " }}}
-"
+
 " Treesitter {{{
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -808,4 +814,9 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 " }}}
+
+" Telescope {{{
+	lua require('telescopeConfig')
+" }}}
+
 " vim vim:foldmethod=marker:foldlevel=0

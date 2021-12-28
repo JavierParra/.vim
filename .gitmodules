@@ -142,3 +142,12 @@
 [submodule "bundle/Catppuccino.nvim"]
 	path = bundle/Catppuccino.nvim
 	url = git@github.com:JavierParra/Catppuccino.nvim.git
+[submodule "bundle/telescope.nvim"]
+	path = bundle/telescope.nvim
+	url = git@github.com:nvim-telescope/telescope.nvim.git
+[submodule "bundle/plenary.nvim"]
+	path = bundle/plenary.nvim
+	url = git@github.com:nvim-lua/plenary.nvim.git
+[submodule "bundle/telescope-coc.nvim"]
+	path = bundle/telescope-coc.nvim
+	url = git@github.com:fannheyward/telescope-coc.nvim.git
