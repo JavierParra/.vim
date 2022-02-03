@@ -743,19 +743,50 @@
 
 " Firenvim {{{
 if exists('g:started_by_firenvim')
+	let g:firenvim_config = {
+		\ 'globalSettings': {
+			\ 'alt': 'all',
+		\  },
+		\ 'localSettings': {
+			\ '^https?:\/\/(www\.)?notion\.so\/': {
+				\ 'takeover': 'never',
+			\ },
+			\ '^about:blank$': {
+				\ 'takeover': 'never',
+			\ },
+			\ '^https?:\/\/(www\.)?docs\.google\.com\/': {
+				\ 'takeover': 'never',
+			\ },
+		\ }
+	\ }
+
 	" let w:test=1
 	set showtabline=0
 	let g:airline#extensions#tabline#enabled = 0
+	" Commenting due to a bug with frame sizing
+	" set guifont=Hack\ Nerd\ Font
 	" let g:airline_symbols_ascii = 1
-	let g:airline_powerline_fonts = 0 "Use powerline fonts
+	let g:airline_powerline_fonts = 1 "Use powerline fonts
 	let g:airline_section_b=''
 	let g:airline_section_c=''
 	" let g:airline_section_x=''
 	let g:airline_section_y=''
 	let g:airline_section_z=''
-	" set guifont=monospace:h14
 
-	nnoremap <Esc><Esc> :w<CR> :call firenvim#focus_page()<CR>
+	nnoremap <silent> <Esc><Esc> :w<CR> :call firenvim#focus_page()<CR>
+
+	" Open the command line with the command to set the font and size. Missing
+	" <CR> on purpose so you can edit the size.
+	nnoremap <leader>fs :set guifont=Hack\ Nerd\ Font:h14
+
+	" Use normaly use leader q to offload the buffer without closing the editor.
+	" Here we do want to close firenvim
+	nnoremap <silent> <leader>q :call firenvim#focus_page()<CR> :q!<CR>
+	nnoremap <silent> <leader>wq :call firenvim#focus_page()<CR> :wq!<CR>
+
+	augroup firenvimShopifyConf
+		autocmd! BufEnter *.myshopify.com_admin-themes-*-code-asset-*.txt set filetype=liquid.html
+	augroup END
 endif
 " }}}
 
