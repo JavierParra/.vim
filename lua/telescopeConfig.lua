@@ -17,7 +17,7 @@ telescope.setup{
 		},
 	},
 	defaults = {
-		winblend = 5,
+		winblend = 0,
 		mappings = {
 			i = {
 				["<C-j>"] = actions.move_selection_next,

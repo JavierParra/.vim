@@ -37,12 +37,14 @@ local monokai = {
 	none = "NONE",
 	bg = monokaiClassic.base2, -- nvim bg
 	fg = monokaiClassic.white, -- fg color (text)
+	bg_inactive = monokaiClassic.base3, -- nvim bg
 	bg_visual = monokaiClassic.base5,
 	bg_highlight = monokaiClassic.base3,
 	bg_search = monokaiClassic.bg_search,
 	bg_popup = monokaiClassic.base3,
 	bg_float = monokaiClassic.base3,
 	-- fg_gutter = "#3b4261",
+	true_black = monokaiClassic.black,
 	black = monokaiClassic.base2,
 	gray = monokaiClassic.grey,
 	red = monokaiClassic.red,
@@ -81,6 +83,7 @@ local monokai = {
 catppuccino.setup(
 	{
 		colorscheme = "catppuccino",
+		transparency = true,
 	},
 	monokai
 )

@@ -15,7 +15,8 @@
 		let &t_EI = "\<Esc>]1337;CursorShape=0\x7" " Block in normal mode
 	endif
 	set title              " Set the terminal's title to the current file
-	set shell=/bin/bash    " My zsh is too slow at the moment.
+	set shell=bash         " My zsh is too slow at the moment.
+	set laststatus=3       " Global status line
 " }}}
 
 " Colors {{{
@@ -166,6 +167,13 @@
 	set splitbelow                 " create new horizontal splits below
 	set scrolloff=4                " lines of margin between the cursor and top-bottom of document
 	set colorcolumn=79             " vertical ruler
+
+	lua <<EOF
+		local winbar = require("winbar")
+		winbar.setSeparators("", "")
+		winbar.set({" %t "}, { "[%n]: %Y "})
+EOF
+
 "}}}
 
 " Searching {{{
@@ -239,17 +247,17 @@
 		nnoremap <Leader>ev :botright vnew ~/.vim/vimrc<CR>
 
 		" Toggle NerdTree
-		nnoremap <Leader>fb :NERDTreeToggle <CR>
-		nnoremap <Leader>ft :NERDTreeToggle <CR>
+		nnoremap <Leader>fb :silent NERDTreeToggle <CR>
+		nnoremap <Leader>ft :silent NERDTreeToggle <CR>
 
 		" Open NerdTree
-		nnoremap <Leader>fo :NERDTreeFocus <CR>
+		nnoremap <Leader>fo :silent NERDTreeFocus <CR>
 
 		" Open NerdTree
-		nnoremap <Leader>fc :NERDTreeClose <CR>
+		nnoremap <Leader>fc :silent NERDTreeClose <CR>
 
 		" Focus file in NerdTree
-		nnoremap <Leader>ff :NERDTreeFind <CR>
+		nnoremap <Leader>ff :silent NERDTreeFind <CR>
 
 		" Edit new file in the current directory
 		nnoremap <Leader>fN :edit %:h/
@@ -814,7 +822,33 @@ endif
 " Treesitter {{{
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-	ensure_installed = "maintained",
+	ensure_installed = {
+		'bash',
+		'comment',
+		'dockerfile',
+		'go',
+		'graphql',
+		'html',
+		'http',
+		'javascript',
+		'jsdoc',
+		'json',
+		'json5',
+		'latex',
+		'lua',
+		'markdown',
+		'php',
+		'prisma',
+		'query',
+		'regex',
+		'scss',
+		'scheme',
+		'sql',
+		'swift',
+		'tsx',
+		'typescript',
+		'vim'
+	},
 	highlight = {
 		enable = true,              -- false will disable the whole extension
 		custom_captures = {
@@ -822,6 +856,15 @@ require'nvim-treesitter.configs'.setup {
 	},
 	indent = {
 		enable = true
+	},
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "gv",
+			node_incremental = "gin",
+			node_decremental = "gdn",
+			scope_incremental = "gis",
+		}
 	},
 	additional_vim_regex_highlighting = false,
 	playground = {
