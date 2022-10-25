@@ -151,3 +151,6 @@
 [submodule "bundle/telescope-coc.nvim"]
 	path = bundle/telescope-coc.nvim
 	url = git@github.com:fannheyward/telescope-coc.nvim.git
+[submodule "bundle/nvim-dap-ui"]
+	path = bundle/nvim-dap-ui
+	url = git@github.com:rcarriga/nvim-dap-ui.git

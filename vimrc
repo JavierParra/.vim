@@ -150,7 +150,7 @@
 	set tabstop=2       " visual spaces per tab
 	set softtabstop=2   " number of spaces per tab when expanding tabs
 	set shiftwidth=2    " for autoindent or indent shifting
-	set noexpandtab     " tab inserts tabs
+	set expandtab       " tab inserts spaces... I give up
 	set autoindent      " autoindent because obviously
 " }}}
 
@@ -374,6 +374,12 @@ EOF
 
 		" It's way too easy to hit this instead of >> and we have <Leader>q
 		nnoremap ZZ <Nop>
+
+		nnoremap <Leader>en :ALENext<CR>
+		nnoremap <Leader>ep :ALEPrevious<CR>
+		nnoremap <Leader>ed :ALEDetail<CR>
+
+		nnoremap <Leader>cr :CocRestart<CR>
 	" }}}
 
 	" Insert mode {{{
@@ -385,17 +391,23 @@ EOF
 		" Use tab for trigger completion with characters ahead and navigate.
 		" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 		inoremap <silent><expr> <TAB>
-					\ pumvisible() ? "\<C-n>" :
-					\ <SID>check_back_space() ? "\<TAB>" :
-					\ coc#refresh()
-		inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+			\ coc#pum#visible() ? coc#_select_confirm() :
+			\ coc#expandableOrJumpable() ?
+			\ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+			\ <SID>check_back_space() ? "\<TAB>" :
+			\ coc#refresh()
 
+		" inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(0) : "\<S-TAB>"
+
+		inoremap <expr> <Down> coc#pum#visible() ? coc#pum#next(1) : "<Down>"
+		inoremap <expr> <Up> coc#pum#visible() ? coc#pum#prev(1) : "<Up>"
 		" Use <c-space> to trigger completion.
-		inoremap <silent><expr> <c-space> coc#refresh()
+		inoremap <silent><expr> <C-Space> coc#refresh()
 
 		" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 		" Coc only does snippet and additional edit on confirm.
-		inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+		inoremap <expr> <CR> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+		inoremap <expr> <C-r> coc#pum#visible() ? coc#refresh() : "\<C-r>"
 	"}}}
 
 	" Visual mode {{{
@@ -577,7 +589,7 @@ EOF
 
 		function! s:check_back_space() abort
 			let col = col('.') - 1
-			return !col || getline('.')[col - 1]  =~# '\s'
+			return !col || getline('.')[col - 1]  =~ '\s'
 		endfunction
 
 		function! s:show_documentation()

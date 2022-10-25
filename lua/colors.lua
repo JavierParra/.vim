@@ -20,7 +20,7 @@ local monokaiClassic = {
 	yellow = '#e6db74', -- yellow
 	orange = '#fd971f', -- orange
 	purple = '#ae81ff', -- magenta
-	red = '#e95678', -- red
+	red = '#f70c27', -- red
 	diff_add_fg = '#6a8f1f', -- add
 	diff_add_bg = '#3d5213',
 	diff_remove_fg = '#4a0f23', -- delete
@@ -67,7 +67,7 @@ local monokai = {
 	-- orange_br = "#F6A878",
 	-- pink_br = "#DF97DB",
 	comment = monokaiClassic.grey,
-	error = monokaiClassic.grey,
+	error = monokaiClassic.red,
 	warning = monokaiClassic.orange,
 	git = {
 		add = monokaiClassic.diff_add_fg,
@@ -84,6 +84,9 @@ catppuccino.setup(
 	{
 		colorscheme = "catppuccino",
 		transparency = true,
+		integrations = {
+			coc = true,
+		},
 	},
 	monokai
 )
