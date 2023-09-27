@@ -154,3 +154,12 @@
 [submodule "bundle/nvim-dap-ui"]
 	path = bundle/nvim-dap-ui
 	url = git@github.com:rcarriga/nvim-dap-ui.git
+[submodule "bundle/nvim-dap"]
+	path = bundle/nvim-dap
+	url = git@github.com:mfussenegger/nvim-dap.git
+[submodule "dap-adapters/vscode-chrome-debug"]
+	path = dap-adapters/vscode-chrome-debug
+	url = git@github.com:microsoft/vscode-chrome-debug.git
+[submodule "bundle/vim-flog"]
+	path = bundle/vim-flog
+	url = git@github.com:rbong/vim-flog.git

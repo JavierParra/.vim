@@ -167,6 +167,7 @@
 	set splitbelow                 " create new horizontal splits below
 	set scrolloff=4                " lines of margin between the cursor and top-bottom of document
 	set colorcolumn=79             " vertical ruler
+	set nofixeol                   " prevents adding a new line to files
 
 	lua <<EOF
 		local winbar = require("winbar")
@@ -285,12 +286,6 @@ EOF
 		nnoremap <Leader>ww :w<CR>
 		nnoremap <Leader>w :w<CR>
 		nnoremap <Leader>wq :w<CR> :Bdelete<CR>
-
-		"Power navigation, by Andrew Radev
-		nnoremap <C-h> 5h
-		nnoremap <C-j> 5j
-		nnoremap <C-k> 5k
-		nnoremap <C-l> 5l
 
 		" Close the buffer keeping the window.
 		nnoremap <Leader>q :Bdelete<CR>
@@ -411,12 +406,6 @@ EOF
 	"}}}
 
 	" Visual mode {{{
-		"Power navigation, by Andrew Radev
-		xnoremap <C-h> 5h
-		xnoremap <C-j> 5j
-		xnoremap <C-k> 5k
-		xnoremap <C-l> 5l
-
 		" Scroll by 2 lines using shift + movement
 		xnoremap J 2<C-e>
 		xnoremap K 2<C-y>
@@ -434,6 +423,9 @@ EOF
 
 		" Search for selected text
 		vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+		" View lines git history
+		xnoremap <Leader>gb :'<,'>Flogsplit<CR>
 
 		" Paste without yanking the deleted text. This is buggy
 		" vnoremap p "_dP
@@ -903,6 +895,11 @@ EOF
 
 " Telescope {{{
 	lua require('telescopeConfig')
+" }}}
+
+
+" Dap {{{
+	lua require('dapConfig')
 " }}}
 
 " vim vim:foldmethod=marker:foldlevel=0
