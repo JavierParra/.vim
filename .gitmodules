@@ -1,42 +1,42 @@
 [submodule "bundle/auto-pairs"]
 	path = bundle/auto-pairs
-	url = https://github.com/jiangmiao/auto-pairs.git
+	url = git@github.com:jiangmiao/auto-pairs.git
 [submodule "bundle/minibufexpl.vim"]
 	path = bundle/minibufexpl.vim
 	url = git@github.com:fholgado/minibufexpl.vim.git
 [submodule "bundle/nerdtree"]
 	path = bundle/nerdtree
-	url = https://github.com/scrooloose/nerdtree.git
+	url = git@github.com:scrooloose/nerdtree.git
 [submodule "bundle/tcomment_vim"]
 	path = bundle/tcomment_vim
 	url = git@github.com:tomtom/tcomment_vim.git
 [submodule "bundle/vim-fugitive"]
 	path = bundle/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive
+	url = git@github.com:tpope/vim-fugitive
 [submodule "bundle/vim-rsi"]
 	path = bundle/vim-rsi
-	url = git://github.com/tpope/vim-rsi.git
+	url = git@github.com:tpope/vim-rsi.git
 [submodule "bundle/vim-sleuth"]
 	path = bundle/vim-sleuth
-	url = git://github.com/tpope/vim-sleuth.git
+	url = git@github.com:tpope/vim-sleuth.git
 [submodule "bundle/vim-surround"]
 	path = bundle/vim-surround
-	url = git://github.com/tpope/vim-surround.git
+	url = git@github.com:tpope/vim-surround.git
 [submodule "bundle/vim-better-whitespace"]
 	path = bundle/vim-better-whitespace
-	url = git://github.com/ntpeters/vim-better-whitespace.git
+	url = git@github.com:ntpeters/vim-better-whitespace.git
 [submodule "bundle/vim-airline"]
 	path = bundle/vim-airline
-	url = https://github.com/vim-airline/vim-airline
+	url = git@github.com:vim-airline/vim-airline
 [submodule "bundle/vim-airline-themes"]
 	path = bundle/vim-airline-themes
-	url = https://github.com/vim-airline/vim-airline-themes
+	url = git@github.com:vim-airline/vim-airline-themes
 [submodule "bundle/vim-obsession"]
 	path = bundle/vim-obsession
-	url = git://github.com/tpope/vim-obsession.git
+	url = git@github.com:tpope/vim-obsession.git
 [submodule "bundle/csv.vim"]
 	path = bundle/csv.vim
-	url = https://github.com/chrisbra/csv.vim
+	url = git@github.com:chrisbra/csv.vim
 [submodule "bundle/vim-multiple-cursors"]
 	path = bundle/vim-multiple-cursors
 	url = git@github.com:terryma/vim-multiple-cursors.git
@@ -45,7 +45,7 @@
 	url = git@github.com:moll/vim-bbye.git
 [submodule "bundle/emmet-vim"]
 	path = bundle/emmet-vim
-	url = https://github.com/mattn/emmet-vim.git
+	url = git@github.com:mattn/emmet-vim.git
 [submodule "bundle/editorconfig-vim"]
 	path = bundle/editorconfig-vim
 	url = git@github.com:editorconfig/editorconfig-vim.git
@@ -84,7 +84,7 @@
 	url = git@github.com:sirosen/vim-rockstar.git
 [submodule "bundle/LanguageClient-neovim"]
 	path = bundle/LanguageClient-neovim
-	url = https://github.com/autozimu/LanguageClient-neovim.git
+	url = git@github.com:autozimu/LanguageClient-neovim.git
 [submodule "bundle/puppet-syntax-vim"]
 	path = bundle/puppet-syntax-vim
 	url = git@github.com:puppetlabs/puppet-syntax-vim.git
