@@ -31,23 +31,5 @@ function generateHelpTags() {
 	return 1)
 }
 
-function installYCM() {
-	cleanPath
-	echo "Installing YouCompleteMe"
-	cd ./bundle/YouCompleteMe && \
-	./install.py && \
-	green "Success" || \
-	(red "Failed to install YouCompleteMe see: https://valloric.github.io/YouCompleteMe/#installation"; \
-	return 1)
-}
-
-function installLanguageClient() {
-	pushd ./bundle/LanguageClient-neovim/
-	bash install.sh || :
-	popd
-}
-
 initSubmodules || (echo "Failed to init submodules"; exit 1)
-generateHelpTags
-# installYCM
-# installLanguageClient
+# generateHelpTags

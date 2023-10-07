@@ -1,7 +1,3 @@
-" Pathogen {{{
-	execute pathogen#infect()
-"}}}
-
 " General Settings {{{
 	filetype on           "Enable filetype detection
 	filetype plugin on    "Enable loading plugins based on file type

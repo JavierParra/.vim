@@ -5,97 +5,97 @@
 	path = bundle/minibufexpl.vim
 	url = git@github.com:fholgado/minibufexpl.vim.git
 [submodule "bundle/nerdtree"]
-	path = bundle/nerdtree
+	path = pack/plugin/start/nerdtree
 	url = git@github.com:scrooloose/nerdtree.git
 [submodule "bundle/tcomment_vim"]
-	path = bundle/tcomment_vim
+	path = pack/plugin/start/tcomment_vim
 	url = git@github.com:tomtom/tcomment_vim.git
 [submodule "bundle/vim-fugitive"]
-	path = bundle/vim-fugitive
+	path = pack/plugin/start/vim-fugitive
 	url = git@github.com:tpope/vim-fugitive
 [submodule "bundle/vim-rsi"]
-	path = bundle/vim-rsi
+	path = pack/plugin/start/vim-rsi
 	url = git@github.com:tpope/vim-rsi.git
 [submodule "bundle/vim-sleuth"]
-	path = bundle/vim-sleuth
+	path = pack/plugin/start/vim-sleuth
 	url = git@github.com:tpope/vim-sleuth.git
 [submodule "bundle/vim-surround"]
-	path = bundle/vim-surround
+	path = pack/plugin/start/vim-surround
 	url = git@github.com:tpope/vim-surround.git
 [submodule "bundle/vim-better-whitespace"]
-	path = bundle/vim-better-whitespace
+	path = pack/plugin/start/vim-better-whitespace
 	url = git@github.com:ntpeters/vim-better-whitespace.git
 [submodule "bundle/vim-airline"]
-	path = bundle/vim-airline
+	path = pack/plugin/start/vim-airline
 	url = git@github.com:vim-airline/vim-airline
 [submodule "bundle/vim-airline-themes"]
-	path = bundle/vim-airline-themes
+	path = pack/plugin/start/vim-airline-themes
 	url = git@github.com:vim-airline/vim-airline-themes
 [submodule "bundle/vim-obsession"]
-	path = bundle/vim-obsession
+	path = pack/plugin/start/vim-obsession
 	url = git@github.com:tpope/vim-obsession.git
 [submodule "bundle/csv.vim"]
-	path = bundle/csv.vim
+	path = pack/plugin/start/csv.vim
 	url = git@github.com:chrisbra/csv.vim
 [submodule "bundle/vim-multiple-cursors"]
 	path = bundle/vim-multiple-cursors
 	url = git@github.com:terryma/vim-multiple-cursors.git
 [submodule "bundle/vim-bbye"]
-	path = bundle/vim-bbye
+	path = pack/plugin/start/vim-bbye
 	url = git@github.com:moll/vim-bbye.git
 [submodule "bundle/emmet-vim"]
 	path = bundle/emmet-vim
 	url = git@github.com:mattn/emmet-vim.git
 [submodule "bundle/editorconfig-vim"]
-	path = bundle/editorconfig-vim
+	path = pack/plugin/start/editorconfig-vim
 	url = git@github.com:editorconfig/editorconfig-vim.git
 [submodule "bundle/vim-repeat"]
-	path = bundle/vim-repeat
+	path = pack/plugin/start/vim-repeat
 	url = git@github.com:tpope/vim-repeat.git
 [submodule "bundle/vim-markdown-composer"]
-	path = bundle/vim-markdown-composer
+	path = pack/plugin/start/vim-markdown-composer
 	url = git@github.com:euclio/vim-markdown-composer.git
 [submodule "bundle/ale"]
-	path = bundle/ale
+	path = pack/plugin/start/ale
 	url = git@github.com:w0rp/ale.git
 [submodule "bundle/vim-easymotion"]
-	path = bundle/vim-easymotion
+	path = pack/plugin/start/vim-easymotion
 	url = git@github.com:easymotion/vim-easymotion.git
 [submodule "bundle/denite.nvim"]
-	path = bundle/denite.nvim
+	path = pack/plugin/start/denite.nvim
 	url = git@github.com:Shougo/denite.nvim.git
 [submodule "bundle/vimwiki"]
-	path = bundle/vimwiki
+	path = pack/plugin/start/vimwiki
 	url = git@github.com:vimwiki/vimwiki.git
 [submodule "bundle/vim-prosession"]
-	path = bundle/vim-prosession
+	path = pack/plugin/start/vim-prosession
 	url = git@github.com:JavierParra/vim-prosession.git
 [submodule "bundle/targets.vim"]
-	path = bundle/targets.vim
+	path = pack/plugin/start/targets.vim
 	url = git@github.com:wellle/targets.vim.git
 [submodule "bundle/jq.vim"]
-	path = bundle/jq.vim
+	path = pack/plugin/start/jq.vim
 	url = git@github.com:vito-c/jq.vim.git
 [submodule "bundle/vim-monokai-tasty"]
-	path = bundle/vim-monokai-tasty
+	path = pack/plugin/start/vim-monokai-tasty
 	url = git@github.com:patstockwell/vim-monokai-tasty.git
 [submodule "bundle/vim-rockstar"]
-	path = bundle/vim-rockstar
+	path = pack/plugin/start/vim-rockstar
 	url = git@github.com:sirosen/vim-rockstar.git
 [submodule "bundle/LanguageClient-neovim"]
 	path = bundle/LanguageClient-neovim
 	url = git@github.com:autozimu/LanguageClient-neovim.git
 [submodule "bundle/puppet-syntax-vim"]
-	path = bundle/puppet-syntax-vim
+	path = pack/plugin/start/puppet-syntax-vim
 	url = git@github.com:puppetlabs/puppet-syntax-vim.git
 [submodule "bundle/vim-polyglot"]
 	path = bundle/vim-polyglot
 	url = git@github.com:sheerun/vim-polyglot.git
 [submodule "bundle/vim-firestore"]
-	path = bundle/vim-firestore
+	path = pack/plugin/start/vim-firestore
 	url = git@github.com:delphinus/vim-firestore.git
 [submodule "bundle/coc.nvim"]
-	path = bundle/coc.nvim
+	path = pack/plugin/start/coc.nvim
 	url = git@github.com:neoclide/coc.nvim.git
 [submodule "bundle/vim-jsx-typescript"]
 	path = bundle/vim-jsx-typescript
@@ -104,16 +104,16 @@
 	path = bundle/vista.vim
 	url = git@github.com:liuchengxu/vista.vim.git
 [submodule "bundle/neomru.vim"]
-	path = bundle/neomru.vim
+	path = pack/plugin/start/neomru.vim
 	url = git@github.com:Shougo/neomru.vim.git
 [submodule "bundle/firenvim"]
-	path = bundle/firenvim
+	path = pack/plugin/start/firenvim
 	url = git@github.com:glacambre/firenvim.git
 [submodule "bundle/vimtex"]
 	path = bundle/vimtex
 	url = git@github.com:lervag/vimtex.git
 [submodule "bundle/ultisnips"]
-	path = bundle/ultisnips
+	path = pack/plugin/start/ultisnips
 	url = git@github.com:SirVer/ultisnips.git
 [submodule "bundle/typescript-vim"]
 	path = bundle/typescript-vim
@@ -122,13 +122,13 @@
 	path = bundle/vim
 	url = git@github.com:dracula/vim.git
 [submodule "bundle/vim-prisma"]
-	path = bundle/vim-prisma
+	path = pack/plugin/start/vim-prisma
 	url = git@github.com:pantharshit00/vim-prisma.git
 [submodule "bundle/vim-table-mode"]
-	path = bundle/vim-table-mode
+	path = pack/plugin/start/vim-table-mode
 	url = git@github.com:dhruvasagar/vim-table-mode.git
 [submodule "bundle/nvim-treesitter"]
-	path = bundle/nvim-treesitter
+	path = pack/plugin/start/nvim-treesitter
 	url = git@github.com:nvim-treesitter/nvim-treesitter.git
 [submodule "monokai.nvim"]
 	path = monokai.nvim
@@ -140,26 +140,26 @@
 	path = bundle/playground
 	url = git@github.com:nvim-treesitter/playground.git
 [submodule "bundle/Catppuccino.nvim"]
-	path = bundle/Catppuccino.nvim
+	path = pack/plugin/start/Catppuccino.nvim
 	url = git@github.com:JavierParra/Catppuccino.nvim.git
 [submodule "bundle/telescope.nvim"]
-	path = bundle/telescope.nvim
+	path = pack/plugin/start/telescope.nvim
 	url = git@github.com:nvim-telescope/telescope.nvim.git
 [submodule "bundle/plenary.nvim"]
-	path = bundle/plenary.nvim
+	path = pack/plugin/start/plenary.nvim
 	url = git@github.com:nvim-lua/plenary.nvim.git
 [submodule "bundle/telescope-coc.nvim"]
-	path = bundle/telescope-coc.nvim
+	path = pack/plugin/start/telescope-coc.nvim
 	url = git@github.com:fannheyward/telescope-coc.nvim.git
 [submodule "bundle/nvim-dap-ui"]
-	path = bundle/nvim-dap-ui
+	path = pack/plugin/start/nvim-dap-ui
 	url = git@github.com:rcarriga/nvim-dap-ui.git
 [submodule "bundle/nvim-dap"]
-	path = bundle/nvim-dap
+	path = pack/plugin/start/nvim-dap
 	url = git@github.com:mfussenegger/nvim-dap.git
 [submodule "dap-adapters/vscode-chrome-debug"]
 	path = dap-adapters/vscode-chrome-debug
 	url = git@github.com:microsoft/vscode-chrome-debug.git
 [submodule "bundle/vim-flog"]
-	path = bundle/vim-flog
+	path = pack/plugin/start/vim-flog
 	url = git@github.com:rbong/vim-flog.git
