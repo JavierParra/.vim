@@ -302,7 +302,7 @@ EOF
 		nnoremap H 2z<Left>
 
 		" Bind Telescope
-		nnoremap <C-p> <cmd>Telescope git_files<CR>
+		nnoremap <C-p> <cmd>Telescope smart_open<CR>
 		nnoremap <Leader>db <cmd>Telescope buffers<CR>
 		nnoremap <Leader>d <cmd>Telescope builtin<CR>
 		nnoremap <Leader>dc <cmd>Telescope colorscheme<CR>
@@ -820,7 +820,20 @@ endif
 " }}}
 
 " Telescope {{{
-	lua require('telescopeConfig')
+	lua <<EOF
+    require('telescopeConfig')
+    telescope = require('telescope')
+    telescope.load_extension('smart_open')
+
+    telescope.setup {
+      extensions = {
+        smart_open = {
+          disable_devicons = false,
+        }
+      }
+    }
+EOF
+
 " }}}
 
 

@@ -163,3 +163,15 @@
 [submodule "bundle/vim-flog"]
 	path = pack/plugin/start/vim-flog
 	url = git@github.com:rbong/vim-flog.git
+[submodule "pack/plugin/start/sqlite.lua"]
+	path = pack/plugin/start/sqlite.lua
+	url = git@github.com:kkharji/sqlite.lua.git
+[submodule "pack/plugin/start/smart-open.nvim"]
+	path = pack/plugin/start/smart-open.nvim
+	url = git@github.com:danielfalk/smart-open.nvim.git
+[submodule "pack/plugin/start/vim-devicons"]
+	path = pack/plugin/start/vim-devicons
+	url = git@github.com:ryanoasis/vim-devicons.git
+[submodule "pack/plugin/start/nvim-web-devicons"]
+	path = pack/plugin/start/nvim-web-devicons
+	url = git@github.com:nvim-tree/nvim-web-devicons.git
