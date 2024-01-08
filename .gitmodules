@@ -58,9 +58,6 @@
 [submodule "bundle/ale"]
 	path = pack/plugin/start/ale
 	url = git@github.com:w0rp/ale.git
-[submodule "bundle/vim-easymotion"]
-	path = pack/plugin/start/vim-easymotion
-	url = git@github.com:easymotion/vim-easymotion.git
 [submodule "bundle/denite.nvim"]
 	path = pack/plugin/start/denite.nvim
 	url = git@github.com:Shougo/denite.nvim.git
@@ -175,3 +172,6 @@
 [submodule "pack/plugin/start/nvim-web-devicons"]
 	path = pack/plugin/start/nvim-web-devicons
 	url = git@github.com:nvim-tree/nvim-web-devicons.git
+[submodule "pack/plugin/start/hop.nvim"]
+	path = pack/plugin/start/hop.nvim
+	url = git@github.com:smoka7/hop.nvim.git

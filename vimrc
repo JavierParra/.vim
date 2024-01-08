@@ -323,11 +323,11 @@ EOF
 		" nnoremap <silent> <Leader>df :Denite file/rec<CR>
 		" nnoremap <silent> <Leader>dt :Denite outline<CR>
 		" nnoremap <silent> <Leader>dh :Denite command_history<CR>
-		nnoremap <silent> <Leader>ds :Denite prosession<CR>
+		" nnoremap <silent> <Leader>ds :Denite prosession<CR>
 		" nnoremap <silent> <Leader>d/ :Denite grep -buffer-name=grep<CR>
 		" nnoremap <silent> <Leader>dn :Denite grep -buffer-name=grep -resume -cursor-pos=+1 -mode=normal -post-action=suspend<CR>
 		" nnoremap <silent> <Leader>dN :Denite grep -buffer-name=grep -resume -cursor-pos=-1 -mode=normal -post-action=suspend<CR>
-		nnoremap <silent> <Leader>dr :Denite register<CR>
+		" nnoremap <silent> <Leader>dr :Denite register<CR>
 
 		" Rename symbol
 		nmap <leader>rn <Plug>(coc-rename)
@@ -371,6 +371,16 @@ EOF
 		nnoremap <Leader>ed :ALEDetail<CR>
 
 		nnoremap <Leader>cr :CocRestart<CR>
+
+    " Hop bindings
+		nnoremap <Leader><Leader>f :HopChar2CurrentLineAC<CR>
+		nnoremap <Leader><Leader>F :HopChar2CurrentLineBC<CR>
+		nnoremap <Leader><Leader>/ :HopPatternMW<CR>
+		nnoremap <Leader><Leader>w :HopWord<CR>
+		nnoremap <Leader><Leader>W :HopWordMW<CR>
+		nnoremap <Leader><Leader>j :HopLineStartAC<CR>
+		nnoremap <Leader><Leader>k :HopLineStartBC<CR>
+
 	" }}}
 
 	" Insert mode {{{
@@ -839,6 +849,10 @@ EOF
 
 " Dap {{{
 	lua require('dapConfig')
+" }}}
+
+" Hop {{{
+	lua require('hop').setup()
 " }}}
 
 " vim vim:foldmethod=marker:foldlevel=0
