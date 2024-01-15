@@ -382,7 +382,7 @@ EOF
 		nnoremap <Leader><Leader>J :HopWordAC<CR>
 		nnoremap <Leader><Leader>K :HopWordBC<CR>
 		nnoremap <Leader><Leader>h :HopWordCurrentLineBC<CR>
-		" nnoremap <Leader><Leader>l :lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR})<CR>
+
 		lua <<EOF
 		local hop = require'hop'
 		local hint = require'hop.hint'
@@ -416,7 +416,9 @@ EOF
 				current_line_only = true,
 			})
 		end)
+
 EOF
+
 		" }}}
 
 		" Insert mode {{{
@@ -878,7 +880,7 @@ EOF
 					}
 					}
 				}
-			EOF
+EOF
 
 			" }}}
 
