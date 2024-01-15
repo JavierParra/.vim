@@ -372,18 +372,54 @@ EOF
 
 		nnoremap <Leader>cr :CocRestart<CR>
 
-    " Hop bindings
+	" Hop bindings
 		nnoremap <Leader><Leader>f :HopChar2CurrentLineAC<CR>
 		nnoremap <Leader><Leader>F :HopChar2CurrentLineBC<CR>
 		nnoremap <Leader><Leader>/ :HopPatternMW<CR>
-		nnoremap <Leader><Leader>w :HopWord<CR>
-		nnoremap <Leader><Leader>W :HopWordMW<CR>
-		nnoremap <Leader><Leader>j :HopLineStartAC<CR>
-		nnoremap <Leader><Leader>k :HopLineStartBC<CR>
+		nnoremap <Leader><Leader>w :HopWordMW<CR>
+		nnoremap <Leader><Leader>j :HopVerticalAC<CR>
+		nnoremap <Leader><Leader>k :HopVerticalBC<CR>
+		nnoremap <Leader><Leader>J :HopWordAC<CR>
+		nnoremap <Leader><Leader>K :HopWordBC<CR>
+		nnoremap <Leader><Leader>h :HopWordCurrentLineBC<CR>
+		" nnoremap <Leader><Leader>l :lua require'hop'.hint_words({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR})<CR>
+		lua <<EOF
+		local hop = require'hop'
+		local hint = require'hop.hint'
 
-	" }}}
+		vim.keymap.set('n', '<Leader><Leader>t', function()
+			hop.hint_char2({
+				hint.HintDirection.AFTER_CURSOR,
+				current_line_only = true,
+				hint_offset = -1,
+			})
+		end)
 
-	" Insert mode {{{
+		vim.keymap.set('n', '<Leader><Leader>T', function()
+			hop.hint_char2({
+				hint.HintDirection.BEFORE_CURSOR,
+				current_line_only = true,
+				hint_offset = 1,
+			})
+		end)
+
+		vim.keymap.set('n', '<Leader><Leader>l', function()
+			hop.hint_camel_case({
+				hint.HintDirection.AFTER_CURSOR,
+				current_line_only = true,
+			})
+		end)
+
+		vim.keymap.set('n', '<Leader><Leader>h', function()
+			hop.hint_camel_case({
+				hint.HintDirection.BEFORE_CURSOR,
+				current_line_only = true,
+			})
+		end)
+EOF
+		" }}}
+
+		" Insert mode {{{
 		inoremap jk <Esc>
 
 		" inoremap <silent> <C-r> <Esc>:Denite register -mode=normal<CR>
@@ -392,11 +428,11 @@ EOF
 		" Use tab for trigger completion with characters ahead and navigate.
 		" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 		inoremap <silent><expr> <TAB>
-			\ coc#pum#visible() ? coc#_select_confirm() :
-			\ coc#expandableOrJumpable() ?
-			\ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-			\ <SID>check_back_space() ? "\<TAB>" :
-			\ coc#refresh()
+					\ coc#pum#visible() ? coc#_select_confirm() :
+					\ coc#expandableOrJumpable() ?
+					\ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+					\ <SID>check_back_space() ? "\<TAB>" :
+					\ coc#refresh()
 
 		" inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(0) : "\<S-TAB>"
 
@@ -409,9 +445,9 @@ EOF
 		" Coc only does snippet and additional edit on confirm.
 		inoremap <expr> <CR> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 		inoremap <expr> <C-r> coc#pum#visible() ? coc#refresh() : "\<C-r>"
-	"}}}
+		"}}}
 
-	" Visual mode {{{
+		" Visual mode {{{
 		" Scroll by 2 lines using shift + movement
 		xnoremap J 2<C-e>
 		xnoremap K 2<C-y>
@@ -435,424 +471,424 @@ EOF
 
 		" Paste without yanking the deleted text. This is buggy
 		" vnoremap p "_dP
-	"}}}
+		"}}}
 
-	" Everywhere {{{
+		" Everywhere {{{
 		" Nothing to see here. Hint: noremap
-	" }}}
+		" }}}
 
-	" Command Line remaps {{{
+		" Command Line remaps {{{
 		" Hint: cnoremap
 		cnoremap alv qa!
-	" }}}
-"}}}
+		" }}}
+		"}}}
 
-" Linting {{{
-	" ALE configuration
-	highlight clear ALEErrorSign   " Do not draw background color in gutter error
-	highlight clear ALEWarningSign " Do not draw background color in gutter waring
-	let g:ale_sign_error = '💩'    " Change error sign
-	" let g:ale_sign_error = '❗️'    " Change error sign
-	let g:ale_sign_warning = '❕'  " Change warning sign
-	let g:ale_set_highlights = 0   " Disable highlight
+		" Linting {{{
+		" ALE configuration
+		highlight clear ALEErrorSign   " Do not draw background color in gutter error
+		highlight clear ALEWarningSign " Do not draw background color in gutter waring
+		let g:ale_sign_error = '💩'    " Change error sign
+		" let g:ale_sign_error = '❗️'    " Change error sign
+		let g:ale_sign_warning = '❕'  " Change warning sign
+		let g:ale_set_highlights = 0   " Disable highlight
 
-	" Disable ALE for minified files
-	let g:ale_pattern_options = {
-	\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
-	\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
-	\}
-"}}}
+		" Disable ALE for minified files
+		let g:ale_pattern_options = {
+					\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
+					\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
+					\}
+		"}}}
 
-" AutoCMD {{{
-	" Live reload vimrc
-	augroup vimrc
-		autocmd! BufWritePost $MYVIMRC,~/.vim/vimrc nested source $MYVIMRC | echom "Reloaded " . $MYVIMRC | redraw
-	augroup END
+		" AutoCMD {{{
+		" Live reload vimrc
+		augroup vimrc
+			autocmd! BufWritePost $MYVIMRC,~/.vim/vimrc nested source $MYVIMRC | echom "Reloaded " . $MYVIMRC | redraw
+		augroup END
 
-	" Always show the gutter to prevent shifting
-	augroup addsign
-		function! DummySign()
-			let noSign = ['nerdtree', 'denite']
-			if index(noSign, &ft) >= 0
-				return
-			endif
+		" Always show the gutter to prevent shifting
+		augroup addsign
+			function! DummySign()
+				let noSign = ['nerdtree', 'denite']
+				if index(noSign, &ft) >= 0
+					return
+				endif
 
-			" define dummy sign with non breaking space
-			sign define dummy text= 
-			execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
-		endfunction
+				" define dummy sign with non breaking space
+				sign define dummy text= 
+				execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
+			endfunction
 
-		autocmd! BufEnter * call DummySign()
-	augroup END
+			autocmd! BufEnter * call DummySign()
+		augroup END
 
-	" Only show cursorline on the active buffer
-	function! WinEnter() abort
-		let nocursor = ['denite-filter']
+		" Only show cursorline on the active buffer
+		function! WinEnter() abort
+			let nocursor = ['denite-filter']
 
-		if index(nocursor, &ft) >= 0
-			set nocursorline
-		else
-			set cursorline
-		endif
-	endfunction
-
-	function! WinLeave() abort
-		let keepcursor = ['denite', 'fugitiveblame']
-
-		if index(keepcursor, &ft) >= 0
-			set cursorline
-		else
-			set nocursorline
-		endif
-	endfunction
-
-
-	augroup curline
-		autocmd! WinEnter * call WinEnter()
-		autocmd! WinLeave * call WinLeave()
-	augroup END
-
-	augroup diffsearch
-		function! SetFoldSearch()
-			if &diff
-				set fdo-=search
-			endif
-		endfunction
-
-		autocmd! BufEnter * call SetFoldSearch()
-	augroup END
-
-	" Set .json to JSON5
-	autocmd BufRead,BufNewFile *.json set filetype=json5
-
-"}}}
-
-" Fugitive {{{
-	set diffopt+=vertical  " Force Gdiff to split vertically
-"}}}
-
-" Airline {{{
-	let g:airline_powerline_fonts = 1 "Use powerline fonts
-	" let g:airline_theme='monokai_tasty'
-	let g:airline_theme='badwolf'
-	let g:airline#extensions#tabline#enabled = 1
-	let g:airline#extensions#tabline#show_buffers = 1
-	let g:airline#extensions#tabline#buffer_nr_show = 1
-
-	"spaces are allowed after tabs, but not in between
-	let g:airline#extensions#whitespace#mixed_indent_algo=2
-	"If fileformat is utf-8[unix] do not display it
-	let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-	"Disable YCM error reporting
-	let g:airline#extensions#ycm#enabled = 0
-	"Enable ale integration
-	let g:airline#extensions#ale#enabled = 1
-
-	" let g:airline#extensions#ale#error_symbol = get(g:, 'ale_sign_error')
-	" let g:airline#extensions#ale#warning_symbol = get(g:, 'ale_sign_warning')
-"}}}
-
-" ProSession {{{
-	let g:prosession_tmux_title = 0 "Report title to tmux
-	let g:prosession_on_startup = 1 "Recover last session
-	let g:prosession_last_session_dir = '~'
-"}}}
-
-" Editorconfig {{{
-	let g:EditorConfig_exclude_patterns = ['fugitive://.*']
-	let g:EditorConfig_disable_rules = ['tab_width']
-"}}}
-
-" {{{ You Complete Me
-	" " Use whichever python3 is found in the path
-	" let g:ycm_python_binary_path = 'python3'
-
-	" " Use ctags file to autocomplete.
-	" let g:ycm_collect_identifiers_from_tags_files=1
-
-	" " Leave preview window open after select but close it after leaving
-	" " insert mode
-	" let g:ycm_autoclose_preview_window_after_completion=0
-	" let g:ycm_autoclose_preview_window_after_insertion=1
-
-	" let g:ycm_enable_diagnostic_signs=0 " Do not try to lint, we have ale for that
-
-	" " Try to always load semantic completion
-	" let g:ycm_semantic_triggers =  {
-	" 	\	'python': ['re!\w{2}']
-	" \}
-"}}}
-
-" {{{ COC
-
-		function! s:check_back_space() abort
-			let col = col('.') - 1
-			return !col || getline('.')[col - 1]  =~ '\s'
-		endfunction
-
-		function! s:show_documentation()
-			if (index(['vim','help'], &filetype) >= 0)
-				execute 'h '.expand('<cword>')
+			if index(nocursor, &ft) >= 0
+				set nocursorline
 			else
-				call CocAction('doHover')
+				set cursorline
 			endif
 		endfunction
-" }}}
 
-" Denite {{{
+		function! WinLeave() abort
+			let keepcursor = ['denite', 'fugitiveblame']
 
-	" Mappings in options window
-	autocmd FileType denite call s:denite_my_settings()
-	function! s:denite_my_settings() abort
-		" Perform the default action on enter
-		nnoremap <silent><buffer><expr> <CR>
-		\ denite#do_map('do_action')
-		" Choose action
-		nnoremap <silent><buffer><expr> <tab>
-		\ denite#do_map('choose_action')
-		" Preview option
-		nnoremap <silent><buffer><expr> p
-		\ denite#do_map('do_action', 'preview')
-		" Close denite with
-		nnoremap <silent><buffer><expr> <Esc>
-		\ denite#do_map('quit')
-		" Go to filter
-		nnoremap <silent><buffer><expr> i
-		\ denite#do_map('open_filter_buffer')
-	endfunction
-
-	" Mappings in filter window
-	autocmd FileType denite-filter call s:denite_filter_my_settings()
-	function! s:denite_filter_my_settings() abort
-		imap <silent><buffer> <tab> <Plug>(denite_filter_update)
-		inoremap <silent><buffer><expr> <CR>
-		\ denite#do_map('do_action')
-		" inoremap <silent><buffer><expr> <Esc>
-		" \ denite#do_map('quit')
-		nnoremap <silent><buffer><expr> <Esc>
-		\ denite#do_map('quit')
-
-		" Move options window cursor in filter window.
-		inoremap <silent><buffer> <C-j>
-		\ <Esc><C-w>p:call cursor(line('.')+1,0)<CR><C-w>pA
-		inoremap <silent><buffer> <C-k>
-		\ <Esc><C-w>p:call cursor(line('.')-1,0)<CR><C-w>pA
-	endfunction
+			if index(keepcursor, &ft) >= 0
+				set cursorline
+			else
+				set nocursorline
+			endif
+		endfunction
 
 
-	call denite#custom#source(
-		\ 'file_mru', 'matchers', ['matcher/substring', 'matcher/ignore_globs'])
+		augroup curline
+			autocmd! WinEnter * call WinEnter()
+			autocmd! WinLeave * call WinLeave()
+		augroup END
 
-	call denite#custom#source(
-		\ 'file/rec', 'matchers', ['matcher/substring', 'matcher/ignore_globs'])
-
-	call denite#custom#source(
-		\ 'file/rec', 'sorters', ['sorters/sublime'])
-
-	call denite#custom#var('file/rec', 'command',
-		\ ['find', '-L', ':directory',
-		\ '-path', '*/.git/*', '-prune', '-o',
-		\ '-path', '*/node_modules/*', '-prune', '-o',
-		\ '-path', '*/vendor/*', '-prune', '-o',
-		\ '-path', '*/build/*', '-prune', '-o',
-		\ '-path', '*/.next/*', '-prune', '-o',
-		\ '-path', '*/database/data/*', '-prune', '-o',
-		\ '-path', '*/venv/*', '-prune', '-o',
-		\ '-path', '*/__pycache__/*', '-prune', '-o',
-		\ '-path', '*/coverage/*', '-prune', '-o',
-		\ '-path', '*/*.map', '-prune', '-o',
-		\ '-type', 'l', '-print', '-o',
-		\ '-type', 'f', '-print'])
-
-	call denite#custom#var('prosession', 'format', 'split')
-
-	" Use ripgrep instead of grep for searching
-	call denite#custom#var('grep', 'command', ['rg'])
-
-	" Custom options for ripgrep
-	"   --vimgrep:  Show results with every match on it's own line
-	"   --hidden:   Search hidden directories and files
-	"   --heading:  Show the file name above clusters of matches from each file
-	"   --S:        Search case insensitively if the pattern is all lowercase
-	call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
-
-	" Recommended defaults for ripgrep via Denite docs
-	call denite#custom#var('grep', 'recursive_opts', [])
-	call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-	call denite#custom#var('grep', 'separator', ['--'])
-	call denite#custom#var('grep', 'final_opts', [])
-
-	" _ applies the options to all buffer names.
-	call denite#custom#option('_', {
-		\ 'auto_accel': v:true,
-		\ 'reversed': v:true,
-		\ 'auto_resize': v:true,
-		\ 'cursor_wrap': v:true,
-		\ 'start_filter': v:true,
-		\ 'floating_preview': v:true,
-		\ 'highlight_matched_char': 'Keyword',
-		\ 'highlight_matched_range': 'Comment',
-		\ })
-
-	call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
-		\ [
-		\ '*~', '*.o', '*.exe', '*.bak',
-		\ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
-		\ '.hg/', '.git/', '.bzr/', '.svn/',
-		\ 'node_modules/', 'venv/', '__pycache__/', 'dist/', 'build/', 'vendor/',
-		\ 'tags', 'tags-*'
-		\])
-" }}}
-
-" {{{ LanguageClient
-		let g:LanguageClient_serverCommands = {
-			\ 'javascript': ['tsserver'],
-			\ 'typescript': ['tsserver'],
-			\ 'typescript.jsx': ['tsserver'],
-			\}
-
-" }}}
-
-" {{{ Vista
-	let g:vista_default_executive='coc'
-" }}}
-
-" VimWiki {{{
-	let g:vimwiki_hl_headers=1       " Highlight headers
-	let g:vimwiki_hl_cb_checked=1    " Highlight completed items
-	let g:vimwiki_folding='expr'     " Fold sections and code
-	let g:vimwiki_table_mappings = 0 " Disable table maps which remap <tab>
-
-	let g:vimwiki_list = [
-			\{
-				\'path': '~/Dropbox/vimwiki',
-				\'syntax': 'markdown',
-				\ 'ext': '.md'
-			\},
-		\]
-
-	augroup wiki_toc
-		autocmd! BufWritePre *.wiki :VimwikiTOC
-	augroup END
-
-" }}}
-
-" Terminal {{{
-	" Remaps {{{
-		tnoremap <Esc> <C-\><C-n>
-		" tnoremap jk <C-\><C-n>
-	" }}}
-
-	" AutoCMD {{{
-		augroup insertonenter
-			function! InsertOnTerminal()
-				if &buftype ==# "terminal"
-					normal i
+		augroup diffsearch
+			function! SetFoldSearch()
+				if &diff
+					set fdo-=search
 				endif
 			endfunction
 
-			autocmd! BufEnter * call InsertOnTerminal()
-			if has('nvim')
-				autocmd! TermOpen * call InsertOnTerminal()
-			endif
+			autocmd! BufEnter * call SetFoldSearch()
 		augroup END
-	" }}}
-" }}}
 
-" Firenvim {{{
-if exists('g:started_by_firenvim')
-	let g:firenvim_config = {
-		\ 'globalSettings': {
-			\ 'alt': 'all',
-		\  },
-		\ 'localSettings': {
-			\ '^https?:\/\/(www\.)?notion\.so\/': {
-				\ 'takeover': 'never',
-			\ },
-			\ '^about:blank$': {
-				\ 'takeover': 'never',
-			\ },
-			\ '^https?:\/\/(www\.)?docs\.google\.com\/': {
-				\ 'takeover': 'never',
-			\ },
-		\ }
-	\ }
+		" Set .json to JSON5
+		autocmd BufRead,BufNewFile *.json set filetype=json5
 
-	" let w:test=1
-	set showtabline=0
-	let g:airline#extensions#tabline#enabled = 0
-	" Commenting due to a bug with frame sizing
-	" set guifont=Hack\ Nerd\ Font
-	" let g:airline_symbols_ascii = 1
-	let g:airline_powerline_fonts = 1 "Use powerline fonts
-	let g:airline_section_b=''
-	let g:airline_section_c=''
-	" let g:airline_section_x=''
-	let g:airline_section_y=''
-	let g:airline_section_z=''
+		"}}}
 
-	nnoremap <silent> <Esc><Esc> :w<CR> :call firenvim#focus_page()<CR>
+		" Fugitive {{{
+		set diffopt+=vertical  " Force Gdiff to split vertically
+		"}}}
 
-	" Open the command line with the command to set the font and size. Missing
-	" <CR> on purpose so you can edit the size.
-	nnoremap <leader>fs :set guifont=Hack\ Nerd\ Font:h14
+		" Airline {{{
+		let g:airline_powerline_fonts = 1 "Use powerline fonts
+		" let g:airline_theme='monokai_tasty'
+		let g:airline_theme='badwolf'
+		let g:airline#extensions#tabline#enabled = 1
+		let g:airline#extensions#tabline#show_buffers = 1
+		let g:airline#extensions#tabline#buffer_nr_show = 1
 
-	" Use normaly use leader q to offload the buffer without closing the editor.
-	" Here we do want to close firenvim
-	nnoremap <silent> <leader>q :call firenvim#focus_page()<CR> :q!<CR>
-	nnoremap <silent> <leader>wq :call firenvim#focus_page()<CR> :wq!<CR>
+		"spaces are allowed after tabs, but not in between
+		let g:airline#extensions#whitespace#mixed_indent_algo=2
+		"If fileformat is utf-8[unix] do not display it
+		let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
+		"Disable YCM error reporting
+		let g:airline#extensions#ycm#enabled = 0
+		"Enable ale integration
+		let g:airline#extensions#ale#enabled = 1
 
-	augroup firenvimShopifyConf
-		autocmd! BufEnter *.myshopify.com_admin-themes-*-code-asset-*.txt set filetype=liquid.html
-	augroup END
-endif
-" }}}
+		" let g:airline#extensions#ale#error_symbol = get(g:, 'ale_sign_error')
+		" let g:airline#extensions#ale#warning_symbol = get(g:, 'ale_sign_warning')
+		"}}}
 
-" LaTex {{{
-" }}}
+		" ProSession {{{
+		let g:prosession_tmux_title = 0 "Report title to tmux
+		let g:prosession_on_startup = 1 "Recover last session
+		let g:prosession_last_session_dir = '~'
+		"}}}
 
-" {{{ Markdown Composer
-	let g:markdown_composer_autostart=0
-" }}}
+		" Editorconfig {{{
+		let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+		let g:EditorConfig_disable_rules = ['tab_width']
+		"}}}
 
-" {{{ Ultisnips
-	let g:UltiSnipsExpandTrigger='<NULL>'
-	" let g:UltiSnipsJumpForwardTrigger='<tab>'
-	" let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
-" }}}
+		" {{{ You Complete Me
+		" " Use whichever python3 is found in the path
+		" let g:ycm_python_binary_path = 'python3'
 
-" {{{ Utils
-	" Show the syntax group under the cursor
-	function! g:SyntaxGroup() abort
-		let l:s = synID(line('.'), col('.'), 1)
-		echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-	endfunction
-" }}}
+		" " Use ctags file to autocomplete.
+		" let g:ycm_collect_identifiers_from_tags_files=1
 
-" Telescope {{{
-	lua <<EOF
-    require('telescopeConfig')
-    telescope = require('telescope')
-    telescope.load_extension('smart_open')
+		" " Leave preview window open after select but close it after leaving
+		" " insert mode
+		" let g:ycm_autoclose_preview_window_after_completion=0
+		" let g:ycm_autoclose_preview_window_after_insertion=1
 
-    telescope.setup {
-      extensions = {
-        smart_open = {
-          disable_devicons = false,
-        }
-      }
-    }
-EOF
+		" let g:ycm_enable_diagnostic_signs=0 " Do not try to lint, we have ale for that
 
-" }}}
+		" " Try to always load semantic completion
+		" let g:ycm_semantic_triggers =  {
+			" 	\	'python': ['re!\w{2}']
+			" \}
+			"}}}
+
+			" {{{ COC
+
+			function! s:check_back_space() abort
+				let col = col('.') - 1
+				return !col || getline('.')[col - 1]  =~ '\s'
+			endfunction
+
+			function! s:show_documentation()
+				if (index(['vim','help'], &filetype) >= 0)
+					execute 'h '.expand('<cword>')
+				else
+					call CocAction('doHover')
+				endif
+			endfunction
+			" }}}
+
+			" Denite {{{
+
+			" Mappings in options window
+			autocmd FileType denite call s:denite_my_settings()
+			function! s:denite_my_settings() abort
+				" Perform the default action on enter
+				nnoremap <silent><buffer><expr> <CR>
+							\ denite#do_map('do_action')
+				" Choose action
+				nnoremap <silent><buffer><expr> <tab>
+							\ denite#do_map('choose_action')
+				" Preview option
+				nnoremap <silent><buffer><expr> p
+							\ denite#do_map('do_action', 'preview')
+				" Close denite with
+				nnoremap <silent><buffer><expr> <Esc>
+							\ denite#do_map('quit')
+				" Go to filter
+				nnoremap <silent><buffer><expr> i
+							\ denite#do_map('open_filter_buffer')
+			endfunction
+
+			" Mappings in filter window
+			autocmd FileType denite-filter call s:denite_filter_my_settings()
+			function! s:denite_filter_my_settings() abort
+				imap <silent><buffer> <tab> <Plug>(denite_filter_update)
+				inoremap <silent><buffer><expr> <CR>
+							\ denite#do_map('do_action')
+				" inoremap <silent><buffer><expr> <Esc>
+				" \ denite#do_map('quit')
+				nnoremap <silent><buffer><expr> <Esc>
+							\ denite#do_map('quit')
+
+				" Move options window cursor in filter window.
+				inoremap <silent><buffer> <C-j>
+							\ <Esc><C-w>p:call cursor(line('.')+1,0)<CR><C-w>pA
+				inoremap <silent><buffer> <C-k>
+							\ <Esc><C-w>p:call cursor(line('.')-1,0)<CR><C-w>pA
+			endfunction
 
 
-" Dap {{{
-	lua require('dapConfig')
-" }}}
+			call denite#custom#source(
+						\ 'file_mru', 'matchers', ['matcher/substring', 'matcher/ignore_globs'])
 
-" Hop {{{
-	lua require('hop').setup()
-" }}}
+			call denite#custom#source(
+						\ 'file/rec', 'matchers', ['matcher/substring', 'matcher/ignore_globs'])
 
-" vim vim:foldmethod=marker:foldlevel=0
+			call denite#custom#source(
+						\ 'file/rec', 'sorters', ['sorters/sublime'])
+
+			call denite#custom#var('file/rec', 'command',
+						\ ['find', '-L', ':directory',
+						\ '-path', '*/.git/*', '-prune', '-o',
+						\ '-path', '*/node_modules/*', '-prune', '-o',
+						\ '-path', '*/vendor/*', '-prune', '-o',
+						\ '-path', '*/build/*', '-prune', '-o',
+						\ '-path', '*/.next/*', '-prune', '-o',
+						\ '-path', '*/database/data/*', '-prune', '-o',
+						\ '-path', '*/venv/*', '-prune', '-o',
+						\ '-path', '*/__pycache__/*', '-prune', '-o',
+						\ '-path', '*/coverage/*', '-prune', '-o',
+						\ '-path', '*/*.map', '-prune', '-o',
+						\ '-type', 'l', '-print', '-o',
+						\ '-type', 'f', '-print'])
+
+			call denite#custom#var('prosession', 'format', 'split')
+
+			" Use ripgrep instead of grep for searching
+			call denite#custom#var('grep', 'command', ['rg'])
+
+			" Custom options for ripgrep
+			"   --vimgrep:  Show results with every match on it's own line
+			"   --hidden:   Search hidden directories and files
+			"   --heading:  Show the file name above clusters of matches from each file
+			"   --S:        Search case insensitively if the pattern is all lowercase
+			call denite#custom#var('grep', 'default_opts', ['--hidden', '--vimgrep', '--heading', '-S'])
+
+			" Recommended defaults for ripgrep via Denite docs
+			call denite#custom#var('grep', 'recursive_opts', [])
+			call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+			call denite#custom#var('grep', 'separator', ['--'])
+			call denite#custom#var('grep', 'final_opts', [])
+
+			" _ applies the options to all buffer names.
+			call denite#custom#option('_', {
+						\ 'auto_accel': v:true,
+						\ 'reversed': v:true,
+						\ 'auto_resize': v:true,
+						\ 'cursor_wrap': v:true,
+						\ 'start_filter': v:true,
+						\ 'floating_preview': v:true,
+						\ 'highlight_matched_char': 'Keyword',
+						\ 'highlight_matched_range': 'Comment',
+						\ })
+
+			call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+						\ [
+						\ '*~', '*.o', '*.exe', '*.bak',
+						\ '.DS_Store', '*.pyc', '*.sw[po]', '*.class',
+						\ '.hg/', '.git/', '.bzr/', '.svn/',
+						\ 'node_modules/', 'venv/', '__pycache__/', 'dist/', 'build/', 'vendor/',
+						\ 'tags', 'tags-*'
+						\])
+			" }}}
+
+			" {{{ LanguageClient
+			let g:LanguageClient_serverCommands = {
+						\ 'javascript': ['tsserver'],
+						\ 'typescript': ['tsserver'],
+						\ 'typescript.jsx': ['tsserver'],
+						\}
+
+			" }}}
+
+			" {{{ Vista
+			let g:vista_default_executive='coc'
+			" }}}
+
+			" VimWiki {{{
+			let g:vimwiki_hl_headers=1       " Highlight headers
+			let g:vimwiki_hl_cb_checked=1    " Highlight completed items
+			let g:vimwiki_folding='expr'     " Fold sections and code
+			let g:vimwiki_table_mappings = 0 " Disable table maps which remap <tab>
+
+			let g:vimwiki_list = [
+						\{
+						\'path': '~/Dropbox/vimwiki',
+						\'syntax': 'markdown',
+						\ 'ext': '.md'
+						\},
+						\]
+
+			augroup wiki_toc
+				autocmd! BufWritePre *.wiki :VimwikiTOC
+			augroup END
+
+			" }}}
+
+			" Terminal {{{
+			" Remaps {{{
+			tnoremap <Esc> <C-\><C-n>
+			" tnoremap jk <C-\><C-n>
+			" }}}
+
+			" AutoCMD {{{
+			augroup insertonenter
+				function! InsertOnTerminal()
+					if &buftype ==# "terminal"
+						normal i
+					endif
+				endfunction
+
+				autocmd! BufEnter * call InsertOnTerminal()
+				if has('nvim')
+					autocmd! TermOpen * call InsertOnTerminal()
+				endif
+			augroup END
+			" }}}
+			" }}}
+
+			" Firenvim {{{
+			if exists('g:started_by_firenvim')
+				let g:firenvim_config = {
+							\ 'globalSettings': {
+							\ 'alt': 'all',
+							\  },
+							\ 'localSettings': {
+							\ '^https?:\/\/(www\.)?notion\.so\/': {
+							\ 'takeover': 'never',
+							\ },
+							\ '^about:blank$': {
+							\ 'takeover': 'never',
+							\ },
+							\ '^https?:\/\/(www\.)?docs\.google\.com\/': {
+							\ 'takeover': 'never',
+							\ },
+							\ }
+							\ }
+
+				" let w:test=1
+				set showtabline=0
+				let g:airline#extensions#tabline#enabled = 0
+				" Commenting due to a bug with frame sizing
+				" set guifont=Hack\ Nerd\ Font
+				" let g:airline_symbols_ascii = 1
+				let g:airline_powerline_fonts = 1 "Use powerline fonts
+				let g:airline_section_b=''
+				let g:airline_section_c=''
+				" let g:airline_section_x=''
+				let g:airline_section_y=''
+				let g:airline_section_z=''
+
+				nnoremap <silent> <Esc><Esc> :w<CR> :call firenvim#focus_page()<CR>
+
+				" Open the command line with the command to set the font and size. Missing
+				" <CR> on purpose so you can edit the size.
+				nnoremap <leader>fs :set guifont=Hack\ Nerd\ Font:h14
+
+				" Use normaly use leader q to offload the buffer without closing the editor.
+				" Here we do want to close firenvim
+				nnoremap <silent> <leader>q :call firenvim#focus_page()<CR> :q!<CR>
+				nnoremap <silent> <leader>wq :call firenvim#focus_page()<CR> :wq!<CR>
+
+				augroup firenvimShopifyConf
+					autocmd! BufEnter *.myshopify.com_admin-themes-*-code-asset-*.txt set filetype=liquid.html
+				augroup END
+			endif
+			" }}}
+
+			" LaTex {{{
+			" }}}
+
+			" {{{ Markdown Composer
+			let g:markdown_composer_autostart=0
+			" }}}
+
+			" {{{ Ultisnips
+			let g:UltiSnipsExpandTrigger='<NULL>'
+			" let g:UltiSnipsJumpForwardTrigger='<tab>'
+			" let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
+			" }}}
+
+			" {{{ Utils
+			" Show the syntax group under the cursor
+			function! g:SyntaxGroup() abort
+				let l:s = synID(line('.'), col('.'), 1)
+				echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+			endfunction
+			" }}}
+
+			" Telescope {{{
+			lua <<EOF
+			require('telescopeConfig')
+			telescope = require('telescope')
+			telescope.load_extension('smart_open')
+
+			telescope.setup {
+				extensions = {
+					smart_open = {
+						disable_devicons = false,
+					}
+					}
+				}
+			EOF
+
+			" }}}
+
+
+			" Dap {{{
+			lua require('dapConfig')
+			" }}}
+
+			" Hop {{{
+			lua require('hop').setup()
+			" }}}
+
+			" vim vim:foldmethod=marker:foldlevel=0
