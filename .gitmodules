@@ -175,3 +175,6 @@
 [submodule "pack/plugin/start/hop.nvim"]
 	path = pack/plugin/start/hop.nvim
 	url = git@github.com:smoka7/hop.nvim.git
+[submodule "pack/plugin/start/nvim-colorizer.lua"]
+	path = pack/plugin/start/nvim-colorizer.lua
+	url = https://github.com/norcalli/nvim-colorizer.lua.git

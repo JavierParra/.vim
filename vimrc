@@ -885,15 +885,19 @@ EOF
 				}
 EOF
 
-			" }}}
+" }}}
 
 
-			" Dap {{{
-			lua require('dapConfig')
-			" }}}
+" Dap {{{
+	lua require('dapConfig')
+" }}}
 
-			" Hop {{{
-			lua require('hop').setup()
-			" }}}
+" Hop {{{
+	lua require('hop').setup()
+" }}}
 
-			" vim vim:foldmethod=marker:foldlevel=0
+" Other Plugins {{{
+	lua require'colorizer'.setup()
+" }}}
+
+" vim vim:foldmethod=marker:foldlevel=0
