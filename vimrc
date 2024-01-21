@@ -278,6 +278,9 @@ EOF
 		" Open buffer in new tab
 		nnoremap <Leader>te :tabedit %<CR>
 
+		" Close the current tab
+		nnoremap <Leader>tc :tabclose<CR>
+
 		"Easier saving.
 		nnoremap <Leader>ww :w<CR>
 		nnoremap <Leader>w :w<CR>
