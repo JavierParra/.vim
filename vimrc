@@ -308,6 +308,7 @@ EOF
 		nnoremap <C-p> <cmd>Telescope smart_open<CR>
 		nnoremap <Leader>db <cmd>Telescope buffers<CR>
 		nnoremap <Leader>d <cmd>Telescope builtin<CR>
+		nnoremap <Leader>dd <cmd>Telescope builtin<CR>
 		nnoremap <Leader>dc <cmd>Telescope colorscheme<CR>
 		nnoremap <Leader>dh <cmd>Telescope command_history<CR>
 		nnoremap <Leader>d/ <cmd>Telescope live_grep<CR>
@@ -332,8 +333,6 @@ EOF
 		" nnoremap <silent> <Leader>dN :Denite grep -buffer-name=grep -resume -cursor-pos=-1 -mode=normal -post-action=suspend<CR>
 		" nnoremap <silent> <Leader>dr :Denite register<CR>
 
-		" Rename symbol
-		nmap <leader>rn <Plug>(coc-rename)
 
 		" VimWiki
 		nmap <Leader>vww <Plug>VimwikiIndex
@@ -348,13 +347,13 @@ EOF
 		endif
 
 		" Common foldlevels
-		nnoremap <Leader>zl0 :set foldlevel=0<CR>
-		nnoremap <Leader>zl1 :set foldlevel=1<CR>
-		nnoremap <Leader>zl2 :set foldlevel=2<CR>
-		nnoremap <Leader>zl3 :set foldlevel=3<CR>
-		nnoremap <Leader>zl4 :set foldlevel=4<CR>
+		nnoremap <Leader>zl0 :setlocal foldlevel=0<CR>
+		nnoremap <Leader>zl1 :setlocal foldlevel=1<CR>
+		nnoremap <Leader>zl2 :setlocal foldlevel=2<CR>
+		nnoremap <Leader>zl3 :setlocal foldlevel=3<CR>
+		nnoremap <Leader>zl4 :setlocal foldlevel=4<CR>
 
-		nnoremap <Leader>zl :set foldlevel=
+		nnoremap <Leader>zl :setlocal foldlevel=
 
 		" Fugitive
 		nnoremap <Leader>gs :Git<CR>
@@ -373,24 +372,22 @@ EOF
 		nnoremap <Leader>ep :ALEPrevious<CR>
 		nnoremap <Leader>ed :ALEDetail<CR>
 
-		nnoremap <Leader>cr :CocRestart<CR>
-
 	" Hop bindings
-		nnoremap <Leader><Leader>f :HopChar2CurrentLineAC<CR>
-		nnoremap <Leader><Leader>F :HopChar2CurrentLineBC<CR>
-		nnoremap <Leader><Leader>/ :HopPatternMW<CR>
-		nnoremap <Leader><Leader>w :HopWordMW<CR>
-		nnoremap <Leader><Leader>j :HopVerticalAC<CR>
-		nnoremap <Leader><Leader>k :HopVerticalBC<CR>
-		nnoremap <Leader><Leader>J :HopWordAC<CR>
-		nnoremap <Leader><Leader>K :HopWordBC<CR>
-		nnoremap <Leader><Leader>h :HopWordCurrentLineBC<CR>
+		noremap <Leader><Leader>f :HopChar2CurrentLineAC<CR>
+		noremap <Leader><Leader>F :HopChar2CurrentLineBC<CR>
+		noremap <Leader><Leader>/ :HopPatternMW<CR>
+		noremap <Leader><Leader>w :HopWordMW<CR>
+		noremap <Leader><Leader>J :HopVerticalAC<CR>
+		noremap <Leader><Leader>K :HopVerticalBC<CR>
+		noremap <Leader><Leader>j :HopWordAC<CR>
+		noremap <Leader><Leader>k :HopWordBC<CR>
+		noremap <Leader><Leader>h :HopWordCurrentLineBC<CR>
 
 		lua <<EOF
 		local hop = require'hop'
 		local hint = require'hop.hint'
 
-		vim.keymap.set('n', '<Leader><Leader>t', function()
+		vim.keymap.set('', '<Leader><Leader>t', function()
 			hop.hint_char2({
 				hint.HintDirection.AFTER_CURSOR,
 				current_line_only = true,
@@ -398,7 +395,7 @@ EOF
 			})
 		end)
 
-		vim.keymap.set('n', '<Leader><Leader>T', function()
+		vim.keymap.set('', '<Leader><Leader>T', function()
 			hop.hint_char2({
 				hint.HintDirection.BEFORE_CURSOR,
 				current_line_only = true,
@@ -406,21 +403,25 @@ EOF
 			})
 		end)
 
-		vim.keymap.set('n', '<Leader><Leader>l', function()
+		vim.keymap.set('', '<Leader><Leader>l', function()
 			hop.hint_camel_case({
 				hint.HintDirection.AFTER_CURSOR,
 				current_line_only = true,
 			})
 		end)
 
-		vim.keymap.set('n', '<Leader><Leader>h', function()
+		vim.keymap.set('', '<Leader><Leader>h', function()
 			hop.hint_camel_case({
 				hint.HintDirection.BEFORE_CURSOR,
 				current_line_only = true,
 			})
 		end)
-
 EOF
+
+		" Try to make marks a bit more usable
+		noremap M m
+		noremap m '
+
 
 		" }}}
 
@@ -428,29 +429,6 @@ EOF
 		inoremap jk <Esc>
 
 		" inoremap <silent> <C-r> <Esc>:Denite register -mode=normal<CR>
-
-		" COC
-		" Use tab for trigger completion with characters ahead and navigate.
-		" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-		inoremap <silent><expr> <TAB>
-					\ coc#pum#visible() ? coc#_select_confirm() :
-					\ coc#expandableOrJumpable() ?
-					\ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
-					\ <SID>check_back_space() ? "\<TAB>" :
-					\ coc#refresh()
-
-		" inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(0) : "\<S-TAB>"
-
-		inoremap <expr> <Down> coc#pum#visible() ? coc#pum#next(1) : "<Down>"
-		inoremap <expr> <Up> coc#pum#visible() ? coc#pum#prev(1) : "<Up>"
-		" Use <c-space> to trigger completion.
-		inoremap <silent><expr> <C-Space> coc#refresh()
-
-		" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-		" Coc only does snippet and additional edit on confirm.
-		inoremap <expr> <CR> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
-		inoremap <expr> <C-r> coc#pum#visible() ? coc#refresh() : "\<C-r>"
-		"}}}
 
 		" Visual mode {{{
 		" Scroll by 2 lines using shift + movement
@@ -488,42 +466,14 @@ EOF
 		" }}}
 		"}}}
 
-		" Linting {{{
-		" ALE configuration
-		highlight clear ALEErrorSign   " Do not draw background color in gutter error
-		highlight clear ALEWarningSign " Do not draw background color in gutter waring
-		let g:ale_sign_error = '💩'    " Change error sign
-		" let g:ale_sign_error = '❗️'    " Change error sign
-		let g:ale_sign_warning = '❕'  " Change warning sign
-		let g:ale_set_highlights = 0   " Disable highlight
-
-		" Disable ALE for minified files
-		let g:ale_pattern_options = {
-					\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
-					\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
-					\}
+		" Diagnostics {{{
+		lua require('diagnostics').setup()
 		"}}}
 
 		" AutoCMD {{{
 		" Live reload vimrc
 		augroup vimrc
 			autocmd! BufWritePost $MYVIMRC,~/.vim/vimrc nested source $MYVIMRC | echom "Reloaded " . $MYVIMRC | redraw
-		augroup END
-
-		" Always show the gutter to prevent shifting
-		augroup addsign
-			function! DummySign()
-				let noSign = ['nerdtree', 'denite']
-				if index(noSign, &ft) >= 0
-					return
-				endif
-
-				" define dummy sign with non breaking space
-				sign define dummy text= 
-				execute 'sign place 9999 line=1 name=dummy buffer=' . bufnr('')
-			endfunction
-
-			autocmd! BufEnter * call DummySign()
 		augroup END
 
 		" Only show cursorline on the active buffer
@@ -563,8 +513,8 @@ EOF
 			autocmd! BufEnter * call SetFoldSearch()
 		augroup END
 
-		" Set .json to JSON5
-		autocmd BufRead,BufNewFile *.json set filetype=json5
+		" Set .json to JSONC
+		autocmd BufRead,BufNewFile *.json set filetype=jsonc
 
 		"}}}
 
@@ -584,8 +534,6 @@ EOF
 		let g:airline#extensions#whitespace#mixed_indent_algo=2
 		"If fileformat is utf-8[unix] do not display it
 		let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-		"Disable YCM error reporting
-		let g:airline#extensions#ycm#enabled = 0
 		"Enable ale integration
 		let g:airline#extensions#ale#enabled = 1
 
@@ -623,22 +571,6 @@ EOF
 			" 	\	'python': ['re!\w{2}']
 			" \}
 			"}}}
-
-			" {{{ COC
-
-			function! s:check_back_space() abort
-				let col = col('.') - 1
-				return !col || getline('.')[col - 1]  =~ '\s'
-			endfunction
-
-			function! s:show_documentation()
-				if (index(['vim','help'], &filetype) >= 0)
-					execute 'h '.expand('<cword>')
-				else
-					call CocAction('doHover')
-				endif
-			endfunction
-			" }}}
 
 			" Denite {{{
 
@@ -754,10 +686,6 @@ EOF
 
 			" }}}
 
-			" {{{ Vista
-			let g:vista_default_executive='coc'
-			" }}}
-
 			" VimWiki {{{
 			let g:vimwiki_hl_headers=1       " Highlight headers
 			let g:vimwiki_hl_cb_checked=1    " Highlight completed items
@@ -816,6 +744,24 @@ EOF
 							\ '^https?:\/\/(www\.)?docs\.google\.com\/': {
 							\ 'takeover': 'never',
 							\ },
+							\ '^https?:\/\/(www\.)?figma\.com\/': {
+							\ 'takeover': 'never',
+							\ },
+							\ '^https?:\/\/(www\.)?interactive-examples\.mdn\.mozilla\.net\/': {
+							\ 'takeover': 'never',
+							\ },
+							\ '^https?:\/\/(www\.)?github\.com\/': {
+							\ 'selector': 'textarea:not(#pull_request_review_body, #read-only-cursor-text-area)',
+							\ },
+							\ '^https?:\/\/localhost:3000/docs': {
+							\ 'takeover': 'never',
+							\ },
+							\ '^https?:\/\/(staging.)?gamma.app/docs': {
+							\ 'takeover': 'never',
+							\ },
+							\ '^https?:\/\/visualize\.graphy\.app': {
+							\ 'takeover': 'never',
+							\ },
 							\ }
 							\ }
 
@@ -843,6 +789,10 @@ EOF
 				nnoremap <silent> <leader>q :call firenvim#focus_page()<CR> :q!<CR>
 				nnoremap <silent> <leader>wq :call firenvim#focus_page()<CR> :wq!<CR>
 
+				inoremap <M-{> {
+				inoremap <M-}> }
+				inoremap <M-[> [
+				inoremap <M-]> ]
 				augroup firenvimShopifyConf
 					autocmd! BufEnter *.myshopify.com_admin-themes-*-code-asset-*.txt set filetype=liquid.html
 				augroup END
@@ -899,5 +849,4 @@ EOF
 " Other Plugins {{{
 	lua require'colorizer'.setup()
 " }}}
-
-" vim vim:foldmethod=marker:foldlevel=0
+" vim vim:foldmethod=marker:foldlevel=0:noexpandtab

@@ -9,10 +9,11 @@ telescope.setup{
 			initial_mode = "insert",
 			theme = "dropdown",
 			preview = {
-				hide_on_startup = true,
+				hide_on_startup = false,
 			},
 		},
 		colorscheme = {
+			theme = "dropdown",
 			enable_preview = true,
 		},
 	},
