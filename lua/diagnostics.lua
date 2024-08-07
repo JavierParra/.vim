@@ -59,7 +59,7 @@ local function configCoc()
 	end
 
 	local function tabKey()
-		if vim.fn['coc#pum#visible']() then
+		if vim.fn['coc#pum#visible']() ~= 0 then
 			return vim.fn['coc#_select_confirm']()
 		elseif vim.fn['coc#expandableOrJumpable']() then
 			return vim.fn['coc#rpc#request']('doKeymap', { 'snippets-expand-jump', '' })
@@ -78,7 +78,7 @@ local function configCoc()
 		end
 	end
 
-	setKey('i', '<TAB>', tabKey, { expr = true, silent = true })
+	setKey('i', '<TAB>', tabKey, { expr = true, silent = true, noremap = true })
 
 	setKey('i', '<Down>', 'coc#pum#visible() ? coc#pum#next(1) : "<Down>"', { expr = true })
 	setKey('i', '<Up>', 'coc#pum#visible() ? coc#pum#prev(1) : "<Up>"', { expr = true })
