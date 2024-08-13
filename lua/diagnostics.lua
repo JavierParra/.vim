@@ -11,7 +11,7 @@ local setKey = vim.keymap.set
 local function configNative()
 	-- Set the updatetime for `CursorHold` (also affects the swap file) but we've
 	-- disabled that in our main config
-	vim.opt.updatetime = 500
+	vim.opt.updatetime = 1000
 
 	-- Always show the signcolumn, otherwise it would shift the text each time
 	-- diagnostics appeared/became resolved
@@ -35,7 +35,7 @@ local function configALE()
 	vim.g.ale_sign_warning = DIAGNOSTICS_SIGNS.WARN
 	vim.g.ale_set_highlights = 0            -- Disable ALE highlights
 	vim.g.ale_use_neovim_diagnostics_api = 1 -- Render using native diagnostics
-	vim.g.ale_fix_on_save = 0               -- Disable fix on save. ftplugins will enable if needed
+	vim.g.ale_fix_on_save = 0               -- Disable fix on save. ftplugins will enable if needed (good idea in theory, very annoying in practice)
 	vim.g.ale_pattern_options = {
 		['\\.min\\.js$'] = { ale_linters = {}, ale_fixers = {} },
 		['\\.min\\.css$'] = { ale_linters = {}, ale_fixers = {} },
@@ -118,6 +118,33 @@ local function setupAutoCommands()
 		-- end
 	end
 
+	---@diagnostic disable-next-line undefined-field
+	local show_virtual_text_timer = vim.uv.new_timer()
+	local o = {
+		show_virtual_text = true
+	}
+
+	function showDiagnosticVirtualText()
+		show_virtual_text_timer:start(20000, 0, function()
+			-- makes vim.diagnostics.config run in the main editor loop
+			vim.schedule(function()
+				o.show_virtual_text = true
+				vim.diagnostic.config({
+					virtual_text = o.show_virtual_text
+				})
+				end)
+		end)
+	end
+
+	function hideDiagnosticVirtualText()
+		show_virtual_text_timer:stop()
+		o.show_virtual_text = false
+
+		vim.diagnostic.config({
+			virtual_text = o.show_virtual_text
+		})
+	end
+
 	vim.api.nvim_create_augroup('Diagnostics', {})
 	vim.api.nvim_create_autocmd('CursorHold', {
 		group = 'Diagnostics',
@@ -137,9 +164,20 @@ local function setupAutoCommands()
 						[vim.diagnostic.severity.INFO] = DIAGNOSTICS_SIGNS.INFO,
 						[vim.diagnostic.severity.HINT] = DIAGNOSTICS_SIGNS.HINT,
 					}
-				}
+				},
+				virtual_text = o.show_virtual_text
 			})
 		end,
+	})
+
+	vim.api.nvim_create_autocmd('InsertEnter', {
+		group = 'Diagnostics',
+		callback = hideDiagnosticVirtualText,
+	})
+
+	vim.api.nvim_create_autocmd('CursorHold', {
+		group = 'Diagnostics',
+		callback = showDiagnosticVirtualText,
 	})
 end
 

@@ -9,5 +9,5 @@
 " Linting {{{
 	let b:ale_fixers = ['eslint', 'prettier']
 	let b:ale_linters = ['eslint']
-	let b:ale_fix_on_save = 1
+	let b:ale_fix_on_save = 0 " fix on save is really annoying
 " }}}
