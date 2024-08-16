@@ -24,7 +24,8 @@ require'nvim-treesitter.configs'.setup {
     'swift',
     'tsx',
     'typescript',
-    'vim'
+    'vim',
+    'vimdoc'
   },
   highlight = {
     enable = true,              -- false will disable the whole extension
