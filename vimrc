@@ -469,6 +469,9 @@ EOF
 		" Diagnostics {{{
 		lua require('diagnostics').setup()
 		"}}}
+		" Diff {{{
+		lua require('diff').setup()
+		" }}}
 
 		" AutoCMD {{{
 		" Live reload vimrc
@@ -834,7 +837,6 @@ EOF
 					}
 				}
 EOF
-
 " }}}
 
 
