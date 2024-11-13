@@ -1,4 +1,3 @@
-local catppuccino = require("catppuccino")
 local monokaiClassic = {
 	name = 'monokai',
 	base1 = '#272a30', -- black
@@ -80,15 +79,26 @@ local monokai = {
 	},
 }
 
-catppuccino.setup(
-	{
-		colorscheme = "catppuccino",
-		transparency = true,
-		integrations = {
-			coc = true,
-		},
-	},
-	monokai
-)
 
-vim.cmd('colorscheme catppuccino')
+
+return {
+
+	{ "JavierParra/Catppuccino.nvim",
+		priority = 1000,
+		lazy = false,
+		config = function()
+			local catppuccino = require("catppuccino")
+			catppuccino.setup(
+				{
+					colorscheme = "catppuccino",
+					transparency = true,
+					integrations = {
+						coc = true,
+					},
+				},
+				monokai
+			)
+			vim.cmd('colorscheme catppuccino')
+		end
+	},
+}

@@ -1,3 +1,11 @@
+	lua <<EOF
+		local winbar = require("winbar")
+		winbar.setSeparators("", "")
+		winbar.set({" %t "}, { "[%n]: %Y "})
+EOF
+
+let mapleader=" "
+
 " General Settings {{{
 	filetype on           "Enable filetype detection
 	filetype plugin on    "Enable loading plugins based on file type
@@ -16,130 +24,7 @@
 " }}}
 
 " Colors {{{
-	lua require('colors')
-	" syntax enable         " enable syntax highlighting
-	" " Set transparent background
-	" " hi Normal guibg=NONE ctermbg=NONE
-
-	" " vertical separator for panels
-	" set fillchars+=vert:│
-
-	" " Helper function to set highlight. Stolen directly from monokai_tasty
-	" " https://github.com/patstockwell/vim-monokai-tasty/blob/master/colors/vim-monokai-tasty.vim
-	" function! Highlight(group, fg, bg, style)
-	" 	exec "hi! " . a:group
-	" 				\ . " ctermfg=" . a:fg["cterm"]
-	" 				\ . " ctermbg=" . a:bg["cterm"]
-	" 				\ . " cterm=" . a:style["cterm"]
-	" 				\ . " guifg=" . a:fg["gui"]
-	" 				\ . " guibg=" . a:bg["gui"]
-	" 				\ . " gui=" . a:style["gui"]
-	" endfunction
-
-	" function! OverrideMonokai() abort
-	" 	" Variables from monokai_tasty
-	" 	if g:vim_monokai_tasty_italic
-	" 		let s:italic = { "cterm": "italic", "gui": "italic" }
-	" 	else
-	" 		let s:italic = { "cterm": "NONE", "gui": "NONE" }
-	" 	endif
-
-	" 	let s:none = { "cterm": "NONE", "gui": "NONE" }
-	" 	let s:yellow = { "cterm": 228, "gui": "#ffff87" }
-	" 	let s:purple = { "cterm": 141, "gui": "#af87ff" }
-	" 	let s:light_green = { "cterm": 148, "gui": "#A4E400" }
-	" 	let s:light_blue = { "cterm": 81, "gui": "#62D8F1" }
-	" 	let s:magenta = { "cterm": 197, "gui": "#FC1A70" }
-	" 	let s:orange = { "cterm": 208, "gui": "#FF9700" }
-
-	" 	let s:bghighlight = { "cterm": 239, "gui": "#2E323C" }
-
-	" 	" Search colours. Specifically not in the monokai palette so that they will
-	" 	" stand out.
-	" 	let s:black = { "cterm": 232, "gui": "#000000" }
-	" 	let s:bright_yellow = { "cterm": 220, "gui": "yellow" }
-
-	" 	" Monochrome in order light -> dark
-	" 	let s:white = { "cterm": 231, "gui": "#ffffff" }
-	" 	let s:light_grey = { "cterm": 250, "gui": "#bcbcbc" }
-	" 	let s:grey = { "cterm": 245, "gui": "#8a8a8a" }
-	" 	let s:dark_grey = { "cterm": 59, "gui": "#5f5f5f" }
-	" 	let s:darker_grey = { "cterm": 238, "gui": "#444444" }
-	" 	let s:light_charcoal = { "cterm": 238, "gui": "#2b2b2b" }
-	" 	let s:charcoal = { "cterm": 236, "gui": "#26292C" }
-
-	" 	" Git diff colours.
-	" 	let s:danger = { "cterm": 197, "gui": "#ff005f" }
-	" 	let s:olive = { "cterm": 64, "gui": "#5f8700" }
-	" 	let s:dark_red = { "cterm": 88, "gui": "#870000" }
-	" 	let s:blood_red = { "cterm": 52, "gui": "#5f0000" }
-	" 	let s:dark_green = { "cterm": 22, "gui": "#005f00" }
-	" 	let s:bright_blue = { "cterm": 33, "gui": "#0087ff" }
-	" 	let s:purple_slate = { "cterm": 60, "gui": "#5f5f87" }
-
-	" 	let s:bold = { "cterm": "bold", "gui": "bold" }
-	" 	let s:underline = { "cterm": "underline", "gui": "underline" }
-	" 	let s:bold_underline = { "cterm": "bold,underline", "gui": "bold,underline" }
-
-
-	" 	" make visual selection more readable
-	" 	" hi Visual ctermbg=240 ctermfg=NONE
-	" 	" hi Search ctermbg=228 ctermfg=232 cterm=bold,italic
-
-	" 	" I like this colors
-	" 	" hi ColorColumn     ctermbg=238
-	" 	" hi SignColumn      ctermbg=235
-	" 	" The line number where the cursor is
-	" 	" hi CursorLineNr    ctermfg=208 ctermbg=236
-	" 	" hi LineNr          ctermfg=242
-	" 	" hi CursorLine      ctermbg=236
-
-	" 	" call Highlight("typescriptBraces", s:light_green, s:none, s:none)
-	" 	" call Highlight("tsxAttributeBraces", s:magenta, s:none, s:none)
-
-	" 	" call Highlight("gitcommitSummary", s:magenta, s:none, s:none)
-	" 	" call Highlight("gitcommitOverflow", s:white, s:none, s:none)
-
-	" 	" call Highlight("gitcommitSelectedFile", s:light_green, s:none, s:none)
-	" 	" call Highlight("gitcommitDiscardedFile", s:magenta, s:none, s:none)
-
-	" 	" hi def link tsxAttrib jsxAttrib
-	" 	" hi def link tsxEqual jsxEqual
-
-	" 	" call Highlight('Normal', s:white, s:charcoal, s:none)
-	" 	call Highlight('ColorColumn', s:none, s:bghighlight, s:none)
-	" 	call Highlight('CursorLineNr', s:orange, s:bghighlight, s:none)
-	" 	call Highlight('Search', s:black, s:bright_yellow, s:bold)
-	" 	call Highlight('PmenuSel', s:yellow, s:darker_grey, s:italic)
-	" 	call Highlight('Pmenu', s:light_blue, s:bghighlight, s:none)
-	" 	" call Highlight('diffLine', s:grey, s:none, s:none)
-	" 	" call Highlight('diffRemoved', s:magenta, s:none, s:none)
-	" 	" call Highlight('diffAdded', s:light_green, s:none, s:none)
-	" 	call Highlight('Directory', s:purple, s:none, s:none)
-	" 	" call Highlight("tsxCloseTag", s:grey, s:none, s:none)
-
-	" 	call Highlight("tsxTSTagDelimiter", s:light_grey, s:none, s:none)
-	" 	" For some reason, tsxTSConstructor takes precedence over TSTag. Luckily,
-	" 	" I don't want to highlight constructors.
-	" 	call Highlight("tsxTSConstructor", s:none, s:none, s:none)
-	" 	call Highlight("TSTag", s:light_blue, s:none, s:none)
-
-	" 	hi Comment gui='italic'
-	" 	hi MatchParen gui='underline'
-	" endfunction
-
-	" " Override colorscheme on an augroup: https://gist.github.com/romainl/379904f91fa40533175dfaec4c833f2f
-	" " augroup ColorOverride
-	" " 	autocmd!
-	" " 	" autocmd! ColorScheme vim-monokai-tasty call OverrideMonokai()
-	" " 	autocmd! ColorScheme * call OverrideMonokai()
-	" " augroup END
-
-	" " Define the colorscheme after the autocmd
-	" let g:vim_monokai_tasty_italic = 1
-	" " colorscheme monokai " the color scheme
-	" colorscheme catppuccino " the color scheme
-	" set termguicolors
+	" lua require('colors')
 " }}}
 
 " Tabstops {{{
@@ -165,11 +50,6 @@
 	set colorcolumn=79             " vertical ruler
 	set nofixeol                   " prevents adding a new line to files
 
-	lua <<EOF
-		local winbar = require("winbar")
-		winbar.setSeparators("", "")
-		winbar.set({" %t "}, { "[%n]: %Y "})
-EOF
 
 "}}}
 
@@ -199,8 +79,11 @@ EOF
 	set wildignore+=*.pyc
 "}}}
 
+" Package manager {{{
+	lua require('config.lazy')
+"}}}
+
 " Remaps {{{
-	let mapleader=" "
 	" Normal mode {{{
 		" Split panel bindings.
 		" Create splits with leader and movement key
@@ -384,38 +267,6 @@ EOF
 		noremap <Leader><Leader>h :HopWordCurrentLineBC<CR>
 
 		lua <<EOF
-		local hop = require'hop'
-		local hint = require'hop.hint'
-
-		vim.keymap.set('', '<Leader><Leader>t', function()
-			hop.hint_char2({
-				hint.HintDirection.AFTER_CURSOR,
-				current_line_only = true,
-				hint_offset = -1,
-			})
-		end)
-
-		vim.keymap.set('', '<Leader><Leader>T', function()
-			hop.hint_char2({
-				hint.HintDirection.BEFORE_CURSOR,
-				current_line_only = true,
-				hint_offset = 1,
-			})
-		end)
-
-		vim.keymap.set('', '<Leader><Leader>l', function()
-			hop.hint_camel_case({
-				hint.HintDirection.AFTER_CURSOR,
-				current_line_only = true,
-			})
-		end)
-
-		vim.keymap.set('', '<Leader><Leader>h', function()
-			hop.hint_camel_case({
-				hint.HintDirection.BEFORE_CURSOR,
-				current_line_only = true,
-			})
-		end)
 EOF
 
 		" Try to make marks a bit more usable
@@ -467,10 +318,10 @@ EOF
 		"}}}
 
 		" Diagnostics {{{
-		lua require('diagnostics').setup()
+		" lua require('diagnostics').setup()
 		"}}}
 		" Diff {{{
-		lua require('diff').setup()
+		" lua require('diff').setup()
 		" }}}
 
 		" AutoCMD {{{
@@ -822,33 +673,5 @@ EOF
 				echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 			endfunction
 			" }}}
-
-			" Telescope {{{
-			lua <<EOF
-			require('telescopeConfig')
-			telescope = require('telescope')
-			telescope.load_extension('smart_open')
-
-			telescope.setup {
-				extensions = {
-					smart_open = {
-						disable_devicons = false,
-					}
-					}
-				}
-EOF
-" }}}
-
-
-" Dap {{{
-	lua require('dapConfig')
-" }}}
-
-" Hop {{{
-	lua require('hop').setup()
-" }}}
-
-" Other Plugins {{{
-	lua require'colorizer'.setup()
 " }}}
 " vim vim:foldmethod=marker:foldlevel=0:noexpandtab

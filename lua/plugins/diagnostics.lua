@@ -182,11 +182,22 @@ local function setupAutoCommands()
 end
 
 
-return {
-	setup = function()
-		configNative()
-		configALE()
-		configCoc()
-		setupAutoCommands()
-	end
+setup = function()
+	configNative()
+	configALE()
+	configCoc()
+	setupAutoCommands()
+end
+
+setup()
+
+local M = {
+	{
+	 	"neoclide/coc.nvim",
+		branch = "master",
+		build = "pwd && npm ci",
+	},
+	"w0rp/ale",
 }
+
+return M
