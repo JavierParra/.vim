@@ -1,87 +1,15 @@
-	lua <<EOF
-		local winbar = require("winbar")
-		winbar.setSeparators("", "")
-		winbar.set({" %t "}, { "[%n]: %Y "})
+lua <<EOF
+	local winbar = require("winbar")
+	winbar.setSeparators("", "")
+	winbar.set({" %t "}, { "[%n]: %Y "})
 EOF
 
-let mapleader=" "
-
-" General Settings {{{
-	filetype on           "Enable filetype detection
-	filetype plugin on    "Enable loading plugins based on file type
-	filetype indent on    "Enable filetype specific indentation
-	set lazyredraw        "Do not redraw during macros
-	set foldmethod=indent "Fold based on indentation
-	set foldlevel=99      "Open all folds
-	set nowrap            "Don't wrap by default
-	if $TERM_PROGRAM =~ "iTerm"
-		let &t_SI = "\<Esc>]1337;CursorShape=1\x7" " Vertical bar in insert mode
-		let &t_EI = "\<Esc>]1337;CursorShape=0\x7" " Block in normal mode
-	endif
-	set title              " Set the terminal's title to the current file
-	set shell=bash         " My zsh is too slow at the moment.
-	set laststatus=3       " Global status line
-" }}}
-
-" Colors {{{
-	" lua require('colors')
-" }}}
-
-" Tabstops {{{
-	set tabstop=2       " visual spaces per tab
-	set softtabstop=2   " number of spaces per tab when expanding tabs
-	set shiftwidth=2    " for autoindent or indent shifting
-	set expandtab       " tab inserts spaces... I give up
-	set autoindent      " autoindent because obviously
-" }}}
-
-" UI {{{
-	"set showcmd                    " shows the last entered command
-	set number                     " show line numbers
-	set relativenumber             " show line numbers relative to current line
-	set cursorline                 " highlights the current line. Disabled because it's set in an autocmd
-	set wildmenu                   " enables command autocompletion
-	set showmatch                  " highlights the matching parens et all
-	set backspace=indent,eol,start " backspaces everything
-	set mouse=a                    " enables mouse
-	set splitright                 " create new vertical splits to the right
-	set splitbelow                 " create new horizontal splits below
-	set scrolloff=4                " lines of margin between the cursor and top-bottom of document
-	set colorcolumn=79             " vertical ruler
-	set nofixeol                   " prevents adding a new line to files
-
-
-"}}}
-
-" Searching {{{
-	set incsearch          " immediate search
-	set hlsearch           " highlight search matches
-	set ignorecase         " case insensitive search
-	set smartcase          " if the search string has mixed case, search becomes case sensitive
-	set inccommand=nosplit " preview replace inline
-" }}}
-
-" Invisible characters {{{
-	set list                                         " Show invisible charactes.
-	set listchars=tab:￫―,nbsp:·,extends:⇀,precedes:↼ " The characters that the invisible will show as.
-" }}}
-
-" Fix VIM {{{
-	set backupdir=~/.local/share/nvim/backup
-	set backup                " Create backups in the above dir
-	set noswapfile            " Disable swap files
-	set hidden                " Enables switching buffers without saving
-	set clipboard=unnamedplus " Syncs VIMs clipboard with the OS's
-	set shortmess+=c          " Hide 'user defined completion pattern not found'
-
-	" Ignore patterns in listings.
-	set wildignore+=node_modules
-	set wildignore+=*.pyc
-"}}}
-
 " Package manager {{{
+	lua require('config.options')
 	lua require('config.lazy')
+	lua require('config.commands')
 "}}}
+
 
 " Remaps {{{
 	" Normal mode {{{
