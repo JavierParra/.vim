@@ -50,7 +50,21 @@ local M = {
 		}
 
 		telescope.setup(telescopeConfig)
-	end
+	end,
+	keys = {
+		{ '<C-p>', '<cmd>Telescope smart_open<CR>', desc='Open something'  },
+		{ '<Leader>db', '<cmd>Telescope buffers<CR>', desc='List buffers' },
+		{ '<Leader>d', '<cmd>Telescope builtin<CR>', desc='List telescope commands' },
+		{ '<Leader>dd', '<cmd>Telescope builtin<CR>', desc='List telescope commands' },
+		{ '<Leader>dc', '<cmd>Telescope colorscheme<CR>', desc='List colorschemes' },
+		{ '<Leader>dh', '<cmd>Telescope command_history<CR>', desc='Show command history' },
+		{ '<Leader>d/', '<cmd>Telescope live_grep<CR>', desc='Find across workspace' },
+		{ '<Leader>dn', '<cmd>Telescope resume initial_mode=normal<CR>', desc='Resume telescope' },
+		{ '<Leader>do', '<cmd>Telescope coc document_symbols<CR>', desc='List document\'s symbols' },
+		{ '<Leader>/', '<cmd>Telescope current_buffer_fuzzy_find<CR>', desc='Find in file' },
+		-- Find references
+		{ '<leader>fr', '<cmd>Telescope coc references initial_mode=normal theme=cursor<CR>', desc='Find symbol\'s references' },
+	},
 }
 
 return M

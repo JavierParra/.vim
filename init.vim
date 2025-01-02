@@ -47,12 +47,6 @@ EOF
 		"Move between tabs with control and arrows
 		nnoremap <C-Left> :tabprevious <CR>
 		nnoremap <C-Right> :tabnext <CR>
-		" Edit vimrc in a split panel
-		"nnoremap <Leader>ev :vsplit <CR> :wincmd l <CR> :e $MYVIMRC <CR>
-		" nnoremap <Leader>ev :botright vnew $MYVIMRC<CR>
-
-		" Hardcode the path to vimrc because we use nvim interchangeably.
-		nnoremap <Leader>ev :botright vnew ~/.vim/vimrc<CR>
 
 		" Toggle NerdTree
 		nnoremap <Leader>fb :silent NERDTreeToggle <CR>
@@ -114,36 +108,6 @@ EOF
 		" Scroll horizontally
 		nnoremap L 2z<Right>
 		nnoremap H 2z<Left>
-
-		" Bind Telescope
-		nnoremap <C-p> <cmd>Telescope smart_open<CR>
-		nnoremap <Leader>db <cmd>Telescope buffers<CR>
-		nnoremap <Leader>d <cmd>Telescope builtin<CR>
-		nnoremap <Leader>dd <cmd>Telescope builtin<CR>
-		nnoremap <Leader>dc <cmd>Telescope colorscheme<CR>
-		nnoremap <Leader>dh <cmd>Telescope command_history<CR>
-		nnoremap <Leader>d/ <cmd>Telescope live_grep<CR>
-		nnoremap <Leader>dn <cmd>Telescope resume initial_mode=normal<CR>
-		" nnoremap <Leader>dr <cmd>Telescope registers<CR> " Telescope register are bugged
-		nnoremap <Leader>do <cmd>Telescope coc document_symbols<CR>
-		nnoremap <Leader>/ <cmd>Telescope current_buffer_fuzzy_find<CR>
-
-		" Find references
-		nmap <leader>fr <cmd>Telescope coc references initial_mode=normal theme=cursor<CR>
-
-		" Bind Denite (deprecated in favor of telescope)
-		" nnoremap <silent> <C-p> :Denite buffer file/rec<CR>
-		" nnoremap <silent> <Leader>d  :Denite source<CR>
-		" nnoremap <silent> <Leader>dc :Denite colorscheme -auto-action=preview <CR>
-		" nnoremap <silent> <Leader>df :Denite file/rec<CR>
-		" nnoremap <silent> <Leader>dt :Denite outline<CR>
-		" nnoremap <silent> <Leader>dh :Denite command_history<CR>
-		" nnoremap <silent> <Leader>ds :Denite prosession<CR>
-		" nnoremap <silent> <Leader>d/ :Denite grep -buffer-name=grep<CR>
-		" nnoremap <silent> <Leader>dn :Denite grep -buffer-name=grep -resume -cursor-pos=+1 -mode=normal -post-action=suspend<CR>
-		" nnoremap <silent> <Leader>dN :Denite grep -buffer-name=grep -resume -cursor-pos=-1 -mode=normal -post-action=suspend<CR>
-		" nnoremap <silent> <Leader>dr :Denite register<CR>
-
 
 		" VimWiki
 		nmap <Leader>vww <Plug>VimwikiIndex
