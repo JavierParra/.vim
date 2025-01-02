@@ -2,7 +2,6 @@ return {
 	"chrisbra/csv.vim",
 	"Shougo/denite.nvim",
 	"editorconfig/editorconfig-vim",
-	{ 'glacambre/firenvim', build = ":call firenvim#install(0)" },
 	"vito-c/jq.vim",
 	"Shougo/neomru.vim",
 	"scrooloose/nerdtree",
