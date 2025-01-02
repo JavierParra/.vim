@@ -30,6 +30,7 @@ local function getWinBarContent (sectionContents)
 	for _key, value in ipairs(sectionContents) do
 		if separators.left then
 			joined = joined .. activeWindowHighlight(separators.left, 'WinBarSeparator', 'WinBarSeparatorNC')
+
 		end
 		joined = joined
 			.. activeWindowHighlight(value, 'WinBarContent', 'WinBarContentNC')
@@ -44,6 +45,10 @@ end
 
 local function doSetWinBar()
 	local barContent = ""
+
+	if vim.g.started_by_firenvim == true then
+		return
+	end
 
 	if content.left then
 		barContent = barContent .. getWinBarContent(content.left)

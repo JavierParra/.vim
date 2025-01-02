@@ -1,6 +1,6 @@
 return {
 	"chrisbra/csv.vim",
-	"Shougo/denite.nvim",
+	{ "Shougo/denite.nvim", enable = false },
 	"editorconfig/editorconfig-vim",
 	"vito-c/jq.vim",
 	"Shougo/neomru.vim",

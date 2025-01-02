@@ -1,7 +1,7 @@
 lua <<EOF
 	local winbar = require("winbar")
 	winbar.setSeparators("", "")
-	winbar.set({" %t "}, { "[%n]: %Y "})
+	winbar.set({"%2(%M%)%t "}, { "[%n]: %Y "})
 EOF
 
 " Package manager {{{
@@ -261,26 +261,6 @@ EOF
 		let g:EditorConfig_disable_rules = ['tab_width']
 		"}}}
 
-		" {{{ You Complete Me
-		" " Use whichever python3 is found in the path
-		" let g:ycm_python_binary_path = 'python3'
-
-		" " Use ctags file to autocomplete.
-		" let g:ycm_collect_identifiers_from_tags_files=1
-
-		" " Leave preview window open after select but close it after leaving
-		" " insert mode
-		" let g:ycm_autoclose_preview_window_after_completion=0
-		" let g:ycm_autoclose_preview_window_after_insertion=1
-
-		" let g:ycm_enable_diagnostic_signs=0 " Do not try to lint, we have ale for that
-
-		" " Try to always load semantic completion
-		" let g:ycm_semantic_triggers =  {
-			" 	\	'python': ['re!\w{2}']
-			" \}
-			"}}}
-
 			" Denite {{{
 
 			" Mappings in options window
@@ -458,7 +438,7 @@ EOF
 			" }}}
 
 			" {{{ Ultisnips
-			let g:UltiSnipsExpandTrigger='<NULL>'
+			" let g:UltiSnipsExpandTrigger='<NULL>'
 			" let g:UltiSnipsJumpForwardTrigger='<tab>'
 			" let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
 			" }}}
