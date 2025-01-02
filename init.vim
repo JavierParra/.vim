@@ -183,20 +183,6 @@ EOF
 		nnoremap <Leader>ep :ALEPrevious<CR>
 		nnoremap <Leader>ed :ALEDetail<CR>
 
-	" Hop bindings
-		noremap <Leader><Leader>f :HopChar2CurrentLineAC<CR>
-		noremap <Leader><Leader>F :HopChar2CurrentLineBC<CR>
-		noremap <Leader><Leader>/ :HopPatternMW<CR>
-		noremap <Leader><Leader>w :HopWordMW<CR>
-		noremap <Leader><Leader>J :HopVerticalAC<CR>
-		noremap <Leader><Leader>K :HopVerticalBC<CR>
-		noremap <Leader><Leader>j :HopWordAC<CR>
-		noremap <Leader><Leader>k :HopWordBC<CR>
-		noremap <Leader><Leader>h :HopWordCurrentLineBC<CR>
-
-		lua <<EOF
-EOF
-
 		" Try to make marks a bit more usable
 		noremap M m
 		noremap m '
