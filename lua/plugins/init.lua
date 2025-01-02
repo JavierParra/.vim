@@ -15,8 +15,6 @@ return {
 	"wellle/targets.vim",
 	"tomtom/tcomment_vim",
 	"SirVer/ultisnips",
-	-- "vim-airline/vim-airline",
-	{"vim-airline/vim-airline-themes", dependencies = "vim-airline/vim-airline"},
 	"ntpeters/vim-better-whitespace",
 	"delphinus/vim-firestore",
 	"tpope/vim-fugitive",

@@ -203,10 +203,6 @@ EOF
 		" }}}
 
 		" AutoCMD {{{
-		" Live reload vimrc
-		augroup vimrc
-			autocmd! BufWritePost $MYVIMRC,~/.vim/vimrc nested source $MYVIMRC | echom "Reloaded " . $MYVIMRC | redraw
-		augroup END
 
 		" Only show cursorline on the active buffer
 		function! WinEnter() abort
@@ -252,25 +248,6 @@ EOF
 
 		" Fugitive {{{
 		set diffopt+=vertical  " Force Gdiff to split vertically
-		"}}}
-
-		" Airline {{{
-		let g:airline_powerline_fonts = 1 "Use powerline fonts
-		" let g:airline_theme='monokai_tasty'
-		let g:airline_theme='badwolf'
-		let g:airline#extensions#tabline#enabled = 1
-		let g:airline#extensions#tabline#show_buffers = 1
-		let g:airline#extensions#tabline#buffer_nr_show = 1
-
-		"spaces are allowed after tabs, but not in between
-		let g:airline#extensions#whitespace#mixed_indent_algo=2
-		"If fileformat is utf-8[unix] do not display it
-		let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-		"Enable ale integration
-		let g:airline#extensions#ale#enabled = 1
-
-		" let g:airline#extensions#ale#error_symbol = get(g:, 'ale_sign_error')
-		" let g:airline#extensions#ale#warning_symbol = get(g:, 'ale_sign_warning')
 		"}}}
 
 		" ProSession {{{
