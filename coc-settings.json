@@ -1,0 +1,16 @@
+{
+  "coc.preferences.messageLevel": "error",
+  "tsserver.locale": "en",
+  "diagnostic.level": "warning",
+  // "tsserver.useLocalTsdk": true,
+  "tsserver.npm": "/usr/bin/npm",
+  "tsserver.tsdk": "/Users/jparra/.nvm/versions/node/v18.18.2/lib/node_modules/typescript/lib",
+  "diagnostic.displayByAle": true,
+  // neovim runtime for a homebrew installation
+  "Lua.workspace.library": [
+    "/opt/homebrew/share/nvim/runtime/lua",
+    "/opt/homebrew/share/nvim/runtime/lua/vim",
+    "/opt/homebrew/share/nvim/runtime/lua/vim/lsp"
+  ],
+  "Lua.diagnostics.globals": ["vim"]
+}
