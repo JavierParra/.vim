@@ -79,7 +79,7 @@ local options_set = {
 	listchars = "tab:￫―,nbsp:·,extends:⇀,precedes:↼",
 
 	-- Fix VIM
-	backupdir = ".local/share/nvim/backup",
+	backupdir = vim.fn.getenv("HOME") .. "/.local/share/nvim/backup",
 	-- Create backups in the above dir
 	backup = true,
 	-- Disable swap files
