@@ -13,7 +13,7 @@ return {
 	"kkharji/sqlite.lua",
 	"wellle/targets.vim",
 	"tomtom/tcomment_vim",
-	"SirVer/ultisnips",
+	-- "SirVer/ultisnips",
 	"ntpeters/vim-better-whitespace",
 	"delphinus/vim-firestore",
 	"tpope/vim-fugitive",
