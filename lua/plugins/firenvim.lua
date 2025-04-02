@@ -34,9 +34,13 @@ if vim.g.started_by_firenvim == true then
 						takeover = "never",
 					},
 					["^https?:\\/\\/(www\\.)?github\\.com\\/"] = {
-						selector = 'textarea:not(#pull_request_review_body, #read-only-cursor-text-area)',
+						-- selector = 'textarea:not(#pull_request_review_body, #read-only-cursor-text-area)',
+						selector = 'textarea[name="comment[body]"]',
 					},
 					["^https?:\\/\\/localhost:3000/docs"] = {
+						takeover = "never",
+					},
+					["^https?:\\/\\/app.retrium.com"] = {
 						takeover = "never",
 					},
 					["^https?:\\/\\/(staging.)?gamma.app/docs"] = {
@@ -45,12 +49,18 @@ if vim.g.started_by_firenvim == true then
 					["^https?:\\/\\/visualize\\.graphy\\.app"] = {
 						takeover = "never",
 					},
+					["^https?:\\/\\/app\\.coderpad\\.io"] = {
+						takeover = "never",
+					},
 				}
 			},
 			config = function(_, opts)
 				if type(opts) == "table" and (opts.localSettings or opts.globalSettings) then
 					vim.g.firenvim_config = opts
 				end
+				vim.opt.wrap = true
+				-- wrap on word boundaries
+				vim.opt.linebreak = true
 			end,
 
 			keys = {
