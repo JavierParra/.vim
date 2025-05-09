@@ -97,6 +97,9 @@ local function configCoc()
 
 	setKey('n', '<C-h>', help)
 	setKey('n', '<Leader>cr', function() vim.cmd('CocRestart') end)
+
+	setKey('n', '<Leader>cf', function() vim.cmd('CocCommand tsserver.executeAutofix') end)
+	setKey('i', '<C-a>', function() vim.cmd('CocCommand tsserver.executeAutofix') end)
 end
 
 local function setupAutoCommands()
@@ -195,7 +198,7 @@ local M = {
 	{
 	 	"neoclide/coc.nvim",
 		branch = "master",
-		build = "pwd && npm ci",
+		build = "pwd && npm ci --no-save",
 	},
 	"w0rp/ale",
 }

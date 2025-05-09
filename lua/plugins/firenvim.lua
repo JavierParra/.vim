@@ -35,7 +35,7 @@ if vim.g.started_by_firenvim == true then
 					},
 					["^https?:\\/\\/(www\\.)?github\\.com\\/"] = {
 						-- selector = 'textarea:not(#pull_request_review_body, #read-only-cursor-text-area)',
-						selector = 'textarea[name="comment[body]"]',
+						selector = 'textarea[name="comment[body]"], textarea[name="pull_request[body]"]',
 					},
 					["^https?:\\/\\/localhost:3000/docs"] = {
 						takeover = "never",
@@ -58,9 +58,12 @@ if vim.g.started_by_firenvim == true then
 				if type(opts) == "table" and (opts.localSettings or opts.globalSettings) then
 					vim.g.firenvim_config = opts
 				end
-				vim.opt.wrap = true
-				-- wrap on word boundaries
-				vim.opt.linebreak = true
+
+				if vim.g.started_by_firenvim == true then
+					vim.opt.wrap = true
+					-- wrap on word boundaries
+					vim.opt.linebreak = true
+				end
 			end,
 
 			keys = {

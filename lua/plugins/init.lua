@@ -25,7 +25,7 @@ return {
 	},
 	"tpope/vim-repeat",
 	"sirosen/vim-rockstar",
-	"tpope/vim-rsi",
+	-- "tpope/vim-rsi",
 	"tpope/vim-sleuth",
 	"tpope/vim-surround",
 	"dhruvasagar/vim-table-mode",

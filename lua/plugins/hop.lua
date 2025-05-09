@@ -39,19 +39,19 @@ local M = {
 
 	end,
 	keys = {
-		{ '<Leader><Leader>f', '<cmd>HopChar2CurrentLineAC<CR>' },
-		{ '<Leader><Leader>F', '<cmd>HopChar2CurrentLineBC<CR>' },
-		{ '<Leader><Leader>/', '<cmd>HopPatternMW<CR>' },
-		{ '<Leader><Leader>w', '<cmd>HopWordMW<CR>' },
-		{ '<Leader><Leader>J', '<cmd>HopVerticalAC<CR>' },
-		{ '<Leader><Leader>K', '<cmd>HopVerticalBC<CR>' },
-		{ '<Leader><Leader>j', '<cmd>HopWordAC<CR>' },
-		{ '<Leader><Leader>k', '<cmd>HopWordBC<CR>' },
-		{ '<Leader><Leader>h', '<cmd>HopWordCurrentLineBC<CR>' },
-		{ '<Leader><Leader>t', '<cmd>HopBeforeChar2CurrentLineAC<CR>' },
-		{ '<Leader><Leader>T', '<cmd>HopBeforeChar2CurrentLineBC<CR>' },
-		{ '<Leader><Leader>l', '<cmd>HopCamelCurrentLineAC<CR>' },
-		{ '<Leader><Leader>h', '<cmd>HopCamelCurrentLineBC<CR>' },
+		{ '<Leader><Leader>f', '<cmd>HopChar2CurrentLineAC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>F', '<cmd>HopChar2CurrentLineBC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>/', '<cmd>HopPatternMW<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>w', '<cmd>HopWordMW<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>J', '<cmd>HopVerticalAC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>K', '<cmd>HopVerticalBC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>j', '<cmd>HopWordAC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>k', '<cmd>HopWordBC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>h', '<cmd>HopWordCurrentLineBC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>t', '<cmd>HopBeforeChar2CurrentLineAC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>T', '<cmd>HopBeforeChar2CurrentLineBC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>l', '<cmd>HopCamelCurrentLineAC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>h', '<cmd>HopCamelCurrentLineBC<CR>', mode = { 'n', 'v', 'o' } },
 	}
 }
 
