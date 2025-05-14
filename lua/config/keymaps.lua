@@ -28,8 +28,8 @@ end
 local cmd = function(command)
 	return function()
 		if is_array(command) then
-			for _, cmd in pairs(command) do
-				vim.cmd(command)
+			for _, _cmd in pairs(command) do
+				vim.cmd(_cmd)
 			end
 		else
 			vim.cmd(command)
@@ -243,6 +243,11 @@ local remaps = {
 		-- Paste without yanking the deleted text (commented out as buggy)
 		-- { "p", "\"_dP" },
 	},
+	--
+	-- Terminal mode
+	t = {
+		{ "<Esc>", "<C-\\><C-n>" }
+	}
 }
 
 -- Apply all the mappings
