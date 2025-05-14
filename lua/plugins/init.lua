@@ -30,4 +30,5 @@ return {
 	"tpope/vim-surround",
 	"dhruvasagar/vim-table-mode",
 	"vimwiki/vimwiki",
+	"nvim-lua/plenary.nvim",
 }

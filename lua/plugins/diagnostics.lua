@@ -31,12 +31,46 @@ local function configNative()
 end
 
 local function configALE()
-	vim.g.ale_sign_error = DIAGNOSTICS_SIGNS.ERROR
-	vim.g.ale_sign_warning = DIAGNOSTICS_SIGNS.WARN
-	vim.g.ale_set_highlights = 0            -- Disable ALE highlights
-	vim.g.ale_use_neovim_diagnostics_api = 1 -- Render using native diagnostics
-	vim.g.ale_fix_on_save = 0               -- Disable fix on save. ftplugins will enable if needed (good idea in theory, very annoying in practice)
-	vim.g.ale_pattern_options = {
+	local g = vim.g
+
+	g.ale_disable_lsp = 1
+	g.ale_sign_error = DIAGNOSTICS_SIGNS.ERROR
+	g.ale_sign_warning = DIAGNOSTICS_SIGNS.WARN
+	g.ale_set_highlights = 0            -- Disable ALE highlights
+	g.ale_use_neovim_diagnostics_api = 1 -- Render using native diagnostics
+	g.ale_fix_on_save = 0               -- Disable fix on save. ftplugins will enable if needed (good idea in theory, very annoying in practice)
+
+	-- Add these lines to disable ALE's own display methods
+	g.ale_echo_cursor = 0               -- Disable echoing messages at cursor position
+	g.ale_cursor_detail = 0             -- Disable detailed error information
+	g.ale_echo_msg_format = ''          -- Empty format string to disable echo messages
+	g.ale_virtualtext_cursor = 'disabled' -- Disable ALE's virtual text
+
+	g.ale_fixers = {
+		typescript = {
+			"eslint",
+			"prettier"
+		},
+		javascript = {
+			"eslint",
+			"prettier"
+		},
+		lua = {
+			"stylua"
+		}
+	}
+
+	g.ale_linters = {
+		typescript = {
+			"eslint",
+		},
+		javascript = {
+			"eslint",
+		}
+	}
+
+	-- Don't run in minified files
+	g.ale_pattern_options = {
 		['\\.min\\.js$'] = { ale_linters = {}, ale_fixers = {} },
 		['\\.min\\.css$'] = { ale_linters = {}, ale_fixers = {} },
 	}
@@ -155,23 +189,25 @@ local function setupAutoCommands()
 	})
 
 	-- Hacky solution to add my symbols to ALE generated diagnostics
-	vim.api.nvim_create_autocmd('User', {
-		pattern = 'ALELintPost',
-		group = 'Diagnostics',
-		callback = function()
-			vim.diagnostic.config({
-				signs = {
-					text = {
-						[vim.diagnostic.severity.ERROR] = DIAGNOSTICS_SIGNS.ERROR,
-						[vim.diagnostic.severity.WARN] = DIAGNOSTICS_SIGNS.WARN,
-						[vim.diagnostic.severity.INFO] = DIAGNOSTICS_SIGNS.INFO,
-						[vim.diagnostic.severity.HINT] = DIAGNOSTICS_SIGNS.HINT,
-					}
-				},
-				virtual_text = o.show_virtual_text
-			})
-		end,
-	})
+	-- This seems to no longer be needed but leaving for the time being in case
+	-- the bug pops up again.
+	-- vim.api.nvim_create_autocmd('User', {
+	-- 	pattern = 'ALELintPost',
+	-- 	group = 'Diagnostics',
+	-- 	callback = function()
+	-- 		vim.diagnostic.config({
+	-- 			signs = {
+	-- 				text = {
+	-- 					[vim.diagnostic.severity.ERROR] = DIAGNOSTICS_SIGNS.ERROR,
+	-- 					[vim.diagnostic.severity.WARN] = DIAGNOSTICS_SIGNS.WARN,
+	-- 					[vim.diagnostic.severity.INFO] = DIAGNOSTICS_SIGNS.INFO,
+	-- 					[vim.diagnostic.severity.HINT] = DIAGNOSTICS_SIGNS.HINT,
+	-- 				}
+	-- 			},
+	-- 			virtual_text = o.show_virtual_text
+	-- 		})
+	-- 	end,
+	-- })
 
 	vim.api.nvim_create_autocmd('InsertEnter', {
 		group = 'Diagnostics',
@@ -200,7 +236,9 @@ local M = {
 		branch = "master",
 		build = "pwd && npm ci --no-save",
 	},
-	"w0rp/ale",
+	{
+		"w0rp/ale",
+	},
 }
 
 return M

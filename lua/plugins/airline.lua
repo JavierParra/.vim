@@ -2,6 +2,7 @@ return {
 	{
 		"vim-airline/vim-airline-themes",
 		dependencies = "vim-airline/vim-airline",
+		enabled = false,
 		init = function ()
 			vim.g.airline_powerline_fonts = 1  -- Use powerline fonts
 			-- " let g:airline_theme='monokai_tasty'

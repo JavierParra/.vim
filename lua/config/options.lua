@@ -8,7 +8,7 @@ vim.g.mapleader = " "
 local options_set = {
 	-- General Settings
 	-- Do not redraw during macros
-	lazyredraw = true,
+	lazyredraw = false,
 	-- Fold based on indentation
 	foldmethod = "indent",
 	-- Open all folds

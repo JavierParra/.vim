@@ -1,12 +1,15 @@
 {
-  "coc.preferences.messageLevel": "error",
+  "coc.preferences.messageLevel": "more",
+  "coc.preferences.enableMessageDialog": false,
+  "diagnostic.enableMessage": "always",
   "tsserver.locale": "en",
   "diagnostic.level": "warning",
   "tsserver.npm": "/usr/bin/npm",
   // If tsserver seems broken in the monorepo, try replacing with the line below (or a better version)
   "tsserver.useLocalTsdk": true,
   // "tsserver.tsdk": "/Users/jparra/.nvm/versions/node/v18.18.2/lib/node_modules/typescript/lib",
-  "diagnostic.displayByAle": true,
+  "diagnostic.displayByAle": false,
+  "diagnostic.displayByVimDiagnostic": true,
   // neovim runtime for a homebrew installation
   "Lua.workspace.library": [
     "/opt/homebrew/share/nvim/runtime/lua",

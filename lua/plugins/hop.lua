@@ -1,57 +1,168 @@
 local M = {
 	"smoka7/hop.nvim",
 	config = function()
-		local hop = require'hop'
-		local hint = require'hop.hint'
-		hop.setup()
-
-		local addCmd = vim.api.nvim_create_user_command
-
-		addCmd('HopBeforeChar2CurrentLineAC', function()
-			hop.hint_char2({
-				hint.HintDirection.AFTER_CURSOR,
-				current_line_only = true,
-				hint_offset = -1,
-			})
-		end, {})
-
-		addCmd('HopBeforeChar2CurrentLineBC', function()
-			hop.hint_char2({
-				hint.HintDirection.BEFORE_CURSOR,
-				current_line_only = true,
-				hint_offset = 2,
-			})
-		end, {})
-
-		addCmd('HopCamelCurrentLineAC', function()
-			hop.hint_camel_case({
-				hint.HintDirection.AFTER_CURSOR,
-				current_line_only = true,
-			})
-		end, {})
-
-		addCmd('HopCamelCurrentLineBC', function()
-			hop.hint_camel_case({
-				hint.HintDirection.BEFORE_CURSOR,
-				current_line_only = true,
-			})
-		end, {})
-
+		require'hop'.setup()
 	end,
+
 	keys = {
-		{ '<Leader><Leader>f', '<cmd>HopChar2CurrentLineAC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>F', '<cmd>HopChar2CurrentLineBC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>/', '<cmd>HopPatternMW<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>w', '<cmd>HopWordMW<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>J', '<cmd>HopVerticalAC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>K', '<cmd>HopVerticalBC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>j', '<cmd>HopWordAC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>k', '<cmd>HopWordBC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>h', '<cmd>HopWordCurrentLineBC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>t', '<cmd>HopBeforeChar2CurrentLineAC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>T', '<cmd>HopBeforeChar2CurrentLineBC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>l', '<cmd>HopCamelCurrentLineAC<CR>', mode = { 'n', 'v', 'o' } },
-		{ '<Leader><Leader>h', '<cmd>HopCamelCurrentLineBC<CR>', mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>f',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+
+				-- '<cmd>HopChar2CurrentLineAC<CR>'
+				hop.hint_char2({
+					direction = hint.HintDirection.AFTER_CURSOR,
+					current_line_only = true,
+				})
+			end,
+		 	mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>F',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+
+				-- '<cmd>HopChar2CurrentLineBC<CR>'
+				hop.hint_char2({
+					direction = hint.HintDirection.BEFORE_CURSOR,
+					current_line_only = true,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>/',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+
+				-- '<cmd>HopPatternMW<CR>'
+				hop.hint_patterns({
+					multi_windows = true,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>w',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+
+				-- '<cmd>HopWord<CR>'
+				hop.hint_words({ })
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>W',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+
+				-- '<cmd>HopWordMW<CR>'
+				hop.hint_words({
+					multi_windows = true,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>J',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+
+				-- '<cmd>HopVerticalAC<CR>'
+				hop.hint_vertical({
+					direction = hint.HintDirection.AFTER_CURSOR,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>K',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+
+				-- '<cmd>HopVerticalBC<CR>'
+				hop.hint_vertical({
+					direction = hint.HintDirection.BEFORE_CURSOR,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>j',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+
+				-- '<cmd>HopWordAC<CR>'
+				hop.hint_words({
+					direction = hint.HintDirection.AFTER_CURSOR,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>k',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+				--
+				-- '<cmd>HopWordBC<CR>'
+				hop.hint_words({
+					direction = hint.HintDirection.BEFORE_CURSOR,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>h',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+
+				-- '<cmd>HopWordCurrentLineBC<CR>'
+				hop.hint_words({
+					direction = hint.HintDirection.BEFORE_CURSOR,
+					current_line_only = true,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>t',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+				-- 'custom cmd'
+
+				hop.hint_char2({
+					hint.HintDirection.AFTER_CURSOR,
+					current_line_only = true,
+					hint_offset = -1,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>T',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+				-- 'custom cmd'
+				hop.hint_char2({
+					hint.HintDirection.BEFORE_CURSOR,
+					current_line_only = true,
+					hint_offset = 2,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>l',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+				-- 'custom cmd'
+				hop.hint_camel_case({
+					hint.HintDirection.AFTER_CURSOR,
+					current_line_only = true,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
+		{ '<Leader><Leader>h',
+			function()
+				local hop = require('hop')
+				local hint = require('hop.hint')
+				-- 'custom cmd'
+				hop.hint_camel_case({
+					hint.HintDirection.BEFORE_CURSOR,
+					current_line_only = true,
+				})
+			end,
+			mode = { 'n', 'v', 'o' } },
 	}
 }
 

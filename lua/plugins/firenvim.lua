@@ -8,6 +8,7 @@ local spec = {
 if vim.g.started_by_firenvim == true then
 	spec = {
 		{"vim-airline/vim-airline", cond = false },
+		{"folke/noice.nvim", cond = false },
 		vim.tbl_extend("force", spec, {
 			lazy = false, -- must load at start in browser
 			init = function ()
@@ -50,6 +51,9 @@ if vim.g.started_by_firenvim == true then
 						takeover = "never",
 					},
 					["^https?:\\/\\/app\\.coderpad\\.io"] = {
+						takeover = "never",
+					},
+					["^https?:\\/\\/excalidraw\\.com"] = {
 						takeover = "never",
 					},
 				}

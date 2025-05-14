@@ -87,12 +87,12 @@ EOF
 		nnoremap <Leader>tc :tabclose<CR>
 
 		"Easier saving.
-		nnoremap <Leader>ww :w<CR>
-		nnoremap <Leader>w :w<CR>
-		nnoremap <Leader>wq :w<CR> :Bdelete<CR>
+		nnoremap <Leader>ww :silent w<CR>
+		nnoremap <Leader>w :silent w<CR>
+		nnoremap <Leader>wq :silent w<CR> :Bdelete<CR>
 
 		" Close the buffer keeping the window.
-		nnoremap <Leader>q :Bdelete<CR>
+		nnoremap <Leader>q :silent Bdelete<CR>
 		" Close the buffer and the window.
 		nnoremap <Leader>Q :bdelete<CR>
 		" Wipe all buffers
@@ -151,6 +151,8 @@ EOF
 		noremap M m
 		noremap m '
 
+		nnoremap <C-]> :Telescope coc definitions<CR>
+		nnoremap <Leader>pw :ALEFix<CR>
 
 		" }}}
 
@@ -191,7 +193,7 @@ EOF
 
 		" Command Line remaps {{{
 		" Hint: cnoremap
-		cnoremap alv qa!
+		" cnoremap alv qa!
 		" }}}
 		"}}}
 
