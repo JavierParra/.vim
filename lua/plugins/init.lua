@@ -17,7 +17,7 @@ return {
 	"ntpeters/vim-better-whitespace",
 	"delphinus/vim-firestore",
 	"tpope/vim-fugitive",
-	"euclio/vim-markdown-composer",
+	{ "euclio/vim-markdown-composer", enable = false },
 	{ "patstockwell/vim-monokai-tasty", enable = false },
 	"pantharshit00/vim-prisma",
 	{ "JavierParra/vim-prosession",
@@ -29,6 +29,5 @@ return {
 	"tpope/vim-sleuth",
 	"tpope/vim-surround",
 	"dhruvasagar/vim-table-mode",
-	"vimwiki/vimwiki",
 	"nvim-lua/plenary.nvim",
 }
