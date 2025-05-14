@@ -1,8 +1,8 @@
 local DIAGNOSTICS_SIGNS = {
-	ERROR = '💩',
-	WARN = '❕',
-	INFO = 'ℹ',
-	HINT = '❔',
+	ERROR = "💩",
+	WARN = "❕",
+	INFO = "ℹ",
+	HINT = "❔",
 }
 
 -- simple alias
@@ -25,8 +25,8 @@ local function configNative()
 				[vim.diagnostic.severity.WARN] = DIAGNOSTICS_SIGNS.WARN,
 				[vim.diagnostic.severity.INFO] = DIAGNOSTICS_SIGNS.INFO,
 				[vim.diagnostic.severity.HINT] = DIAGNOSTICS_SIGNS.HINT,
-			}
-		}
+			},
+		},
 	})
 end
 
@@ -36,28 +36,28 @@ local function configALE()
 	g.ale_disable_lsp = 1
 	g.ale_sign_error = DIAGNOSTICS_SIGNS.ERROR
 	g.ale_sign_warning = DIAGNOSTICS_SIGNS.WARN
-	g.ale_set_highlights = 0            -- Disable ALE highlights
+	g.ale_set_highlights = 0 -- Disable ALE highlights
 	g.ale_use_neovim_diagnostics_api = 1 -- Render using native diagnostics
-	g.ale_fix_on_save = 0               -- Disable fix on save. ftplugins will enable if needed (good idea in theory, very annoying in practice)
+	g.ale_fix_on_save = 0 -- Disable fix on save. ftplugins will enable if needed (good idea in theory, very annoying in practice)
 
 	-- Add these lines to disable ALE's own display methods
-	g.ale_echo_cursor = 0               -- Disable echoing messages at cursor position
-	g.ale_cursor_detail = 0             -- Disable detailed error information
-	g.ale_echo_msg_format = ''          -- Empty format string to disable echo messages
-	g.ale_virtualtext_cursor = 'disabled' -- Disable ALE's virtual text
+	g.ale_echo_cursor = 0 -- Disable echoing messages at cursor position
+	g.ale_cursor_detail = 0 -- Disable detailed error information
+	g.ale_echo_msg_format = "" -- Empty format string to disable echo messages
+	g.ale_virtualtext_cursor = "disabled" -- Disable ALE's virtual text
 
 	g.ale_fixers = {
 		typescript = {
 			"eslint",
-			"prettier"
+			"prettier",
 		},
 		javascript = {
 			"eslint",
-			"prettier"
+			"prettier",
 		},
 		lua = {
-			"stylua"
-		}
+			"stylua",
+		},
 	}
 
 	g.ale_linters = {
@@ -66,85 +66,93 @@ local function configALE()
 		},
 		javascript = {
 			"eslint",
-		}
+		},
 	}
 
 	-- Don't run in minified files
 	g.ale_pattern_options = {
-		['\\.min\\.js$'] = { ale_linters = {}, ale_fixers = {} },
-		['\\.min\\.css$'] = { ale_linters = {}, ale_fixers = {} },
+		["\\.min\\.js$"] = { ale_linters = {}, ale_fixers = {} },
+		["\\.min\\.css$"] = { ale_linters = {}, ale_fixers = {} },
 	}
 end
 
 local function configCoc()
 	local function check_back_space()
-		local col = vim.fn.col('.') - 1
-		if (col == 0) then
+		local col = vim.fn.col(".") - 1
+		if col == 0 then
 			return true
 		end
 		---@diagnostic disable-next-line param-type-mismatch
-		local line = vim.fn.getline('.')
+		local line = vim.fn.getline(".")
 
-		if (type(line) ~= 'string') then
+		if type(line) ~= "string" then
 			return false
 		end
 
-		return line:sub(col, col):match('%s')
+		return line:sub(col, col):match("%s")
 	end
 
 	local function tabKey()
-		if vim.fn['coc#pum#visible']() ~= 0 then
-			return vim.fn['coc#_select_confirm']()
-		elseif vim.fn['coc#expandableOrJumpable']() then
-			return vim.fn['coc#rpc#request']('doKeymap', { 'snippets-expand-jump', '' })
+		if vim.fn["coc#pum#visible"]() ~= 0 then
+			return vim.fn["coc#_select_confirm"]()
+		elseif vim.fn["coc#expandableOrJumpable"]() then
+			return vim.fn["coc#rpc#request"]("doKeymap", { "snippets-expand-jump", "" })
 		elseif check_back_space() then
 			return "<TAB>"
 		else
-			return vim.fn['coc#refresh']()
+			return vim.fn["coc#refresh"]()
 		end
 	end
 	-- Define the show_documentation function
 	local function help()
 		if vim.api.nvim_eval('index(["vim", "help"], &filetype)') >= 0 then
-			vim.api.nvim_command('h ' .. vim.fn.expand('<cword>'))
+			vim.api.nvim_command("h " .. vim.fn.expand("<cword>"))
 		else
-			vim.fn.CocActionAsync('doHover')
+			vim.fn.CocActionAsync("doHover")
 		end
 	end
 
-	setKey('i', '<TAB>', tabKey, { expr = true, silent = true, noremap = true })
+	setKey("i", "<TAB>", tabKey, { expr = true, silent = true, noremap = true })
 
-	setKey('i', '<Down>', 'coc#pum#visible() ? coc#pum#next(1) : "<Down>"', { expr = true })
-	setKey('i', '<Up>', 'coc#pum#visible() ? coc#pum#prev(1) : "<Up>"', { expr = true })
+	setKey("i", "<Down>", 'coc#pum#visible() ? coc#pum#next(1) : "<Down>"', { expr = true })
+	setKey("i", "<Up>", 'coc#pum#visible() ? coc#pum#prev(1) : "<Up>"', { expr = true })
 
 	--  Use <c-space> to trigger completion.
-	setKey('i', '<C-Space>', 'coc#start()', { expr = true, silent = true })
+	setKey("i", "<C-Space>", "coc#start()", { expr = true, silent = true })
 
 	-- Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 	-- Coc only does snippet and additional edit on confirm.
-	setKey('i', '<CR>', 'coc#pum#visible() ? coc#_select_confirm() : "\\<C-g>u\\<CR>"', { expr = true })
-	setKey('i', '<C-r>', 'coc#pum#visible() ? coc#refresh() : "\\<C-r>"', { expr = true })
+	setKey("i", "<CR>", 'coc#pum#visible() ? coc#_select_confirm() : "\\<C-g>u\\<CR>"', { expr = true })
+	setKey("i", "<C-r>", 'coc#pum#visible() ? coc#refresh() : "\\<C-r>"', { expr = true })
 
 	--  Rename symbol
-	setKey('n', '<Leader>rn', '<Plug>(coc-rename)')
-	setKey('n', '<Leader>rf', function() vim.fn.CocAction('refactor') end)
+	setKey("n", "<Leader>rn", "<Plug>(coc-rename)")
+	setKey("n", "<Leader>rf", function()
+		vim.fn.CocAction("refactor")
+	end)
 
-	setKey('n', '<C-h>', help)
-	setKey('n', '<Leader>cr', function() vim.cmd('CocRestart') end)
+	setKey("n", "<C-h>", help)
+	setKey("n", "<Leader>cr", function()
+		vim.cmd("CocRestart")
+	end)
 
-	setKey('n', '<Leader>cf', function() vim.cmd('CocCommand tsserver.executeAutofix') end)
-	setKey('i', '<C-a>', function() vim.cmd('CocCommand tsserver.executeAutofix') end)
+	setKey("n", "<Leader>cf", function()
+		vim.cmd("CocCommand tsserver.executeAutofix")
+	end)
+	setKey("i", "<C-a>", function()
+		vim.cmd("CocCommand tsserver.executeAutofix")
+	end)
 end
 
 local function setupAutoCommands()
 	local function showHover()
 		local diagnosticsWin = vim.diagnostic.open_float({
-			scope = 'cursor',
+			scope = "cursor",
 			focusable = false,
 		})
 
 		-- Only show hover information if there's no diagnostic message
-		if (diagnosticsWin ~= nil) then
+		if diagnosticsWin ~= nil then
 			return
 		end
 
@@ -158,7 +166,7 @@ local function setupAutoCommands()
 	---@diagnostic disable-next-line undefined-field
 	local show_virtual_text_timer = vim.uv.new_timer()
 	local o = {
-		show_virtual_text = true
+		show_virtual_text = true,
 	}
 
 	function showDiagnosticVirtualText()
@@ -167,9 +175,9 @@ local function setupAutoCommands()
 			vim.schedule(function()
 				o.show_virtual_text = true
 				vim.diagnostic.config({
-					virtual_text = o.show_virtual_text
+					virtual_text = o.show_virtual_text,
 				})
-				end)
+			end)
 		end)
 	end
 
@@ -178,13 +186,13 @@ local function setupAutoCommands()
 		o.show_virtual_text = false
 
 		vim.diagnostic.config({
-			virtual_text = o.show_virtual_text
+			virtual_text = o.show_virtual_text,
 		})
 	end
 
-	vim.api.nvim_create_augroup('Diagnostics', {})
-	vim.api.nvim_create_autocmd('CursorHold', {
-		group = 'Diagnostics',
+	vim.api.nvim_create_augroup("Diagnostics", {})
+	vim.api.nvim_create_autocmd("CursorHold", {
+		group = "Diagnostics",
 		callback = showHover,
 	})
 
@@ -209,17 +217,16 @@ local function setupAutoCommands()
 	-- 	end,
 	-- })
 
-	vim.api.nvim_create_autocmd('InsertEnter', {
-		group = 'Diagnostics',
+	vim.api.nvim_create_autocmd("InsertEnter", {
+		group = "Diagnostics",
 		callback = hideDiagnosticVirtualText,
 	})
 
-	vim.api.nvim_create_autocmd('CursorHold', {
-		group = 'Diagnostics',
+	vim.api.nvim_create_autocmd("CursorHold", {
+		group = "Diagnostics",
 		callback = showDiagnosticVirtualText,
 	})
 end
-
 
 setup = function()
 	configNative()
@@ -232,7 +239,7 @@ setup()
 
 local M = {
 	{
-	 	"neoclide/coc.nvim",
+		"neoclide/coc.nvim",
 		branch = "master",
 		build = "pwd && npm ci --no-save",
 	},

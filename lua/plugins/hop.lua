@@ -123,7 +123,7 @@ local M = {
 				-- 'custom cmd'
 
 				hop.hint_char2({
-					hint.HintDirection.AFTER_CURSOR,
+					direction = hint.HintDirection.AFTER_CURSOR,
 					current_line_only = true,
 					hint_offset = -1,
 				})
@@ -135,7 +135,7 @@ local M = {
 				local hint = require('hop.hint')
 				-- 'custom cmd'
 				hop.hint_char2({
-					hint.HintDirection.BEFORE_CURSOR,
+					direction = hint.HintDirection.BEFORE_CURSOR,
 					current_line_only = true,
 					hint_offset = 2,
 				})
@@ -147,7 +147,7 @@ local M = {
 				local hint = require('hop.hint')
 				-- 'custom cmd'
 				hop.hint_camel_case({
-					hint.HintDirection.AFTER_CURSOR,
+					direction = hint.HintDirection.AFTER_CURSOR,
 					current_line_only = true,
 				})
 			end,
@@ -158,7 +158,7 @@ local M = {
 				local hint = require('hop.hint')
 				-- 'custom cmd'
 				hop.hint_camel_case({
-					hint.HintDirection.BEFORE_CURSOR,
+					direction = hint.HintDirection.BEFORE_CURSOR,
 					current_line_only = true,
 				})
 			end,

@@ -6,196 +6,155 @@ EOF
 
 " Package manager {{{
 	lua require('config.options')
+	lua require('config.keymaps')
 	lua require('config.lazy')
 	lua require('config.commands')
 "}}}
 
 
 " Remaps {{{
-	" Normal mode {{{
-		" Split panel bindings.
-		" Create splits with leader and movement key
-		noremap <Leader><C-l> :belowright vsplit<CR>
-		noremap <Leader><C-h> :aboveleft vsplit<CR>
-		noremap <Leader><C-j> :belowright split<CR>
-		noremap <Leader><C-k> :aboveleft split<CR>
-
-		" Create 'hard splits' (I just made that up) with Alt + movement
-		noremap <Leader><M-l> :topright vsplit<CR>
-		noremap <Leader>™ :topleft vsplit<CR>
-		noremap <Leader>¶ :botright split<CR>
-		noremap <Leader>§ :topleft split<CR>
-
-		"Close split with leader and shift movement key
-		noremap <Leader><S-l> <C-w><C-l> :q <CR>
-		noremap <Leader><S-h> <C-w><C-h> :q<CR>
-		noremap <Leader><S-j> <C-w><C-j> :q<CR>
-		noremap <Leader><S-k> <C-w><C-k> :q<CR>
-
-		" Toggle spellcheck
-		nnoremap <silent><Leader>s :set spell!<CR>
-		" Move between split panels with leader + movement
-		nnoremap <Leader>h <C-w>h
-		nnoremap <Leader>j <C-w>j
-		nnoremap <Leader>k <C-w>k
-		nnoremap <Leader>l <C-w>l
-
-		"Move between buffers with arrows
-		nnoremap <Left> :bprevious <CR>
-		nnoremap <Right> :bnext <CR>
-
-		"Move between tabs with control and arrows
-		nnoremap <C-Left> :tabprevious <CR>
-		nnoremap <C-Right> :tabnext <CR>
-
-		" Toggle NerdTree
-		nnoremap <Leader>fb :silent NERDTreeToggle <CR>
-		nnoremap <Leader>ft :silent NERDTreeToggle <CR>
-
-		" Open NerdTree
-		nnoremap <Leader>fo :silent NERDTreeFocus <CR>
-
-		" Open NerdTree
-		nnoremap <Leader>fc :silent NERDTreeClose <CR>
-
-		" Focus file in NerdTree
-		nnoremap <Leader>ff :silent NERDTreeFind <CR>
-
-		" Edit new file in the current directory
-		nnoremap <Leader>fN :edit %:h/
-
-		" Copy the current file's name
-		nnoremap <Leader>fn :!echo -n %:t:r \| pbcopy <CR>
-		" Copy the current file's path
-		nnoremap <Leader>fp :!echo % \| pbcopy <CR>
-		" Re-syntax highlight
-		" nnoremap <Leader>s :syntax on <CR>
-
-		" Toggle wordwrap on word boundary
-		nnoremap <Leader>tw :set wrap! lbr <CR>
-		" Use j and k to move by visual lines only if there's no count modifier.
-		nnoremap <expr> j v:count ? 'j' : 'gj'
-		nnoremap <expr> k v:count ? 'k' : 'gk'
-
-		" Clear search
-		nnoremap <Leader><Esc> :nohlsearch<CR>
-
-		" Open buffer in new tab
-		nnoremap <Leader>te :tabedit %<CR>
-
-		" Close the current tab
-		nnoremap <Leader>tc :tabclose<CR>
-
-		"Easier saving.
-		nnoremap <Leader>ww :silent w<CR>
-		nnoremap <Leader>w :silent w<CR>
-		nnoremap <Leader>wq :silent w<CR> :Bdelete<CR>
-
-		" Close the buffer keeping the window.
-		nnoremap <Leader>q :silent Bdelete<CR>
-		" Close the buffer and the window.
-		nnoremap <Leader>Q :bdelete<CR>
-		" Wipe all buffers
-		nnoremap <Leader>bw :%bwipe<CR>
-
-		" * stays in the same place
-		nnoremap * *``
-
-		" Scroll by 2 lines using shift + movement
-		nnoremap J 2<C-e>
-		nnoremap K 2<C-y>
-
-		" Scroll horizontally
-		nnoremap L 2z<Right>
-		nnoremap H 2z<Left>
-
-		" VimWiki
-		nmap <Leader>vww <Plug>VimwikiIndex
-		nmap <Leader>vws <Plug>VimwikiUISelect
-
-		" Open terminal
-		if has('nvim')
-			nnoremap <Leader>< :botright split\|resize 20\|terminal zsh<CR>
-		else
-			set termwinsize=20x0
-			nnoremap <Leader>< :botright terminal zsh<CR>
-		endif
-
-		" Common foldlevels
-		nnoremap <Leader>zl0 :setlocal foldlevel=0<CR>
-		nnoremap <Leader>zl1 :setlocal foldlevel=1<CR>
-		nnoremap <Leader>zl2 :setlocal foldlevel=2<CR>
-		nnoremap <Leader>zl3 :setlocal foldlevel=3<CR>
-		nnoremap <Leader>zl4 :setlocal foldlevel=4<CR>
-
-		nnoremap <Leader>zl :setlocal foldlevel=
-
-		" Fugitive
-		nnoremap <Leader>gs :Git<CR>
-		nnoremap <Leader>gb :Git blame<CR>
-		nnoremap <Leader>gp :Git pull<CR>
-		nnoremap <Leader>gd :Git diff<CR>
-		nnoremap <Leader>gc :Git checkout
-
-		" Join the current line with the previous one.
-		nnoremap <BS> kJ
-
-		" It's way too easy to hit this instead of >> and we have <Leader>q
-		nnoremap ZZ <Nop>
-
-		nnoremap <Leader>en :ALENext<CR>
-		nnoremap <Leader>ep :ALEPrevious<CR>
-		nnoremap <Leader>ed :ALEDetail<CR>
-
-		" Try to make marks a bit more usable
-		noremap M m
-		noremap m '
-
-		nnoremap <C-]> :Telescope coc definitions<CR>
-		nnoremap <Leader>pw :ALEFix<CR>
-
-		" }}}
-
-		" Insert mode {{{
-		inoremap jk <Esc>
-
-		" inoremap <silent> <C-r> <Esc>:Denite register -mode=normal<CR>
-
-		" Visual mode {{{
-		" Scroll by 2 lines using shift + movement
-		xnoremap J 2<C-e>
-		xnoremap K 2<C-y>
-
-		" Scroll horizontally
-		xnoremap L 2z<Right>
-		xnoremap H 2z<Left>
-
-		" Format selection as json.
-		xnoremap <Leader>jf :'<,'>!jq '.'<CR>
-
-		" Use j and k to move by visual lines only if there's no count modifier.
-		xnoremap <expr> j v:count ? 'j' : 'gj'
-		xnoremap <expr> k v:count ? 'k' : 'gk'
-
-		" Search for selected text
-		vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-		" View lines git history
-		xnoremap <Leader>gb :'<,'>Flogsplit<CR>
-
-		" Paste without yanking the deleted text. This is buggy
-		" vnoremap p "_dP
-		"}}}
-
-		" Everywhere {{{
-		" Nothing to see here. Hint: noremap
-		" }}}
-
-		" Command Line remaps {{{
-		" Hint: cnoremap
-		" cnoremap alv qa!
-		" }}}
-		"}}}
+	" " Normal mode {{{
+	" 	" Split panel bindings.
+	" 	" Create splits with leader and movement key
+	" 	noremap <Leader><C-l> :belowright vsplit<CR>
+	" 	noremap <Leader><C-h> :aboveleft vsplit<CR>
+	" 	noremap <Leader><C-j> :belowright split<CR>
+	" 	noremap <Leader><C-k> :aboveleft split<CR>
+	" 	" Create 'hard splits' (I just made that up) with Alt + movement
+	" 	noremap <Leader><M-l> :topright vsplit<CR>
+	" 	noremap <Leader>™ :topleft vsplit<CR>
+	" 	noremap <Leader>¶ :botright split<CR>
+	" 	noremap <Leader>§ :topleft split<CR>
+	" 	"Close split with leader and shift movement key
+	" 	noremap <Leader><S-l> <C-w><C-l> :q <CR>
+	" 	noremap <Leader><S-h> <C-w><C-h> :q<CR>
+	" 	noremap <Leader><S-j> <C-w><C-j> :q<CR>
+	" 	noremap <Leader><S-k> <C-w><C-k> :q<CR>
+	" 	" Toggle spellcheck
+	" 	nnoremap <silent><Leader>s :set spell!<CR>
+	" 	" Move between split panels with leader + movement
+	" 	nnoremap <Leader>h <C-w>h
+	" 	nnoremap <Leader>j <C-w>j
+	" 	nnoremap <Leader>k <C-w>k
+	" 	nnoremap <Leader>l <C-w>l
+	" 	"Move between buffers with arrows
+	" 	nnoremap <Left> :bprevious <CR>
+	" 	nnoremap <Right> :bnext <CR>
+	" 	"Move between tabs with control and arrows
+	" 	nnoremap <C-Left> :tabprevious <CR>
+	" 	nnoremap <C-Right> :tabnext <CR>
+	" 	" Toggle NerdTree
+	" 	nnoremap <Leader>fb :silent NERDTreeToggle <CR>
+	" 	nnoremap <Leader>ft :silent NERDTreeToggle <CR>
+	" 	" Open NerdTree
+	" 	nnoremap <Leader>fo :silent NERDTreeFocus <CR>
+	" 	" Open NerdTree
+	" 	nnoremap <Leader>fc :silent NERDTreeClose <CR>
+	" 	" Focus file in NerdTree
+	" 	nnoremap <Leader>ff :silent NERDTreeFind <CR>
+	" 	" Edit new file in the current directory
+	" 	nnoremap <Leader>fN :edit %:h/
+	" 	" Copy the current file's name
+	" 	nnoremap <Leader>fn :!echo -n %:t:r \| pbcopy <CR>
+	" 	" Copy the current file's path
+	" 	nnoremap <Leader>fp :!echo % \| pbcopy <CR>
+	" 	" Re-syntax highlight
+	" 	" nnoremap <Leader>s :syntax on <CR>
+	" 	" Toggle wordwrap on word boundary
+	" 	nnoremap <Leader>tw :set wrap! lbr <CR>
+	" 	" Use j and k to move by visual lines only if there's no count modifier.
+	" 	nnoremap <expr> j v:count ? 'j' : 'gj'
+	" 	nnoremap <expr> k v:count ? 'k' : 'gk'
+	" 	" Clear search
+	" 	nnoremap <Leader><Esc> :nohlsearch<CR>
+	" 	" Open buffer in new tab
+	" 	nnoremap <Leader>te :tabedit %<CR>
+	" 	" Close the current tab
+	" 	nnoremap <Leader>tc :tabclose<CR>
+	" 	"Easier saving.
+	" 	" nnoremap <Leader>ww :silent w<CR>
+	" 	nnoremap <Leader>w :silent w<CR>
+	" 	nnoremap <Leader>wq :silent w<CR> :Bdelete<CR>
+	" 	" Close the buffer keeping the window.
+	" 	nnoremap <Leader>q :silent Bdelete<CR>
+	" 	" Close the buffer and the window.
+	" 	nnoremap <Leader>Q :bdelete<CR>
+	" 	" Wipe all buffers
+	" 	nnoremap <Leader>bw :%bwipe<CR>
+	" 	" * stays in the same place
+	" 	nnoremap * *``
+	" 	" Scroll by 2 lines using shift + movement
+	" 	nnoremap J 2<C-e>
+	" 	nnoremap K 2<C-y>
+	" 	" Scroll horizontally
+	" 	nnoremap L 2z<Right>
+	" 	nnoremap H 2z<Left>
+	" 	" VimWiki
+	" 	nmap <Leader>vww <Plug>VimwikiIndex
+	" 	nmap <Leader>vws <Plug>VimwikiUISelect
+	" 	" Open terminal
+	" 	if has('nvim')
+	" 		nnoremap <Leader>< :botright split\|resize 20\|terminal zsh<CR>
+	" 	else
+	" 		set termwinsize=20x0
+	" 		nnoremap <Leader>< :botright terminal zsh<CR>
+	" 	endif
+	" 	" Common foldlevels
+	" 	nnoremap <Leader>zl0 :setlocal foldlevel=0<CR>
+	" 	nnoremap <Leader>zl1 :setlocal foldlevel=1<CR>
+	" 	nnoremap <Leader>zl2 :setlocal foldlevel=2<CR>
+	" 	nnoremap <Leader>zl3 :setlocal foldlevel=3<CR>
+	" 	nnoremap <Leader>zl4 :setlocal foldlevel=4<CR>
+	" 	nnoremap <Leader>zl :setlocal foldlevel=
+	" 	" Fugitive
+	" 	nnoremap <Leader>gs :Git<CR>
+	" 	nnoremap <Leader>gb :Git blame<CR>
+	" 	nnoremap <Leader>gp :Git pull<CR>
+	" 	nnoremap <Leader>gd :Git diff<CR>
+	" 	nnoremap <Leader>gc :Git checkout
+	" 	" Join the current line with the previous one.
+	" 	nnoremap <BS> kJ
+	" 	" It's way too easy to hit this instead of >> and we have <Leader>q
+	" 	nnoremap ZZ <Nop>
+	" 	nnoremap <Leader>en :ALENext<CR>
+	" 	nnoremap <Leader>ep :ALEPrevious<CR>
+	" 	nnoremap <Leader>ed :ALEDetail<CR>
+	" 	" Try to make marks a bit more usable
+	" 	noremap M m
+	" 	noremap m '
+	" 	nnoremap <C-]> :Telescope coc definitions<CR>
+	" 	nnoremap <Leader>pw :ALEFix<CR>
+	" 	" }}}
+	" 	" Insert mode {{{
+	" 	inoremap jk <Esc>
+	" 	" inoremap <silent> <C-r> <Esc>:Denite register -mode=normal<CR>
+	" 	" Visual mode {{{
+	" 	" Scroll by 2 lines using shift + movement
+	" 	xnoremap J 2<C-e>
+	" 	xnoremap K 2<C-y>
+	" 	" Scroll horizontally
+	" 	xnoremap L 2z<Right>
+	" 	xnoremap H 2z<Left>
+	" 	" Format selection as json.
+	" 	xnoremap <Leader>jf :'<,'>!jq '.'<CR>
+	" 	" Use j and k to move by visual lines only if there's no count modifier.
+	" 	xnoremap <expr> j v:count ? 'j' : 'gj'
+	" 	xnoremap <expr> k v:count ? 'k' : 'gk'
+	" 	" Search for selected text
+	" 	vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
+	" 	" View lines git history
+	" 	xnoremap <Leader>gb :'<,'>Flogsplit<CR>
+	" 	" Paste without yanking the deleted text. This is buggy
+	" 	" vnoremap p "_dP
+	" 	"}}}
+	" 	" Everywhere {{{
+	" 	" Nothing to see here. Hint: noremap
+	" 	" }}}
+	" 	" Command Line remaps {{{
+	" 	" Hint: cnoremap
+	" 	" cnoremap alv qa!
+	" 	" }}}
+	" 	"}}}
 
 		" Diagnostics {{{
 		" lua require('diagnostics').setup()
