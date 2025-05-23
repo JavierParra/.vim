@@ -89,7 +89,7 @@ local function sync_mason_packages(ensure_installed)
 		end
 	end
 
-	vim.notify("Will schedule install", vim.log.levels.DEBUG)
+	-- vim.notify("Will schedule install", vim.log.levels.DEBUG)
 	mr.refresh(do_sync_packages)
 end
 

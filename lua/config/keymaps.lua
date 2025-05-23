@@ -193,8 +193,8 @@ local remaps = {
 		{ "ZZ", "<Nop>" },
 
 		-- ALE navigation
-		{ "<Leader>en", cmd("ALENext") },
-		{ "<Leader>ep", cmd("ALEPrevious") },
+		{ "<Leader>en", function () vim.diagnostic.jump({ count = 1, wrap = false }) end },
+		{ "<Leader>ep", function () vim.diagnostic.jump({ count = -1, wrap = false }) end },
 		{ "<Leader>ed", cmd("ALEDetail") },
 
 		-- Make marks more usable
