@@ -1,7 +1,9 @@
 local spec = {
 	'glacambre/firenvim',
 	build = ":call firenvim#install(0)",
-	lazy = true,
+	-- firenvim needs to be eager so it's available when the browser plugin
+	-- probes for it.
+	lazy = false,
 	module = false,
 }
 

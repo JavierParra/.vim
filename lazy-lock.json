@@ -1,7 +1,8 @@
 {
   "Catppuccino.nvim": { "branch": "main", "commit": "38adf0ce9f8caffd54e99818c7bccc55b305b481" },
   "ale": { "branch": "master", "commit": "80ff84db84ba172bfcdee5e2748924bb2249134b" },
-  "coc.nvim": { "branch": "master", "commit": "5f611a6e99979621b71fdebfd588c91ce740e848" },
+  "claude-code.nvim": { "branch": "main", "commit": "ffdf35d8566528cb144d9812eccfecee34502edf" },
+  "coc.nvim": { "branch": "master", "commit": "c0944667552139154ae958d0021da833da235439" },
   "csv.vim": { "branch": "master", "commit": "b8eb7f67babce96168e7f6b93b2ba8328b72a390" },
   "denite.nvim": { "branch": "master", "commit": "055dd686c274a293dc4b7365be07c159148c31dd" },
   "editorconfig-vim": { "branch": "master", "commit": "6a58b7c11f79c0e1d0f20533b3f42f2a11490cf8" },
@@ -23,7 +24,7 @@
   "nvim-web-devicons": { "branch": "master", "commit": "1fb58cca9aebbc4fd32b086cb413548ce132c127" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
   "puppet-syntax-vim": { "branch": "master", "commit": "ddf5bd0747a989e8b326d6125a059613b38ab609" },
-  "smart-open.nvim": { "branch": "main", "commit": "7770b01ce4d551c143d7ec8589879320796621b9" },
+  "smart-open.nvim": { "branch": "main", "commit": "f079c3201a0a62b1582563bd5ce4256c253634d4" },
   "sqlite.lua": { "branch": "master", "commit": "50092d60feb242602d7578398c6eb53b4a8ffe7b" },
   "targets.vim": { "branch": "master", "commit": "6325416da8f89992b005db3e4517aaef0242602e" },
   "tcomment_vim": { "branch": "master", "commit": "48ab639a461d9b8344f7fee06cb69b4374863b13" },

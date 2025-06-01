@@ -22,7 +22,8 @@ end
 local function needs_restart()
 	local res = bob.needs_restart()
 	if res == nil then
-		return ""
+		-- return ""
+		return ""
 	end
 
 	if res == true then
@@ -166,9 +167,24 @@ return {
 				},
 				lualine_c = { cwd },
 				lualine_x = {
-					"filetype",
+					{
+						function()
+							local coc_status = vim.g.coc_status
+							local char = vim.fn.strcharpart(coc_status, 1, 1)
+
+							if string.match(char, "%w") then
+								return ""
+							end
+
+							return char
+						end,
+						separator = ""
+					},
+					{
+						"filetype",
+					},
 				},
-				lualine_y = { "branch" },
+				lualine_y = { {'FugitiveHead', icon = ''} },
 				lualine_z = { { "location", separator = "" }, needs_restart, "searchcount" },
 			},
 			inactive_sections = {
