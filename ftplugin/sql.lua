@@ -1,0 +1,1 @@
+vim.keymap.set('n', '<Leader>pw', ':CocCommand sql.Format<CR>', { buffer = true })

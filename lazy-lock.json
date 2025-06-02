@@ -2,7 +2,7 @@
   "Catppuccino.nvim": { "branch": "main", "commit": "38adf0ce9f8caffd54e99818c7bccc55b305b481" },
   "ale": { "branch": "master", "commit": "80ff84db84ba172bfcdee5e2748924bb2249134b" },
   "claude-code.nvim": { "branch": "main", "commit": "ffdf35d8566528cb144d9812eccfecee34502edf" },
-  "coc.nvim": { "branch": "master", "commit": "c0944667552139154ae958d0021da833da235439" },
+  "coc.nvim": { "branch": "master", "commit": "d425554a59f134a41e5de705f868c6d0a9da2df2" },
   "csv.vim": { "branch": "master", "commit": "b8eb7f67babce96168e7f6b93b2ba8328b72a390" },
   "denite.nvim": { "branch": "master", "commit": "055dd686c274a293dc4b7365be07c159148c31dd" },
   "editorconfig-vim": { "branch": "master", "commit": "6a58b7c11f79c0e1d0f20533b3f42f2a11490cf8" },
