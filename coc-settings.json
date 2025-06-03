@@ -12,9 +12,9 @@
   "diagnostic.displayByVimDiagnostic": true,
   // neovim runtime for a homebrew installation
   "Lua.workspace.library": [
-    "/opt/homebrew/share/nvim/runtime/lua",
-    "/opt/homebrew/share/nvim/runtime/lua/vim",
-    "/opt/homebrew/share/nvim/runtime/lua/vim/lsp"
+    "~/.local/share/bob/nightly/share/nvim/runtime/lua",
+    "~/.local/share/bob/nightly/share/nvim/runtime/lua/vim",
+    "~/.local/share/bob/nightly/share/nvim/runtime/lua/vim/lsp"
   ],
   "Lua.diagnostics.globals": [
     "vim"
