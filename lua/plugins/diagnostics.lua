@@ -240,8 +240,9 @@ setup()
 local M = {
 	{
 		"neoclide/coc.nvim",
-		branch = "master",
-		build = "pwd && npm ci --no-save",
+		branch = "release",
+		-- Build step is only needed if branch is `master`
+		-- build = "pwd && npm ci --no-save",
 	},
 	{
 		"w0rp/ale",
