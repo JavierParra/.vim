@@ -69,6 +69,7 @@ if vim.g.started_by_firenvim == true then
 					vim.opt.wrap = true
 					-- wrap on word boundaries
 					vim.opt.linebreak = true
+					vim.opt.guifont = "MesloLGS NF"
 				end
 			end,
 

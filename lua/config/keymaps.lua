@@ -125,8 +125,8 @@ local remaps = {
 		{
 			"<Leader>tw",
 			function()
-				toggle("wrap")
-				toggle("linebreak")
+				toggle("wrap")()
+				toggle("linebreak")()
 			end,
 		},
 

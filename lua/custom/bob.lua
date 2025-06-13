@@ -264,6 +264,9 @@ M.rollback_to_stable = function()
 		end
 
 		vim.system({ "cp", "-r", version_path(stable_version), version_path("nightly") }):wait()
+		-- When updating nightly, bob tries to make the rollback version and dies if it already exists.
+		-- yeaaaah bob only does this sometimes
+		-- vim.system({ "mv", version_path(stable_version), version_path("nightly") }):wait()
 		vim.system({ "bob", "use", stable_version }):wait()
 	else
 		-- Requested version is from nvim release. This is the easy part

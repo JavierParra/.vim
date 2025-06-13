@@ -12,11 +12,23 @@ local function visual_multi()
 end
 
 local function cwd()
+	if vim.g.started_by_firenvim == true then
+		return ""
+	end
 	return path_utils.normalize_to_home(vim.fn.getcwd())
 end
 
 local function relativeFile()
-	return path_utils.normalize_to_cwd(vim.fn.expand("%"))
+	local path = path_utils.normalize_to_cwd(vim.fn.expand("%"))
+
+	if vim.g.started_by_firenvim == true then
+		local site = path:match("([^_]+)_")
+		if site ~= nil then
+			return site
+		end
+	end
+
+	return path
 end
 
 local function needs_restart()
@@ -170,7 +182,12 @@ return {
 					{
 						function()
 							local coc_status = vim.g.coc_status
-							local char = vim.fn.strcharpart(coc_status, 1, 1)
+
+							if coc_status == nil then
+								return ""
+							end
+
+							local char = vim.fn.strcharpart(vim.g.coc_status, 1, 1)
 
 							if string.match(char, "%w") then
 								return ""
