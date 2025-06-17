@@ -51,6 +51,10 @@ local function configALE()
 			"eslint",
 			"prettier",
 		},
+		typescriptreact = {
+			"eslint",
+			"prettier",
+		},
 		javascript = {
 			"eslint",
 			"prettier",
@@ -62,6 +66,9 @@ local function configALE()
 
 	g.ale_linters = {
 		typescript = {
+			"eslint",
+		},
+		typescriptreact = {
 			"eslint",
 		},
 		javascript = {
