@@ -58,64 +58,64 @@ local remaps = {
 	-- Normal mode mappings
 	n = {
 		-- Split panel bindings
-		{ "<Leader><C-l>", cmd("belowright vsplit") },
-		{ "<Leader><C-h>", cmd("aboveleft vsplit") },
-		{ "<Leader><C-j>", cmd("belowright split") },
-		{ "<Leader><C-k>", cmd("aboveleft split") },
+		{ "<Leader><C-l>", "Split right", cmd("belowright vsplit") },
+		{ "<Leader><C-h>", "Split left", cmd("aboveleft vsplit") },
+		{ "<Leader><C-j>", "Split down", cmd("belowright split") },
+		{ "<Leader><C-k>", "Split up", cmd("aboveleft split") },
 
 		-- Create 'hard splits' with Alt + movement
-		{ "<Leader><M-l>", cmd("topright vsplit") },
-		{ "<Leader>™", cmd("topleft vsplit") },
-		{ "<Leader>¶", cmd("botright split") },
-		{ "<Leader>§", cmd("topleft split") },
+		{ "<Leader><M-l>", "", cmd("topright vsplit") },
+		{ "<Leader>™", "", cmd("topleft vsplit") },
+		{ "<Leader>¶", "", cmd("botright split") },
+		{ "<Leader>§", "", cmd("topleft split") },
 
 		-- Close split with leader and shift movement key
-		{ "<Leader><S-l>", cmd({ "wincmd l", "q" }) },
-		{ "<Leader><S-h>", cmd({ "wincmd h", "q" }) },
-		{ "<Leader><S-j>", cmd({ "wincmd j", "q" }) },
-		{ "<Leader><S-k>", cmd({ "wincmd k", "q" }) },
+		{ "<Leader><S-l>", "Close panel to the right", cmd({ "wincmd l", "q" }) },
+		{ "<Leader><S-h>", "Close panel to the left", cmd({ "wincmd h", "q" }) },
+		{ "<Leader><S-j>", "Close panel below", cmd({ "wincmd j", "q" }) },
+		{ "<Leader><S-k>", "Close panel above", cmd({ "wincmd k", "q" }) },
 
 		-- Toggle spellcheck
-		{ "<Leader>s", toggle("spell") },
+		{ "<Leader>s", "Toggle [S]pellcheck", toggle("spell") },
 
 		-- Move between split panels with leader + movement
-		{ "<Leader>h", "<C-w>h" },
-		{ "<Leader>j", "<C-w>j" },
-		{ "<Leader>k", "<C-w>k" },
-		{ "<Leader>l", "<C-w>l" },
+		{ "<Leader>l", "Move cursor to panel to the right", "<C-w>l" },
+		{ "<Leader>h", "Move cursor to panel to the left", "<C-w>h" },
+		{ "<Leader>j", "Move cursor to panel below", "<C-w>j" },
+		{ "<Leader>k", "Move cursor to panel above", "<C-w>k" },
 
 		-- Move between buffers with arrows
-		{ "<Left>", cmd("bprevious") },
-		{ "<Right>", cmd("bnext") },
+		{ "<Left>", "Previous buffer", cmd("bprevious") },
+		{ "<Right>", "Next buffer", cmd("bnext") },
 
 		-- Move between tabs with control and arrows
-		{ "<C-Left>", cmd("tabprevious") },
-		{ "<C-Right>", cmd("tabnext") },
+		{ "<C-Left>", "Previous tab", cmd("tabprevious") },
+		{ "<C-Right>", "Next tab", cmd("tabnext") },
 
 		-- NERDTree mappings
-		{ "<Leader>fb", cmd("NERDTreeToggle") },
-		{ "<Leader>ft", cmd("NERDTreeToggle") },
-		{ "<Leader>fo", cmd("NERDTreeFocus") },
-		{ "<Leader>fc", cmd("NERDTreeClose") },
-		{ "<Leader>ff", cmd("NERDTreeFind") },
+		{ "<Leader>ft", "[T]oggle [F]ile explorer", cmd("NERDTreeToggle") },
+		{ "<Leader>fo", "[O]pen [F]ile explorer", cmd("NERDTreeFocus") },
+		{ "<Leader>fc", "[C]lose [F]ile explorer", cmd("NERDTreeClose") },
+		{ "<Leader>ff", "[F]ind [F]ile in explorer", cmd("NERDTreeFind") },
 
 		-- Edit new file in the current directory
 		{
 			"<Leader>fN",
-			function()
-				cmd("edit " .. fn.expand("%:h") .. "/")()
-			end,
+			"Edit ([N]ew) [F]ile in current directory",
+			":edit " .. fn.expand("%:h") .. "/", -- expects input
 		},
 
 		-- Copy the current file's name/path
 		{
 			"<Leader>fn",
+			"Copy current [F]ile's [N]ame",
 			function()
 				fn.system("echo -n " .. fn.expand("%:t:r") .. " | pbcopy")
 			end,
 		},
 		{
 			"<Leader>fp",
+			"Copy current [F]ile's [P]ath",
 			function()
 				fn.system("echo " .. fn.expand("%") .. " | pbcopy")
 			end,
@@ -124,6 +124,7 @@ local remaps = {
 		-- Toggle wordwrap on word boundary
 		{
 			"<Leader>tw",
+			"[T]oggle [W]ordwrap",
 			function()
 				toggle("wrap")()
 				toggle("linebreak")()
@@ -131,129 +132,143 @@ local remaps = {
 		},
 
 		-- Use j and k to move by visual lines only if there's no count modifier
-		{ "j", "v:count ? 'j' : 'gj'", { expr = true } },
-		{ "k", "v:count ? 'k' : 'gk'", { expr = true } },
+		{ "j", "", "v:count ? 'j' : 'gj'", { expr = true } },
+		{ "k", "", "v:count ? 'k' : 'gk'", { expr = true } },
 
 		-- Clear search
-		{ "<Leader><Esc>", cmd("nohlsearch") },
+		{ "<Leader><Esc>", "Clear search", cmd("nohlsearch") },
 
 		-- Tab operations
 		{
 			"<Leader>te",
+			"[E]dit current file in new [T]ab",
 			function()
 				cmd("tabedit " .. fn.expand("%"))()
 			end,
 		},
-		{ "<Leader>tc", cmd("tabclose") },
+		{ "<Leader>tc", "[C]lose current [T]ab", cmd("tabclose") },
 
 		-- Saving operations
-		{ "<Leader>w", cmd("w") },
-		{ "<Leader>ww", cmd("w") },
-		{ "<Leader>wq", cmd({ "w", "Bdelete" }) },
+		{ "<Leader>w", "[W]rite file", cmd("w") },
+		{ "<Leader>ww", "[W]rite file", cmd("w") },
+		{ "<Leader>wq", "Write file and close buffer", cmd({ "w", "Bdelete" }) },
 
 		-- Buffer operations
-		{ "<Leader>q", cmd("Bdelete") },
-		{ "<Leader>Q", cmd("bdelete") },
-		{ "<Leader>bw", cmd("%bwipe") },
+		{ "<Leader>q", "Close buffer", cmd("Bdelete") },
+		{ "<Leader>Q", "Close buffer even with unsaved changes", cmd("bdelete") },
+		{ "<Leader>bw", "Close all ([W]ipe) [B]uffers", cmd("%bwipe") },
 
 		-- * stays in the same place
-		{ "*", "*``" },
+		{ "*", "", "*``" },
 
 		-- Scroll by 2 lines using shift + movement
-		{ "J", "2<C-e>" },
-		{ "K", "2<C-y>" },
+		{ "J", "Scroll down", "2<C-e>" },
+		{ "K", "Scroll up", "2<C-y>" },
 
 		-- Scroll horizontally
-		{ "L", "2z<Right>" },
-		{ "H", "2z<Left>" },
-
-		-- VimWiki
-		{ "<Leader>vww", "<Plug>VimwikiIndex" },
-		{ "<Leader>vws", "<Plug>VimwikiUISelect" },
+		{ "L", "Scroll right", "2z<Right>" },
+		{ "H", "Scroll left", "2z<Left>" },
 
 		-- Common foldlevels
-		{ "<Leader>zl0", set_fold(0) },
-		{ "<Leader>zl1", set_fold(1) },
-		{ "<Leader>zl2", set_fold(2) },
-		{ "<Leader>zl3", set_fold(3) },
-		{ "<Leader>zl4", set_fold(4) },
-		{ "<Leader>zl", ":setlocal foldlevel=" }, -- Expects input
+		{ "<Leader>zl0", "Close all folds", set_fold(0) },
+		{ "<Leader>zl1", "Fold level 1", set_fold(1) },
+		{ "<Leader>zl2", "Fold level 2", set_fold(2) },
+		{ "<Leader>zl3", "Fold level 3", set_fold(3) },
+		{ "<Leader>zl4", "Fold level 4", set_fold(4) },
+		{ "<Leader>zl", "Specify fold level", ":setlocal foldlevel=" }, -- Expects input
 
 		-- Fugitive
-		{ "<Leader>gs", cmd("Git") },
-		{ "<Leader>gb", cmd("Git blame") },
-		{ "<Leader>gp", cmd("Git pull") },
-		{ "<Leader>gd", cmd("Git diff") },
-		{ "<Leader>gc", ":Git checkout" }, -- Expects input
+		{ "<Leader>gs", "[G]it [S]tatus", cmd("Git") },
+		{ "<Leader>gb", "[G]it [B]lame", cmd("Git blame") },
+		{ "<Leader>gp", "[G]it [P]ull", cmd("Git pull") },
+		{ "<Leader>gd", "[G]it [D]iff", cmd("Git diff") },
+		{ "<Leader>gc", "[G]it [C]heckout", ":Git checkout" }, -- Expects input
 
 		-- Join the current line with the previous one
-		{ "<BS>", "kJ" },
+		{ "<BS>", "Join lines", "kJ" },
 
 		-- Disable ZZ
-		{ "ZZ", "<Nop>" },
+		{ "ZZ", "", "<Nop>" },
 
 		-- ALE navigation
-		{ "<Leader>en", function () vim.diagnostic.jump({ count = 1, wrap = false }) end },
-		{ "<Leader>ep", function () vim.diagnostic.jump({ count = -1, wrap = false }) end },
-		{ "<Leader>ed", cmd("ALEDetail") },
+		{
+			"<Leader>en",
+			"Go to [N]ext diagnostic [E]ror",
+			function()
+				vim.diagnostic.jump({ count = 1, wrap = false })
+			end,
+		},
+		{
+			"<Leader>ep",
+			"Go to [P]revious diagnostic [E]ror",
+			function()
+				vim.diagnostic.jump({ count = -1, wrap = false })
+			end,
+		},
+		{ "<Leader>ed", "Show [E]rror [D]etail", cmd("ALEDetail") },
 
 		-- Make marks more usable
-		{ "M", "m" },
-		{ "m", "'" },
+		{ "M", "Add mark", "m" },
+		{ "m", "Goto mark", "'" },
 
 		-- Telescope and ALE fix
-		{ "<C-]>", cmd("Telescope coc definitions") },
-		{ "<Leader>pw", cmd("ALEFix") },
+		{ "<C-]>", "Go to definition", cmd("Telescope coc definitions") },
+		{ "<Leader>pw", "Fix linting ([P]rettier [W]rite)", cmd("ALEFix") },
 
 		-- Open terminal
-		{ "<Leader><", cmd({ "botright split", "resize 20", "terminal zsh" }) },
+		{ "<Leader><", "Open terminal", cmd({ "botright split", "resize 20", "terminal zsh" }) },
 	},
 
 	-- Insert mode mappings
 	i = {
-		{ "jk", "<Esc>" },
+		{ "jk", "Leave insert mode", "<Esc>" },
 	},
 
 	-- Visual mode mappings
 	x = {
 		-- Scroll by 2 lines using shift + movement
-		{ "J", "2<C-e>" },
-		{ "K", "2<C-y>" },
+		{ "J", "Scroll down", "2<C-e>" },
+		{ "K", "Scroll up", "2<C-y>" },
 
 		-- Scroll horizontally
-		{ "L", "2z<Right>" },
-		{ "H", "2z<Left>" },
+		{ "L", "Scroll right", "2z<Right>" },
+		{ "H", "Scroll left", "2z<Left>" },
 
 		-- Format selection as json
-		{ "<Leader>jf", cmd("'<,'>!jq '.'") },
+		{ "<Leader>fj", "[F]ormat selection as [J]SON", cmd("'<,'>!jq '.'") },
 
 		-- Use j and k to move by visual lines only if there's no count modifier
-		{ "j", "v:count ? 'j' : 'gj'", { expr = true } },
-		{ "k", "v:count ? 'k' : 'gk'", { expr = true } },
+		{ "j", "", "v:count ? 'j' : 'gj'", { expr = true } },
+		{ "k", "", "v:count ? 'k' : 'gk'", { expr = true } },
 
 		-- View lines git history
-		{ "<Leader>gb", cmd("'<,'>Flogsplit") },
+		-- { "<Leader>gb", "Blame selected lines", cmd("'<,'>Flogsplit") },
 	},
 
 	-- Visual mode (only) mappings
 	v = {
 		-- Search for selected text
-		{ "*", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>" },
+		{ "*", "Search for selection", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>" },
 
 		-- Paste without yanking the deleted text (commented out as buggy)
-		-- { "p", "\"_dP" },
+		-- { "p", "", "\"_dP" },
 	},
 	--
 	-- Terminal mode
 	t = {
-		{ "<Esc>", "<C-\\><C-n>" }
-	}
+		{ "<Esc>", "Normal mode", "<C-\\><C-n>" },
+	},
 }
 
 -- Apply all the mappings
 for mode, mappings in pairs(remaps) do
 	for _, mapping in ipairs(mappings) do
-		local lhs, rhs, opts = mapping[1], mapping[2], mapping[3]
+		local lhs, desc, rhs = mapping[1], mapping[2], mapping[3]
+		local opts = { desc = desc }
+		-- Handle additional options if they exist in a 4th element
+		if mapping[4] then
+			opts = vim.tbl_extend("force", opts, mapping[4])
+		end
 		map(mode, lhs, rhs, opts)
 	end
 end

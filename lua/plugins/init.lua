@@ -20,14 +20,26 @@ return {
 	{ "euclio/vim-markdown-composer", enabled = false },
 	{ "patstockwell/vim-monokai-tasty", enabled = false },
 	"pantharshit00/vim-prisma",
-	{ "JavierParra/vim-prosession",
-		dependencies = "tpope/vim-obsession"
-	},
+	{ "JavierParra/vim-prosession", dependencies = "tpope/vim-obsession" },
 	"tpope/vim-repeat",
 	"sirosen/vim-rockstar",
 	-- "tpope/vim-rsi",
 	"tpope/vim-sleuth",
 	"tpope/vim-surround",
 	"dhruvasagar/vim-table-mode",
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
+	},
 	"nvim-lua/plenary.nvim",
 }
