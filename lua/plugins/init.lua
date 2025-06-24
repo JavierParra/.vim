@@ -29,6 +29,7 @@ return {
 	"dhruvasagar/vim-table-mode",
 	{
 		"folke/which-key.nvim",
+		enabled = false,
 		event = "VeryLazy",
 		opts = {},
 		keys = {
