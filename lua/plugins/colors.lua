@@ -51,22 +51,25 @@ local monokai = {
 
 return {
 
-	{ "JavierParra/Catppuccino.nvim",
+	{
+		"JavierParra/Catppuccino.nvim",
 		priority = 1000,
 		lazy = false,
 		config = function()
 			local catppuccino = require("catppuccino")
-			catppuccino.setup(
-				{
-					colorscheme = "catppuccino",
-					transparency = true,
-					integrations = {
-						coc = true,
-					},
+			catppuccino.setup({
+				colorscheme = "catppuccino",
+				transparency = true,
+				integrations = {
+					coc = true,
+					nvimtree = {
+						enabled = true,
+						show_root = true,
+					}
 				},
-				monokai
-			)
-			vim.cmd('colorscheme catppuccino')
-		end
+			}, monokai)
+			vim.cmd("colorscheme catppuccino")
+		end,
+		dev = true,
 	},
 }

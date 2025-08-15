@@ -4,7 +4,6 @@ return {
 	"editorconfig/editorconfig-vim",
 	"vito-c/jq.vim",
 	"Shougo/neomru.vim",
-	"scrooloose/nerdtree",
 	"norcalli/nvim-colorizer.lua",
 	{ "mfussenegger/nvim-dap", enabled = false },
 	"rcarriga/nvim-dap-ui",

@@ -66,27 +66,41 @@ local function first(...)
 	end
 end
 
-local function lsp_status()
-	local status, result = pcall(function(...)
-		local bufnr = vim.api.nvim_get_current_buf()
-		local clients = {}
-		if rawget(vim, "lsp") then
-			for _, client in ipairs(vim.lsp.get_active_clients()) do
-				if client.attached_buffers[bufnr] and client.name ~= "null-ls" then
-					table.insert(clients, client.name)
-				end
-			end
-			if #clients == 0 then
-				return ""
-			end
-			local str = table.concat(clients, " ")
-			return "  " .. str
-		end
-	end)
-	if not status then
-		return ""
+local function mode()
+	return vim.api.nvim_get_mode().mode
+end
+
+local function inVisual()
+	local m = mode()
+	if m:lower() == 'v' then
+		return true
 	end
-	return result
+
+	if m == '' then
+		return true
+	end
+
+	return false
+end
+
+local function selectioncount()
+	local cursorPos = vim.fn.getpos(".")
+	local visualPos = vim.fn.getpos("v")
+
+	local selection = vim.fn.getregion(cursorPos, visualPos, {
+		type = mode()
+	})
+
+	local chars = table.concat(selection, '\n')
+	local charLen = vim.fn.strcharlen(chars)
+	local byteLen = vim.fn.strlen(chars)
+	local byteCount = ''
+
+	if byteLen ~= charLen then
+		byteCount = string.format(' (%d)', byteLen)
+	end
+
+	return string.format("%d:%d%s", #selection, charLen, byteCount)
 end
 
 -- them colors
@@ -202,7 +216,21 @@ return {
 					},
 				},
 				lualine_y = { {'FugitiveHead', icon = ''} },
-				lualine_z = { { "location", separator = "" }, needs_restart, "searchcount" },
+				lualine_z = {
+					{ "location",
+						separator = "",
+						cond = function ()
+							return inVisual() == false
+						end
+					},
+					{
+						selectioncount,
+						separator = "",
+						cond = inVisual
+					},
+					needs_restart,
+					"searchcount"
+				},
 			},
 			inactive_sections = {
 				lualine_a = {},

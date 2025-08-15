@@ -186,6 +186,34 @@ local function format_bob_version(version)
 	return version_string
 end
 
+M.running_version = function()
+	return format_bob_version(bob_state.running_version)
+end
+
+M.installed_version = function()
+	return format_bob_version(bob_state.bob_version)
+end
+
+-- @returns string | nil
+M.tagged_version = function()
+	local path = tagged_version_file_path()
+
+	if vim.fn.filereadable(path) == 0 then
+		vim.notify("No version tagged as stable", vim.log.levels.ERROR)
+		return nil
+	end
+
+	---@type string[]
+	local lines = vim.fn.readfile(path)
+	local stable_version = lines[1]
+
+	if not stable_version then
+		return nil
+	end
+
+	return stable_version
+end
+
 -- Rolls back to latest version tagged as `stable`.
 -- There's a bug in `bob` that ignores `bob use` with nightly versions so we
 -- work around that if that's the case.
@@ -201,27 +229,18 @@ M.rollback_to_stable = function()
 		return
 	end
 
-	local path = tagged_version_file_path()
-
-	if vim.fn.filereadable(path) == 0 then
-		vim.notify("No version tagged as stable", vim.log.levels.ERROR)
-		return
-	end
-
-	---@type string[]
-	local lines = vim.fn.readfile(path)
-	local stable_version = lines[1]
+	local stable_version = M.tagged_version()
 
 	if not stable_version then
 		vim.notify("Tagged version file is empty", vim.log.levels.ERROR)
 		return
 	end
 
-	local installed_version = format_bob_version(bob_state.bob_version)
+	local installed_version = M.installed_version()
 	if installed_version == stable_version then
 		---@type string
 		local hint = ""
-		local running_version = format_bob_version(bob_state.running_version)
+		local running_version = M.running_version()
 		if running_version ~= installed_version then
 			hint = string.format("\nCurrent running version=%s differs. Restart needed.", running_version)
 		end

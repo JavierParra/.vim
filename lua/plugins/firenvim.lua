@@ -58,6 +58,15 @@ if vim.g.started_by_firenvim == true then
 					["^https?:\\/\\/excalidraw\\.com"] = {
 						takeover = "never",
 					},
+					["^https?:\\/\\/claude\\.ai"] = {
+						takeover = "never",
+					},
+					["^https?:\\/\\/app\\.datadoghq\\.com"] = {
+						takeover = "never",
+					},
+					["^https?:\\/\\/regex101\\.com"] = {
+						takeover = "never",
+					},
 				}
 			},
 			config = function(_, opts)
@@ -69,7 +78,8 @@ if vim.g.started_by_firenvim == true then
 					vim.opt.wrap = true
 					-- wrap on word boundaries
 					vim.opt.linebreak = true
-					vim.opt.guifont = "MesloLGS NF"
+					-- vim.opt.guifont = "MesloLGS Nerd Font"
+					vim.opt.guifont = "MesloLGS Nerd Font Mono"
 				end
 			end,
 

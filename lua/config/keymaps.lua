@@ -1,3 +1,7 @@
+local h = require("helpers")
+
+local cmd = h.cmd
+
 -- Helper functions for concise keymap definitions
 local function map(mode, lhs, rhs, opts)
 	local options = { noremap = true, silent = true }
@@ -7,35 +11,6 @@ local function map(mode, lhs, rhs, opts)
 	vim.keymap.set(mode, lhs, rhs, options)
 end
 
-local function is_array(var)
-	-- First check if it's a table
-	if type(var) ~= "table" then
-		return false
-	end
-
-	-- Check if it has sequential numeric keys
-	local count = 0
-	for _ in pairs(var) do
-		count = count + 1
-	end
-
-	-- If #var (length operator) equals the number of keys,
-	-- then it's an array with sequential keys
-	return count == #var
-end
-
--- Command helpers
-local cmd = function(command)
-	return function()
-		if is_array(command) then
-			for _, _cmd in pairs(command) do
-				vim.cmd(_cmd)
-			end
-		else
-			vim.cmd(command)
-		end
-	end
-end
 local fn = vim.fn
 local opt = vim.opt
 local opt_local = vim.opt_local
