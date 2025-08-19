@@ -50,6 +50,56 @@ local remaps = {
 		{ "<Leader><S-j>", "Close panel below", cmd({ "wincmd j", "q" }) },
 		{ "<Leader><S-k>", "Close panel above", cmd({ "wincmd k", "q" }) },
 
+		{ "<Leader>S", "Open Scratchpad",
+			function()
+				-- url pattern so vim doesn't try to parse the name as a file path
+				local scratch_name = "scratch://[scratch]"
+				local is_scratch = function (buf)
+					return vim.api.nvim_buf_get_name(buf) == scratch_name
+				end
+
+				-- If the current buffer is scratchpad, go back to previous buffer.
+				if is_scratch(vim.api.nvim_get_current_buf()) then
+					local alt = vim.fn.bufnr("#") -- alternate buffer
+					if alt > 0 and vim.api.nvim_buf_is_loaded(alt) then
+						vim.api.nvim_set_current_buf(alt)
+					else
+						vim.cmd("bprevious")
+					end
+					return
+				end
+
+				-- If the scratchpad is open in the current tab, jump to its window
+				for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+					local buf = vim.api.nvim_win_get_buf(win)
+					if is_scratch(buf) then
+						vim.api.nvim_set_current_win(win)
+						return
+					end
+				end
+
+				local scratchBuf = nil
+				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+					if vim.api.nvim_buf_is_loaded(buf)
+						 and is_scratch(buf) then
+							scratchBuf = buf
+						break
+					end
+				end
+
+				if scratchBuf == nil then
+					scratchBuf = vim.api.nvim_create_buf(false, true)
+					vim.api.nvim_buf_set_name(scratchBuf, scratch_name)
+					vim.api.nvim_set_option_value("filetype", "markdown", { buf = scratchBuf })
+					vim.api.nvim_set_option_value("buftype", "nofile", { buf = scratchBuf })
+					vim.api.nvim_set_option_value("bufhidden", "hide", { buf = scratchBuf })
+					vim.api.nvim_set_option_value("swapfile", false, { buf = scratchBuf })
+				end
+
+				vim.api.nvim_set_current_buf(scratchBuf)
+			end
+		},
+
 		-- Toggle spellcheck
 		{ "<Leader>s", "Toggle [S]pellcheck", toggle("spell") },
 

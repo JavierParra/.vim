@@ -21,15 +21,11 @@ local function on_attach(bufnr)
 	vim.keymap.set("n", "K", api.node.navigate.sibling.first, opts("First Sibling"))
 	vim.keymap.set("n", "p", api.node.navigate.parent, opts("Parent Directory"))
 	vim.keymap.set("n", "b", api.tree.toggle_no_buffer_filter, opts("Toggle Filter: No Buffer"))
-	vim.keymap.set("n", "o",
-		function()
-			api.node.open.no_window_picker(nil, { quit_on_open = true })
-		end,
-		opts("Open: No Window Picker")
-	)
+	vim.keymap.set("n", "o", function()
+		api.node.open.no_window_picker(nil, { quit_on_open = true })
+	end, opts("Open: No Window Picker"))
 	vim.keymap.set("n", "I", function()
-		api.tree.toggle_enable_filters()
-		api.live_filter.clear()
+		api.tree.toggle_gitignore_filter()
 	end, opts("Toggle filters"))
 	vim.keymap.set("n", "<CR>", function()
 		api.node.open.edit(nil, { quit_on_open = true })
@@ -65,7 +61,7 @@ local M = {
 				show_on_open_dirs = false,
 			},
 			view = {
-				preserve_window_proportions = true,
+				preserve_window_proportions = false,
 				float = {
 					enable = false,
 				},
