@@ -1,4 +1,5 @@
 local h = require("helpers")
+local path_utils = require("custom.path_utils")
 
 local function on_attach(bufnr)
 	local api = require("nvim-tree.api")
@@ -16,7 +17,27 @@ local function on_attach(bufnr)
 	vim.keymap.set("n", "mp", api.fs.paste, opts("Paste"))
 	vim.keymap.set("n", "md", api.fs.remove, opts("Delete"))
 	vim.keymap.set("n", "mm", api.fs.rename_full, opts("Move"))
-	vim.keymap.set("n", "mr", api.fs.rename_basename, opts("Move"))
+	vim.keymap.set("n", "mr", api.fs.rename_basename, opts("Rename"))
+	vim.keymap.set("n", "m/", function(filename)
+		local node = api.tree.get_node_under_cursor()
+
+		if node.type == "file" and node.parent then
+			node = node.parent
+		end
+
+		local path = node.absolute_path
+
+		if node.type ~= "directory" or not path then
+			vim.notify('Cannot search ' .. node.type .. ' ' .. path)
+			return
+		end
+
+		local ppath = path_utils.normalize_to_cwd(path)
+		require("telescope.builtin").live_grep({
+			prompt_title = "Live Grep in " .. ppath,
+			cwd = path,
+		})
+	end, opts "Grep here")
 	vim.keymap.set("n", "J", api.node.navigate.sibling.last, opts("Last Sibling"))
 	vim.keymap.set("n", "K", api.node.navigate.sibling.first, opts("First Sibling"))
 	vim.keymap.set("n", "p", api.node.navigate.parent, opts("Parent Directory"))
