@@ -104,6 +104,7 @@ local M = {
 		ensure_installed = {
 			"stylua",
 			"prettier",
+			"biome"
 		},
 	},
 

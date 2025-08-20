@@ -1,5 +1,6 @@
 local M = {
 	"folke/noice.nvim",
+	enabled = true,
 	opts = {
 		-- Suggested options
 		lsp = {

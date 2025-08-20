@@ -48,14 +48,17 @@ local function configALE()
 
 	g.ale_fixers = {
 		typescript = {
+			"biome",
 			"eslint",
 			"prettier",
 		},
 		typescriptreact = {
+			"biome",
 			"eslint",
 			"prettier",
 		},
 		javascript = {
+			"biome",
 			"eslint",
 			"prettier",
 		},
@@ -118,6 +121,8 @@ local function configCoc()
 			vim.fn.CocActionAsync("doHover")
 		end
 	end
+
+	vim.g.coc_global_extensions = { "coc-json", "coc-biome", "coc-lua", "coc-snippets", "coc-tsserver" }
 
 	setKey("i", "<TAB>", tabKey, { expr = true, silent = true, noremap = true })
 

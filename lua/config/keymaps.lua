@@ -32,6 +32,11 @@ end
 local remaps = {
 	-- Normal mode mappings
 	n = {
+		-- test
+		{ "<Leader><CR>", "Test a thing", function()
+			require('custom.breadcrumbs').open_crumbs()
+			-- cmd('messages')()
+		end},
 		-- Split panel bindings
 		{ "<Leader><C-l>", "Split right", cmd("belowright vsplit") },
 		{ "<Leader><C-h>", "Split left", cmd("aboveleft vsplit") },

@@ -1,5 +1,19 @@
 local M = {}
 
+--- @param captures { capture: string, lang: string }[]
+--- @return string[]
+local function captures_to_hl_groups(captures)
+	local groups = {}
+
+	for _, cap in pairs(captures) do
+		local group = '@'.. cap.capture .. (cap.lang and '.' .. cap.lang or '')
+		table.insert(groups, group)
+	end
+
+	return groups
+end
+
+--- @returns { [1]: string, captures: table, hl_groups: string[]}[]
 M.build_crumbs = function(debug)
 	local node = vim.treesitter.get_node()
 	local last_node = nil
@@ -8,22 +22,58 @@ M.build_crumbs = function(debug)
 	local i = 0
 	local stuff = {
 		method_definition = true,
-		class_declaraton = true,
+		class_declaration = true,
 		function_declaration = true,
 	}
 
 	--- @param node TSNode
+	--- @param bfr integer
+	--- @param res { [1]: string, captures: table, hl_groups: string[]}[] | nil
+	local function descend(node, bfr, res)
+		local result = res or {}
+
+		if node:child_count() == 0 then
+			local row, col = node:start()
+			local captures = vim.treesitter.get_captures_at_pos(bfr, row, col)
+
+			table.insert(result, {
+				vim.treesitter.get_node_text(node, bfr),
+				captures = captures,
+				hl_groups = captures_to_hl_groups(captures),
+			})
+			return result
+		end
+
+		for child, field in node:iter_children() do
+			descend(child, bfr, result)
+		end
+
+		return result
+	end
+
+	--- @param node TSNode
+	--- @returns { [1]: string, captures: table, hl_groups: string[]}[]
 	local push_crumb = function(node, prefix, suffix)
 		local bfr = 0
-		local text =  (prefix or '') .. vim.treesitter.get_node_text(node, bfr) .. (suffix or '')
-		local row, col = node:start()
-		local captures = vim.treesitter.get_captures_at_pos(bfr, row, col)
+		local res = descend(node, bfr)
 
-		table.insert(crumbs, 1, {
-			text,
-			pos = { row, col },
-			captures = captures,
-		})
+		if prefix then
+			table.insert(res, 1, {
+				prefix,
+				captures = {},
+				hl_groups = {},
+			})
+		end
+
+		if suffix then
+			table.insert(res, {
+				suffix,
+				captures = {},
+				hl_groups = {},
+			})
+		end
+
+		table.insert(crumbs, 1, res)
 	end
 
 	while node do
@@ -35,7 +85,6 @@ M.build_crumbs = function(debug)
 		end
 
 		if stuff[type] then
-			-- vim.treesitter.get_node_text(node, 0)
 			local name_node = node:field('name')[1]
 
 			if name_node then
@@ -111,62 +160,104 @@ M.build_crumbs = function(debug)
 	return crumbs
 end
 
+--- @param crumbs { [1]: string, captures: table, hl_groups: string[]}[] | nil
+--- @param win integer
+local function print_crumbs(crumbs, buf, win)
+	vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
+
+	if not crumbs then
+		return
+	end
+
+	local col = 0
+	local ns = vim.api.nvim_create_namespace('breadcrumbs')
+	local crumbs_length = #crumbs
+
+
+	for i, crumb in pairs(crumbs) do
+		for _, part in pairs(crumb) do
+			local txt = part[1]
+			local len = vim.fn.strlen(txt)
+
+			vim.api.nvim_buf_set_text(
+				buf,
+				0,
+				col,
+				0,
+				col,
+				{ txt }
+			)
+
+			-- vim.api.nvim_buf_set_extmark(buf, ns, 0, col, {
+			vim.api.nvim_buf_set_extmark(buf, ns, 0, col, {
+				end_row = 0,
+				end_col = col + len,
+				hl_group = part.hl_groups,
+			})
+			col = col + len
+		end
+
+		local sep = '  '
+		if i < crumbs_length then
+			vim.api.nvim_buf_set_text(
+				buf,
+				0,
+				col,
+				0,
+				col,
+				{ sep }
+			)
+
+			col = col + vim.fn.strlen(sep)
+		end
+	end
+end
+
+M.win = nil
+M.augr = nil
+
 M.open_crumbs = function (win)
+	if M.augr then
+		vim.api.nvim_clear_autocmds({
+			group = M.augr
+		})
+	end
+	if M.win then
+		vim.api.nvim_win_close(M.win, true)
+		M.win = nil
+		return
+	end
 	local crumbs = M.build_crumbs()
--- end
--- local function s()
+	if not crumbs then
+		return
+	end
 	local buf = vim.api.nvim_create_buf(false, true)
-	local win_height = vim.api.nvim_win_get_width(win or 0)
 	local win_width = vim.api.nvim_win_get_width(win or 0)
 	local float_height = 1
 	local float_width = win_width - 1
 
 	local opts = {
-		relative = 'win',
-		win = win or 0,
-		width = float_width,
+		relative = 'laststatus',
+		width = vim.o.columns,
 		height = float_height,
-		-- row = win_height - float_height - 2,
-		row = 1,
+		row = 0,
+		anchor = 'SW',
 		col = 1,
 		style = 'minimal',
 	}
 	local float = vim.api.nvim_open_win(buf, false, opts)
 
-	local col = 0
-	local ns = vim.api.nvim_create_namespace('breadcrumbs')
+	M.win = float
 
-	-- vim.api.nvim_buf_set_option(buf, 'filetype', lang)
-	for _, crumb in pairs(crumbs) do
-		local txt = crumb[1]
-		local len = #txt
+	M.augr = vim.api.nvim_create_augroup('breadcrumbs', { clear = true })
+	vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
+			group = M.augr, callback = function()
+			print_crumbs(M.build_crumbs(false), buf, float)
+		end,
+		-- buffer = 0,
+	})
 
-		vim.api.nvim_buf_set_text(
-			buf,
-			0,
-			col,
-			0,
-			col,
-			{ txt .. ' ' }
-		)
-
-		local groups = {}
-
-		for _, cap in pairs(crumb.captures) do
-			local group = '@'.. cap.capture .. (cap.lang and '.' .. cap.lang or '')
-			table.insert(groups, group)
-		end
-
-		-- vim.api.nvim_buf_set_extmark(buf, ns, 0, col, {
-		vim.api.nvim_buf_set_extmark(buf, ns, 0, col, {
-			end_row = 0,
-			end_col = col + len,
-			hl_group = groups,
-		})
-		col = col + len + 1
-
-	end
-
+	print_crumbs(crumbs, buf, float)
 end
 
 return M

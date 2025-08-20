@@ -1,5 +1,4 @@
 {
-  "Catppuccino.nvim": { "branch": "main", "commit": "7ed3aa1c8a1eea20f2f3a0343ae09c2cba1e0004" },
   "ale": { "branch": "master", "commit": "b415dddf9f7658ddaaa660785df5c96c02517452" },
   "coc.nvim": { "branch": "release", "commit": "5e34cdeff4d6b77eccb07b2f63f30e811ea125dc" },
   "csv.vim": { "branch": "master", "commit": "b8eb7f67babce96168e7f6b93b2ba8328b72a390" },
@@ -9,6 +8,7 @@
   "hop.nvim": { "branch": "master", "commit": "2254e0b3c8054b9ee661c9be3cb201d4b3384d8e" },
   "jq.vim": { "branch": "master", "commit": "e5c2f21f28d7f343c4630c7af819afa7043e43ad" },
   "lazy.nvim": { "branch": "main", "commit": "6c3bda4aca61a13a9c63f1c1d1b16b9d3be90d7a" },
+  "lazydev.nvim": { "branch": "main", "commit": "2367a6c0a01eb9edb0464731cc0fb61ed9ab9d2c" },
   "lualine.nvim": { "branch": "master", "commit": "b8c23159c0161f4b89196f74ee3a6d02cdc3a955" },
   "mason.nvim": { "branch": "main", "commit": "7dc4facca9702f95353d5a1f87daf23d78e31c2a" },
   "neomru.vim": { "branch": "master", "commit": "d9b92f73f7d9158e803d72f2baeb7da9ea30040e" },
