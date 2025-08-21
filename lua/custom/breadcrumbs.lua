@@ -1,8 +1,9 @@
 local M = {}
 
 --- @alias crumbs { [1]: string, captures: table, hl_groups: string[]}[]
---- @alias push_crumb fun(node: TSNode, prefix?: string, suffix?: string)
---- @alias processor fun(push_crumb: push_crumb): fun(node: TSNode)
+--- @alias push_crumb fun(nodes: (TSNode | string)[])
+--- @alias processor fun(push_crumb: push_crumb, bfr: number): fun(node: TSNode)
+--- @alias crumb { [1]: string, captures: table, hl_groups: string[]}[]
 
 --- @param captures { capture: string, lang: string }[]
 --- @return string[]
@@ -19,23 +20,35 @@ end
 
 --- @type processor
 local function json_processor(push_crumb)
+	--- @type TSNode | nil
+	local last_node = nil
+
+	--- @param node TSNode
 	return function(node)
 		local type = node:type()
+
+		if type == "array" then
+			local found = nil
+			if last_node then
+				for index, value in ipairs(node:named_children()) do
+					if value:equal(last_node) then
+						push_crumb({ "[" .. (index - 1) .. "]" })
+						break
+					end
+				end
+			end
+		end
 
 		if type == "pair" then
 			local key_node = node:field("key")[1]
 			local value_node = node:field("value")[1]
 			local suffix = nil
 
-			if value_node and value_node:type() == "array" then
-				suffix = " []"
-			end
-
 			if key_node then
-				-- table.insert(crumbs, 1, '<'..vim.treesitter.get_node_text(name_node, 0)..' />')
-				push_crumb(key_node, nil, suffix)
+				push_crumb({ key_node })
 			end
 		end
+		last_node = node
 	end
 end
 
@@ -58,7 +71,7 @@ local function lua_processor(push_crumb)
 			if type == "return_statement" and last == "expression_list" then
 				local child = node:child(0)
 				if child and child:type() == "return" then
-					push_crumb(child)
+					push_crumb({ child })
 				end
 			end
 
@@ -68,7 +81,7 @@ local function lua_processor(push_crumb)
 					local name_node = child:field("name")[1]
 
 					if name_node then
-						push_crumb(name_node)
+						push_crumb({ name_node })
 					end
 				end
 			end
@@ -78,7 +91,7 @@ local function lua_processor(push_crumb)
 			local name_node = node:field("name")[1]
 
 			if name_node then
-				push_crumb(name_node)
+				push_crumb({ name_node })
 			end
 		end
 
@@ -89,13 +102,17 @@ local function lua_processor(push_crumb)
 end
 
 --- @type processor
-local function typescript_processor(push_crumb)
+local function typescript_processor(push_crumb, bfr)
 	--- @type TSNode | nil
 	local last_node = nil
 	local stuff = {
 		method_definition = true,
 		class_declaration = true,
 		function_declaration = true,
+	}
+	local test_functions = {
+		it = true,
+		describe = true,
 	}
 
 	return function(node)
@@ -106,12 +123,14 @@ local function typescript_processor(push_crumb)
 
 			if name_node then
 				local prev_sibling = name_node:prev_sibling()
+				local to_push = {}
 				if prev_sibling and (prev_sibling:type() == "get" or prev_sibling:type() == "set") then
 					-- table.insert(crumbs, 1, '['.. prev_sibling:type() ..']')
-					push_crumb(prev_sibling, "[", "]")
+					to_push = { prev_sibling, " " }
 				end
-				-- table.insert(crumbs, 1, vim.treesitter.get_node_text(name_node, 0))
-				push_crumb(name_node)
+
+				table.insert(to_push, name_node)
+				push_crumb(to_push)
 			end
 		end
 
@@ -122,7 +141,7 @@ local function typescript_processor(push_crumb)
 			if value_node and value_node:type() == "arrow_function" then
 				if name_node then
 					-- table.insert(crumbs, 1, vim.treesitter.get_node_text(name_node, 0))
-					push_crumb(name_node)
+					push_crumb({ name_node })
 				end
 			end
 		end
@@ -136,8 +155,20 @@ local function typescript_processor(push_crumb)
 			then
 				local function_node = node:parent():field("function")[1]
 				if function_node then
-					-- table.insert(crumbs, 1, vim.treesitter.get_node_text(function_node, 0) ..'()')
-					push_crumb(function_node, nil, "()")
+					local func_name = vim.treesitter.get_node_text(function_node, bfr)
+					local to_push = nil
+
+					-- Special case to print the description of the test case in jest tests
+					if test_functions[func_name] then
+						local args_node = node:parent():field("arguments")[1]
+						local first_arg = args_node and args_node:named_child(0)
+
+						if first_arg and first_arg:type() == "string" then
+							to_push = { function_node, "(", first_arg, ")" }
+						end
+					end
+
+					push_crumb(to_push or { function_node, "()" })
 				end
 			end
 		end
@@ -147,7 +178,7 @@ local function typescript_processor(push_crumb)
 
 			if name_node then
 				-- table.insert(crumbs, 1, '<'..vim.treesitter.get_node_text(name_node, 0)..' />')
-				push_crumb(name_node, "<", " />")
+				push_crumb({ "<", name_node, " />" })
 			end
 		end
 
@@ -157,7 +188,7 @@ local function typescript_processor(push_crumb)
 
 			if name_node then
 				-- table.insert(crumbs, 1, '<'..vim.treesitter.get_node_text(name_node, 0)..'>')
-				push_crumb(name_node, "<", ">")
+				push_crumb({ "<", name_node, ">" })
 			end
 		end
 
@@ -190,7 +221,7 @@ local function get_processor(lang)
 	return nil
 end
 
---- @returns { [1]: string, captures: table, hl_groups: string[]}[]
+--- @returns crumb
 M.build_crumbs = function(debug)
 	local node = vim.treesitter.get_node()
 	local last_node = nil
@@ -198,12 +229,13 @@ M.build_crumbs = function(debug)
 	local crumbs = {}
 	local i = 0
 	local lang = vim.api.nvim_get_option_value("filetype", { buf = 0 })
+	local bfr = 0
 
 	--- @type push_crumb
-	local push_crumb = function(node, prefix, suffix)
+	local push_crumb = function(nodes)
 		--- @param node TSNode
 		--- @param bfr integer
-		--- @param res { [1]: string, captures: table, hl_groups: string[]}[] | nil
+		--- @param res crumb | nil
 		local function descend(node, bfr, res)
 			local result = res or {}
 
@@ -226,23 +258,24 @@ M.build_crumbs = function(debug)
 			return result
 		end
 
-		local bfr = 0
-		local res = descend(node, bfr)
+		--- @type crumb
+		local res = {}
 
-		if prefix then
-			table.insert(res, 1, {
-				prefix,
-				captures = {},
-				hl_groups = {},
-			})
-		end
-
-		if suffix then
-			table.insert(res, {
-				suffix,
-				captures = {},
-				hl_groups = {},
-			})
+		for _, node in pairs(nodes) do
+			if type(node) == "string" then
+				table.insert(res, {
+					node,
+					captures = {},
+					hl_groups = {},
+				})
+			else
+				local crbs = descend(node, bfr)
+				if crbs then
+					for _, crb in pairs(crbs) do
+						table.insert(res, crb)
+					end
+				end
+			end
 		end
 
 		table.insert(crumbs, 1, res)
@@ -254,7 +287,7 @@ M.build_crumbs = function(debug)
 		return
 	end
 
-	local process_node = processor(push_crumb)
+	local process_node = processor(push_crumb, bfr)
 
 	while node do
 		if debug then
