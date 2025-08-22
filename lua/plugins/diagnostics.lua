@@ -47,6 +47,7 @@ local function configALE()
 	g.ale_virtualtext_cursor = "disabled" -- Disable ALE's virtual text
 
 	g.ale_fixers = {
+		["*"] = { "remove_trailing_lines", "trim_whitespace" },
 		typescript = {
 			"biome",
 			"eslint",
@@ -61,6 +62,12 @@ local function configALE()
 			"biome",
 			"eslint",
 			"prettier",
+		},
+		jsonc = {
+			"biome",
+		},
+		json = {
+			"biome",
 		},
 		lua = {
 			"stylua",

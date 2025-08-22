@@ -408,6 +408,16 @@ M.open_crumbs = function(win)
 	vim.api.nvim_create_autocmd({ "CursorMoved" }, {
 		group = M.augr,
 		callback = function()
+			local float_y = vim.api.nvim_win_get_position(float)[1]
+			local win_y = vim.api.nvim_win_get_position(0)[1]
+			local cursor_win_line = vim.fn.winline()
+			local cursor_screen_row = win_y + cursor_win_line
+
+			-- If the cursor is where our float window is drawn, scroll by 1 line
+			if cursor_screen_row == float_y then
+					vim.fn.winrestview({topline = vim.fn.winsaveview().topline + 1})
+			end
+
 			print_crumbs(M.build_crumbs(false), buf, float)
 		end,
 	})
