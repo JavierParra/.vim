@@ -243,7 +243,8 @@ local remaps = {
 
 		-- Telescope and ALE fix
 		{ "<C-]>", "Go to definition", cmd("Telescope coc definitions") },
-		{ "<Leader>pw", "Fix linting ([P]rettier [W]rite)", cmd("ALEFix") },
+		-- { "<Leader>pw", "Fix linting ([P]rettier [W]rite)", cmd("ALEFix") },
+		{ "<Leader>pw", "Fix linting ([P]rettier [W]rite)", cmd("call CocActionAsync('format')") },
 
 		-- Open terminal
 		{ "<Leader><", "Open terminal", cmd({ "botright split", "resize 20", "terminal zsh" }) },

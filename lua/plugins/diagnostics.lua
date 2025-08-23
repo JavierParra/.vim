@@ -129,7 +129,15 @@ local function configCoc()
 		end
 	end
 
-	vim.g.coc_global_extensions = { "coc-json", "coc-biome", "coc-lua", "coc-snippets", "coc-tsserver" }
+	vim.g.coc_global_extensions = {
+		"coc-json",
+		-- "coc-biome",
+		"coc-eslint",
+		"coc-prettier",
+		"coc-lua",
+		"coc-snippets",
+		"coc-tsserver"
+	}
 
 	setKey("i", "<TAB>", tabKey, { expr = true, silent = true, noremap = true })
 
@@ -265,6 +273,7 @@ local M = {
 	},
 	{
 		"w0rp/ale",
+		enabled = false,
 	},
 }
 
