@@ -1,3 +1,4 @@
+local helpers = require('helpers')
 local M = {}
 
 --- @alias crumbs { [1]: string, captures: table, hl_groups: string[]}[]
@@ -148,10 +149,10 @@ local function typescript_processor(push_crumb, bfr)
 
 		if type == "arguments" then
 			if
-				last_node
-				and last_node:type() == "arrow_function"
-				and node:parent()
-				and node:parent():type() == "call_expression"
+					last_node
+					and last_node:type() == "arrow_function"
+					and node:parent()
+					and node:parent():type() == "call_expression"
 			then
 				local function_node = node:parent():field("function")[1]
 				if function_node then
@@ -200,12 +201,12 @@ end
 local function get_processor(lang)
 	-- TODO have a map or something
 	if
-		lang == "typescript"
-		or lang == "javascript"
-		or lang == "typescriptreact"
-		or lang == "javascriptreact"
-		or lang == "tsx"
-		or lang == "jsx"
+			lang == "typescript"
+			or lang == "javascript"
+			or lang == "typescriptreact"
+			or lang == "javascriptreact"
+			or lang == "tsx"
+			or lang == "jsx"
 	then
 		return typescript_processor
 	end
@@ -314,6 +315,9 @@ end
 M.win = nil
 M.augr = nil
 
+--- @type function | nil
+local cancel_timer = nil
+
 local is_loaded = function()
 	return M.win ~= nil or M.augr ~= nil
 end
@@ -367,6 +371,12 @@ M.unload = function()
 	if M.win and vim.api.nvim_win_is_valid(M.win) then
 		vim.api.nvim_win_close(M.win, true)
 	end
+
+	if cancel_timer then
+		cancel_timer()
+		cancel_timer = nil
+	end
+
 	M.augr = nil
 	M.win = nil
 end
@@ -405,9 +415,25 @@ M.open_crumbs = function(win)
 	M.win = float
 
 	M.augr = vim.api.nvim_create_augroup("breadcrumbs", { clear = true })
+
+	local on_cursor_moved = function()
+		print_crumbs(M.build_crumbs(false), buf, float)
+	end
+
+	local throttled_on_cursor_moved, cancel_cursor_moved = helpers.throttle(
+		on_cursor_moved,
+		200,
+		{
+			leading = false,
+			trailing = true
+		}
+	)
+	cancel_timer = cancel_cursor_moved
+
 	vim.api.nvim_create_autocmd({ "CursorMoved" }, {
 		group = M.augr,
 		callback = function()
+			throttled_on_cursor_moved()
 			local float_y = vim.api.nvim_win_get_position(float)[1]
 			local win_y = vim.api.nvim_win_get_position(0)[1]
 			local cursor_win_line = vim.fn.winline()
@@ -415,17 +441,14 @@ M.open_crumbs = function(win)
 
 			-- If the cursor is where our float window is drawn, scroll by 1 line
 			if cursor_screen_row == float_y then
-					vim.fn.winrestview({topline = vim.fn.winsaveview().topline + 1})
+				vim.fn.winrestview({ topline = vim.fn.winsaveview().topline + 1 })
 			end
-
-			print_crumbs(M.build_crumbs(false), buf, float)
-		end,
+		end
 	})
 
 	vim.api.nvim_create_autocmd({ "BufUnload" }, {
 		group = M.augr,
 		callback = function()
-			print("will unload")
 			M.unload()
 		end,
 		buffer = buf,
