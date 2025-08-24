@@ -56,6 +56,7 @@ local function on_attach(bufnr)
 		api.node.open.preview_no_picker(nil, { focus = true })
 	end, opts("Open Preview"))
 
+	vim.keymap.set("n", "q", api.tree.close, opts("Close the browser"))
 	vim.keymap.set("n", "<BS>", api.node.navigate.parent_close, opts("Close Directory"))
 	vim.keymap.set("n", "E", api.tree.expand_all, opts("Expand Directory"))
 	vim.keymap.set("n", "F", api.live_filter.clear, opts("Live Filter: Clear"))
