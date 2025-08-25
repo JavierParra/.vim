@@ -42,4 +42,16 @@ return {
 		},
 	},
 	"nvim-lua/plenary.nvim",
+	{
+		"JavierParra/nvim-breadcrumbs",
+		keys = {
+			{
+				"<Leader>bc",
+				function()
+					require('nvim-breadcrumbs').toggle()
+				end
+			}
+		},
+		dev = true,
+	},
 }
