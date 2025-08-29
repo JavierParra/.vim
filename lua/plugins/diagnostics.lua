@@ -49,17 +49,14 @@ local function configALE()
 	g.ale_fixers = {
 		["*"] = { "remove_trailing_lines", "trim_whitespace" },
 		typescript = {
-			"biome",
 			"eslint",
 			"prettier",
 		},
 		typescriptreact = {
-			"biome",
 			"eslint",
 			"prettier",
 		},
 		javascript = {
-			"biome",
 			"eslint",
 			"prettier",
 		},
@@ -76,13 +73,13 @@ local function configALE()
 
 	g.ale_linters = {
 		typescript = {
-			"eslint",
+			-- "eslint",
 		},
 		typescriptreact = {
-			"eslint",
+			-- "eslint",
 		},
 		javascript = {
-			"eslint",
+			-- "eslint",
 		},
 	}
 
@@ -273,7 +270,7 @@ local M = {
 	},
 	{
 		"w0rp/ale",
-		enabled = false,
+		enabled = true,
 	},
 }
 

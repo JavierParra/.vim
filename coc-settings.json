@@ -1,6 +1,6 @@
 {
 	"coc.preferences.messageLevel": "more",
-	"coc.preferences.messageDialogKind": "notification",
+	"coc.preferences.messageDialogKind": "menu",
 	"diagnostic.enableMessage": "always",
 	"tsserver.locale": "en",
 	"diagnostic.level": "warning",
