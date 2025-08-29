@@ -50,6 +50,45 @@ return {
 				function()
 					require('nvim-breadcrumbs').toggle()
 				end
+			},
+			{
+				"<Leader>bp",
+				function()
+					require('nvim-breadcrumbs').parent()
+				end
+			}
+		},
+		opts = {
+			processors = {
+				prisma = function()
+					return function (push_crumb)
+						--- @param node TSNode
+						return function (node)
+							local type = node:type()
+							if type == 'model_declaration' then
+								local first_child = node:child(0)
+								local name_node = node:named_child(0)
+								local nodes = {}
+
+								if first_child and first_child:type() == 'model' then
+									table.insert(nodes, first_child)
+									table.insert(nodes, ' ')
+								end
+								if name_node and name_node:type() == 'identifier' then
+									table.insert(nodes, name_node)
+									push_crumb(nodes)
+								end
+							end
+
+							if type == 'column_declaration' then
+								local name_node = node:named_child(0)
+								if name_node and name_node:type() == 'identifier' then
+									push_crumb({ name_node })
+								end
+							end
+						end
+					end
+				end
 			}
 		},
 		dev = true,
