@@ -59,6 +59,7 @@ return {
 			}
 		},
 		opts = {
+			debug = true,
 			processors = {
 				prisma = function()
 					return function (push_crumb)

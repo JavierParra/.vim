@@ -1,5 +1,5 @@
 local spec = {
-	'glacambre/firenvim',
+	"glacambre/firenvim",
 	build = ":call firenvim#install(0)",
 	-- firenvim needs to be eager so it's available when the browser plugin
 	-- probes for it.
@@ -9,16 +9,18 @@ local spec = {
 
 if vim.g.started_by_firenvim == true then
 	spec = {
-		{"vim-airline/vim-airline", cond = false },
-		{"folke/noice.nvim", cond = false },
+		{ "vim-airline/vim-airline", cond = false },
+		-- Noice should load because we set cmdline to 'none'
+		{ "folke/noice.nvim", cond = true },
 		vim.tbl_extend("force", spec, {
 			lazy = false, -- must load at start in browser
-			init = function ()
+			init = function()
 				vim.opt.showtabline = 0
 			end,
 			opts = {
 				globalSettings = {
-					alt = 'all',
+					-- alt = "all",
+					cmdline = "none",
 				},
 				localSettings = {
 					["^https?:\\/\\/(www\\.)?notion\\.so\\/"] = {
@@ -67,7 +69,13 @@ if vim.g.started_by_firenvim == true then
 					["^https?:\\/\\/regex101\\.com"] = {
 						takeover = "never",
 					},
-				}
+					["^https?:\\/\\/linear\\.app"] = {
+						takeover = "never",
+					},
+					["^https?:\\/\\/metabase\\.internal\\.gamma\\.app"] = {
+						takeover = "never",
+					},
+				},
 			},
 			config = function(_, opts)
 				if type(opts) == "table" and (opts.localSettings or opts.globalSettings) then
@@ -88,11 +96,11 @@ if vim.g.started_by_firenvim == true then
 				{ "<leader>q", "<cmd>q!<CR>" },
 				{ "<leader>wq", "<cmd>wq!<CR>" },
 
-				{ "<M-{>", "{", mode="i" },
-				{ "<M-}>", "}", mode="i" },
-				{ "<M-[>", "[", mode="i" },
-				{ "<M-]>", "]", mode="i" },
-				{ "<M-Bar>", "|", mode="i" },
+				-- { "<M-{>", "{", mode = "i" },
+				-- { "<M-}>", "}", mode = "i" },
+				-- { "<M-[>", "[", mode = "i" },
+				-- { "<M-]>", "]", mode = "i" },
+				-- { "<M-Bar>", "|", mode = "i" },
 			},
 		}),
 	}

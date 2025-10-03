@@ -32,6 +32,7 @@ end
 local remaps = {
 	-- Normal mode mappings
 	n = {
+		{ "t", "[T]o register", '"' },
 		-- Split panel bindings
 		{ "<Leader><C-l>", "Split right", cmd("belowright vsplit") },
 		{ "<Leader><C-h>", "Split left", cmd("aboveleft vsplit") },
@@ -50,11 +51,13 @@ local remaps = {
 		{ "<Leader><S-j>", "Close panel below", cmd({ "wincmd j", "q" }) },
 		{ "<Leader><S-k>", "Close panel above", cmd({ "wincmd k", "q" }) },
 
-		{ "<Leader>S", "Open Scratchpad",
+		{
+			"<Leader>S",
+			"Open Scratchpad",
 			function()
 				-- url pattern so vim doesn't try to parse the name as a file path
 				local scratch_name = "scratch://[scratch]"
-				local is_scratch = function (buf)
+				local is_scratch = function(buf)
 					return vim.api.nvim_buf_get_name(buf) == scratch_name
 				end
 
@@ -80,9 +83,8 @@ local remaps = {
 
 				local scratchBuf = nil
 				for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-					if vim.api.nvim_buf_is_loaded(buf)
-						 and is_scratch(buf) then
-							scratchBuf = buf
+					if vim.api.nvim_buf_is_loaded(buf) and is_scratch(buf) then
+						scratchBuf = buf
 						break
 					end
 				end
@@ -97,7 +99,7 @@ local remaps = {
 				end
 
 				vim.api.nvim_set_current_buf(scratchBuf)
-			end
+			end,
 		},
 
 		-- Toggle spellcheck
@@ -252,6 +254,7 @@ local remaps = {
 
 	-- Visual mode mappings
 	x = {
+		{ "t", "[T]o register", '"' },
 		-- Scroll by 2 lines using shift + movement
 		{ "J", "Scroll down", "2<C-e>" },
 		{ "K", "Scroll up", "2<C-y>" },

@@ -38,7 +38,7 @@ local function configALE()
 	g.ale_sign_warning = DIAGNOSTICS_SIGNS.WARN
 	g.ale_set_highlights = 0 -- Disable ALE highlights
 	g.ale_use_neovim_diagnostics_api = 1 -- Render using native diagnostics
-	g.ale_fix_on_save = 0 -- Disable fix on save. ftplugins will enable if needed (good idea in theory, very annoying in practice)
+	g.ale_fix_on_save = 1 -- Disable fix on save. ftplugins will enable if needed (good idea in theory, very annoying in practice)
 
 	-- Add these lines to disable ALE's own display methods
 	g.ale_echo_cursor = 0 -- Disable echoing messages at cursor position
@@ -61,10 +61,10 @@ local function configALE()
 			"prettier",
 		},
 		jsonc = {
-			"biome",
+			-- "biome",
 		},
 		json = {
-			"biome",
+			-- "biome",
 		},
 		lua = {
 			"stylua",
@@ -133,7 +133,7 @@ local function configCoc()
 		"coc-prettier",
 		"coc-lua",
 		"coc-snippets",
-		"coc-tsserver"
+		"coc-tsserver",
 	}
 
 	setKey("i", "<TAB>", tabKey, { expr = true, silent = true, noremap = true })
