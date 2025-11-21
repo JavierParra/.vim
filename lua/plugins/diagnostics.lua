@@ -128,6 +128,7 @@ local function configCoc()
 
 	vim.g.coc_global_extensions = {
 		"coc-json",
+		"coc-sql",
 		-- "coc-biome",
 		"coc-eslint",
 		"coc-prettier",

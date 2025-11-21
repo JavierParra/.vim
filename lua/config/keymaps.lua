@@ -32,7 +32,6 @@ end
 local remaps = {
 	-- Normal mode mappings
 	n = {
-		{ "t", "[T]o register", '"' },
 		-- Split panel bindings
 		{ "<Leader><C-l>", "Split right", cmd("belowright vsplit") },
 		{ "<Leader><C-h>", "Split left", cmd("aboveleft vsplit") },
@@ -183,7 +182,16 @@ local remaps = {
 		-- Buffer operations
 		{ "<Leader>q", "Close buffer", cmd("Bdelete") },
 		{ "<Leader>Q", "Close buffer even with unsaved changes", cmd("bdelete") },
-		{ "<Leader>bw", "Close all ([W]ipe) [B]uffers", cmd("%bwipe") },
+		{
+			"<Leader>bw",
+			"Close all ([W]ipe) [B]uffers",
+			cmd({
+				"%bwipe",
+				"belowright vsplit",
+				"aboveleft vsplit",
+				"wincmd =",
+			}),
+		},
 
 		-- * stays in the same place
 		{ "*", "", "*``" },
@@ -254,7 +262,6 @@ local remaps = {
 
 	-- Visual mode mappings
 	x = {
-		{ "t", "[T]o register", '"' },
 		-- Scroll by 2 lines using shift + movement
 		{ "J", "Scroll down", "2<C-e>" },
 		{ "K", "Scroll up", "2<C-y>" },
@@ -269,6 +276,10 @@ local remaps = {
 		-- Use j and k to move by visual lines only if there's no count modifier
 		{ "j", "", "v:count ? 'j' : 'gj'", { expr = true } },
 		{ "k", "", "v:count ? 'k' : 'gk'", { expr = true } },
+
+		-- Swap p and P to not override the unnamed registry by default
+		{ "P", "Paste replacing registry", "p" },
+		{ "p", "Paste", "P" },
 
 		-- View lines git history
 		-- { "<Leader>gb", "Blame selected lines", cmd("'<,'>Flogsplit") },

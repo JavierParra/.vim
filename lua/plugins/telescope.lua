@@ -63,7 +63,23 @@ local M = {
 				})
 			end,
 		},
-		{ "<Leader>db", "<cmd>Telescope buffers show_all_buffers=true sort_mru=true cwd_only=true  <CR>", desc = "List buffers" },
+		{
+			"<Leader>db",
+			"<cmd>Telescope buffers show_all_buffers=true sort_mru=true cwd_only=true  <CR>",
+			desc = "List buffers",
+		},
+		{
+			"<Leader>dbb",
+			"<cmd>Telescope buffers show_all_buffers=true sort_mru=true cwd_only=true  <CR>",
+			desc = "List buffers",
+		},
+		{
+			"<Leader>dbg",
+			function()
+				require("telescope.builtin").live_grep({ grep_open_files = true })
+			end,
+			desc = "Find across workspace",
+		},
 		{ "<Leader>d", "<cmd>Telescope builtin<CR>", desc = "List telescope commands" },
 		{ "<Leader>dd", "<cmd>Telescope builtin<CR>", desc = "List telescope commands" },
 		{ "<Leader>dc", "<cmd>Telescope colorscheme<CR>", desc = "List colorschemes" },
