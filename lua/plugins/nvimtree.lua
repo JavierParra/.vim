@@ -28,7 +28,7 @@ local function on_attach(bufnr)
 		local path = node.absolute_path
 
 		if node.type ~= "directory" or not path then
-			vim.notify('Cannot search ' .. node.type .. ' ' .. path)
+			vim.notify("Cannot search " .. node.type .. " " .. path)
 			return
 		end
 
@@ -37,7 +37,7 @@ local function on_attach(bufnr)
 			prompt_title = "Live Grep in " .. ppath,
 			cwd = path,
 		})
-	end, opts "Grep here")
+	end, opts("Grep here"))
 	vim.keymap.set("n", "J", api.node.navigate.sibling.last, opts("Last Sibling"))
 	vim.keymap.set("n", "K", api.node.navigate.sibling.first, opts("First Sibling"))
 	vim.keymap.set("n", "p", api.node.navigate.parent, opts("Parent Directory"))
@@ -71,6 +71,9 @@ end
 local M = {
 	{
 		"nvim-tree/nvim-tree.lua",
+		dependencies = {
+			"windowpicker",
+		},
 		opts = {
 			on_attach = on_attach,
 			diagnostics = {
@@ -102,6 +105,15 @@ local M = {
 							unstaged = "★",
 							untracked = "✗",
 						},
+					},
+				},
+			},
+			actions = {
+				open_file = {
+					window_picker = {
+						picker = function()
+							return require("window-picker").pick_window()
+						end,
 					},
 				},
 			},
