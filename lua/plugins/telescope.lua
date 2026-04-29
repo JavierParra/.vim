@@ -65,20 +65,15 @@ local M = {
 		},
 		{
 			"<Leader>db",
-			"<cmd>Telescope buffers show_all_buffers=true sort_mru=true cwd_only=true  <CR>",
+			"<cmd>Telescope buffers show_all_buffers=true sort_mru=true cwd_only=true<CR>",
 			desc = "List buffers",
 		},
 		{
-			"<Leader>dbb",
-			"<cmd>Telescope buffers show_all_buffers=true sort_mru=true cwd_only=true  <CR>",
-			desc = "List buffers",
-		},
-		{
-			"<Leader>dbg",
+			"<Leader>dgb",
 			function()
 				require("telescope.builtin").live_grep({ grep_open_files = true })
 			end,
-			desc = "Find across workspace",
+			desc = "[G]rep in open [B]uffers",
 		},
 		{ "<Leader>d", "<cmd>Telescope builtin<CR>", desc = "List telescope commands" },
 		{ "<Leader>dd", "<cmd>Telescope builtin<CR>", desc = "List telescope commands" },
@@ -93,6 +88,16 @@ local M = {
 			"<leader>fr",
 			"<cmd>Telescope coc references initial_mode=normal theme=cursor<CR>",
 			desc = "Find symbol's references",
+		},
+		{
+			"<leader>fl",
+			"<cmd>Telescope coc line_code_actions initial_mode=normal theme=cursor<CR>",
+			desc = "[F]ix Line with coc",
+		},
+		{
+			"<leader>cl",
+			"<cmd>Telescope coc commands initial_mode=normal theme=dropdown<CR>",
+			desc = "List coc's commands",
 		},
 	},
 }
