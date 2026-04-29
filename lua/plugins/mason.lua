@@ -10,7 +10,7 @@ local function sync_mason_packages(ensure_installed)
 	local mr = require("mason-registry")
 
 	local notification
-	local notify = require"custom.live_notify".create_notification({
+	local notify = require "custom.live_notify".create_notification({
 		title = "Mason live?"
 	})
 
@@ -51,10 +51,10 @@ local function sync_mason_packages(ensure_installed)
 		local total_operations = #to_remove + #to_install
 		local remaining_operations = total_operations
 
-		local get_header = function ()
+		local get_header = function()
 			return total_operations - remaining_operations .. "/" .. total_operations .. ": "
-				.. table.concat(map(to_install, function(p) return "+"..p end), " ")
-				.. " " .. table.concat(map(to_remove, function(p) return "-"..p end), " ")
+					.. table.concat(map(to_install, function(p) return "+" .. p end), " ")
+					.. " " .. table.concat(map(to_remove, function(p) return "-" .. p end), " ")
 		end
 
 		local nt = function(msg)
@@ -104,7 +104,9 @@ local M = {
 		ensure_installed = {
 			"stylua",
 			"prettier",
-			"biome"
+			"biome",
+			"oxfmt",
+			"oxlint"
 		},
 	},
 

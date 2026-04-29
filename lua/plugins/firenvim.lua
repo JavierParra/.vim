@@ -11,12 +11,12 @@ if vim.g.started_by_firenvim == true then
 	spec = {
 		{ "vim-airline/vim-airline", cond = false },
 		-- Noice should load because we set cmdline to 'none'
-		{ "folke/noice.nvim", cond = true },
+		{ "folke/noice.nvim", cond = false },
 		vim.tbl_extend("force", spec, {
 			lazy = false, -- must load at start in browser
-			init = function()
-				vim.opt.showtabline = 0
-			end,
+			-- init = function()
+			-- 	vim.opt.showtabline = 0
+			-- end,
 			opts = {
 				globalSettings = {
 					-- alt = "all",
@@ -42,13 +42,13 @@ if vim.g.started_by_firenvim == true then
 						-- selector = 'textarea:not(#pull_request_review_body, #read-only-cursor-text-area)',
 						selector = 'textarea[name="comment[body]"], textarea[name="pull_request[body]"]',
 					},
-					["^https?:\\/\\/localhost:3000/docs"] = {
+					["^https?:\\/\\/localhost:3000\\/docs\\/"] = {
 						takeover = "never",
 					},
 					["^https?:\\/\\/app.retrium.com"] = {
 						takeover = "never",
 					},
-					["^https?:\\/\\/(staging.)?gamma.app/docs"] = {
+					["^https?:\\/\\/(staging.)?gamma.app\\/docs\\/"] = {
 						takeover = "never",
 					},
 					["^https?:\\/\\/visualize\\.graphy\\.app"] = {
@@ -73,6 +73,9 @@ if vim.g.started_by_firenvim == true then
 						takeover = "never",
 					},
 					["^https?:\\/\\/metabase\\.internal\\.gamma\\.app"] = {
+						takeover = "never",
+					},
+					["^https?:\\/\\/.*-gamma-app\\.vercel\\.app"] = {
 						takeover = "never",
 					},
 				},

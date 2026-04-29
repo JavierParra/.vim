@@ -1,6 +1,6 @@
-	-- filetype on           "Enable filetype detection
-	-- filetype plugin on    "Enable loading plugins based on file type
-	-- filetype indent on    "Enable filetype specific indentation
+-- filetype on           "Enable filetype detection
+-- filetype plugin on    "Enable loading plugins based on file type
+-- filetype indent on    "Enable filetype specific indentation
 
 -- Leader keys
 vim.g.mapleader = " "
@@ -56,7 +56,7 @@ local options_set = {
 	-- lines of margin between the cursor and top-bottom of document
 	scrolloff = 4,
 	-- vertical ruler
-	colorcolumn = {79},
+	colorcolumn = { 79 },
 	-- prevents adding a new line to files
 	fixeol = false,
 
@@ -88,6 +88,13 @@ local options_set = {
 	hidden = true,
 	-- Syncs VIMs clipboard with the OS's
 	clipboard = "unnamedplus",
+
+	-- Enable per-project configuration
+	exrc = true,
+
+	-- Ask for confirmation before loading exrc in a new project.
+	-- Enabled by default in up to date neovim versions
+	secure = true,
 }
 
 local options_append = {
