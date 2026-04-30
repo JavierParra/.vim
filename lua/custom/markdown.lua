@@ -497,14 +497,10 @@ local function handle_checkbox_status(item, new_status, ctx)
 	handle_checkbox_status(parent, derive_parent_status(parent, ctx), ctx)
 end
 
-M.toggle_checkbox = function()
-	local ctx = Context:new()
-	local item = get_markdown_line(nil, ctx)
-
-	if not item or item.type ~= 'list_item' then
-		return
-	end
-
+--- @param item MarkdownListItem
+--- @param new_status number | nil - If not provided, will toggle the current status.
+--- @param ctx Context
+local function set_item_status(item, new_status, ctx)
 	local status_pairs = {
 		[0]   = 1,
 		[0.5] = 1,
@@ -512,9 +508,13 @@ M.toggle_checkbox = function()
 	}
 
 	if not item.has_checkbox then
+		if new_status == nil then
+			new_status = 0
+		end
+
 		local ix_start = item.marker_index + string.len(item.marker) + 1
 		local ix_end = ix_start
-		local tpl = '[ ] '
+		local tpl = '[' .. status_to_mark[new_status] .. '] '
 		local len = string.len(tpl)
 
 		-- table.unpack complains at runtime
@@ -534,7 +534,7 @@ M.toggle_checkbox = function()
 		item.checkbox_index = ix_start
 		item.has_checkbox = true
 		item.content_index = item.content_index + ix_end - ix_start
-		item.checkbox_status = 0
+		item.checkbox_status = new_status
 
 		vim.api.nvim_buf_set_text(
 			0,
@@ -544,11 +544,35 @@ M.toggle_checkbox = function()
 			ix_end,
 			{ tpl }
 		)
+	elseif new_status == nil then
+		new_status = status_pairs[item.checkbox_status]
+	end
 
-		-- Send update with the same status to trigger a recursive parent check
-		handle_checkbox_status(item, item.checkbox_status, ctx)
-	else
-		handle_checkbox_status(item, status_pairs[item.checkbox_status], ctx)
+	handle_checkbox_status(item, new_status, ctx)
+end
+
+--- @param status number | nil
+M.toggle_checkbox = function(status)
+	local ctx = Context:new()
+	local _, row_start = unpack(vim.fn.getpos('.'))
+	local _, row_end = unpack(vim.fn.getpos('v'))
+
+	if row_start > row_end then
+		local old_start = row_start
+		row_start = row_end
+		row_end = old_start
+	end
+
+	for i = row_start, row_end, 1 do
+		local item = get_markdown_line(i, ctx)
+
+		if not item then
+			return
+		end
+
+		if item.type == 'list_item' then
+			set_item_status(item, status, ctx)
+		end
 	end
 end
 
