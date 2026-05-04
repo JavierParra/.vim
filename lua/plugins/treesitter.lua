@@ -2,78 +2,55 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		lazy = false,
-		cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+		branch = "main",
 		build = ":TSUpdate",
-		config = function ()
-			local configs = require("nvim-treesitter.configs")
-			configs.setup({
-				ensure_installed = {
-					'bash',
-					'comment',
-					'dockerfile',
-					'go',
-					'graphql',
-					'html',
-					'http',
-					'javascript',
-					'jsdoc',
-					'json',
-					'json5',
-					'latex',
-					'lua',
-					'markdown',
-					'php',
-					'prisma',
-					'query',
-					'regex',
-					'scss',
-					'scheme',
-					'sql',
-					'swift',
-					'tsx',
-					'typescript',
-					'vim',
-					'vimdoc'
-				},
-				sync_install = false,
-				highlight = {
-					enable = true,
-					custom_captures = {
-					}
-				},
-				indent = {
-					enable = true
-				},
-				incremental_selection = {
-					enable = true,
-					keymaps = {
-						init_selection = "gv",
-						node_incremental = "gin",
-						node_decremental = "gdn",
-						scope_incremental = "gis",
-					}
-				},
-				auto_install = true,
-				additional_vim_regex_highlighting = false,
-				playground = {
-					enable = true,
-					disable = {},
-					updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-					persist_queries = false, -- Whether the query persists across vim sessions
-					keybindings = {
-						toggle_query_editor = 'o',
-						toggle_hl_groups = 'i',
-						toggle_injected_languages = 't',
-						toggle_anonymous_nodes = 'a',
-						toggle_language_display = 'I',
-						focus_language = 'f',
-						unfocus_language = 'F',
-						update = 'R',
-						goto_node = '<cr>',
-						show_help = '?',
-					},
-				},
+		config = function()
+			local parsers = {
+				"bash",
+				"comment",
+				"dockerfile",
+				"go",
+				"graphql",
+				"html",
+				"http",
+				"javascript",
+				"jsdoc",
+				"json",
+				"json5",
+				"latex",
+				"lua",
+				"markdown",
+				"markdown_inline",
+				"php",
+				"prisma",
+				"query",
+				"regex",
+				"scss",
+				"scheme",
+				"sql",
+				"swift",
+				"tsx",
+				"typescript",
+				"vim",
+				"vimdoc",
+			}
+
+			require("nvim-treesitter").install(parsers)
+
+			local enabled = {}
+			for _, p in ipairs(parsers) do
+				enabled[p] = true
+			end
+
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					local ft = vim.bo[args.buf].filetype
+					local lang = vim.treesitter.language.get_lang(ft) or ft
+					if enabled[lang] and pcall(vim.treesitter.start, args.buf, lang) then
+						vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+					end
+				end,
 			})
-		end
-	}
+		end,
+	},
 }

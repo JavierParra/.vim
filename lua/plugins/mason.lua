@@ -106,7 +106,8 @@ local M = {
 			"prettier",
 			"biome",
 			"oxfmt",
-			"oxlint"
+			"oxlint",
+			"tree-sitter-cli"
 		},
 	},
 
