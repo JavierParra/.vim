@@ -42,13 +42,13 @@ if vim.g.started_by_firenvim == true then
 						-- selector = 'textarea:not(#pull_request_review_body, #read-only-cursor-text-area)',
 						selector = 'textarea[name="comment[body]"], textarea[name="pull_request[body]"]',
 					},
-					["^https?:\\/\\/localhost:3000\\/docs\\/"] = {
+					["^https?:\\/\\/localhost:3000"] = {
 						takeover = "never",
 					},
 					["^https?:\\/\\/app.retrium.com"] = {
 						takeover = "never",
 					},
-					["^https?:\\/\\/(staging.)?gamma.app\\/docs\\/"] = {
+					["^https?:\\/\\/(staging.)?gamma.app"] = {
 						takeover = "never",
 					},
 					["^https?:\\/\\/visualize\\.graphy\\.app"] = {
@@ -61,6 +61,9 @@ if vim.g.started_by_firenvim == true then
 						takeover = "never",
 					},
 					["^https?:\\/\\/claude\\.ai"] = {
+						takeover = "never",
+					},
+					["^https?:\\/\\/(.*\\.)?devin\\.ai"] = {
 						takeover = "never",
 					},
 					["^https?:\\/\\/app\\.datadoghq\\.com"] = {

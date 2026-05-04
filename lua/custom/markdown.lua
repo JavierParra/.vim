@@ -362,16 +362,20 @@ local function get_markdown_line(row, ctx)
 	return md_line
 end
 
---- @param item MarkdownListItem
+--- Walks upward from `line` until `predicate` returns true (match) or false
+--- (give up). Empty lines are silently skipped — predicate is not invoked.
+--- The caller is expected to close over `line` and `ctx` if needed.
+---
+--- @param line MarkdownLine | MarkdownListItem
+--- @param predicate fun(ancestor: MarkdownLine | MarkdownListItem): boolean | nil
 --- @param ctx Context
---- @return MarkdownListItem | nil
-local function find_parent_list_item(item, ctx)
-	local prev_row = item.row - 1
-
-	if item.indent_level <= 0 then
+--- @return MarkdownLine | MarkdownListItem | nil
+local function find_ancestor(line, predicate, ctx)
+	if line.indent_level <= 0 then
 		return nil
 	end
 
+	local prev_row = line.row - 1
 	while prev_row >= 1 do
 		local prev_line = get_markdown_line(prev_row, ctx)
 		prev_row = prev_row - 1
@@ -380,19 +384,51 @@ local function find_parent_list_item(item, ctx)
 			return nil
 		end
 
-		if prev_line.type == 'list_item' and prev_line.has_checkbox and prev_line.indent_level == item.indent_level - 1 then
-			return prev_line
+		if prev_line.empty then
+			goto continue
 		end
 
-		-- If we encounter anything with an indentation level less than the
-		-- expected parent, don't keep traversing because we might hit other
-		-- hierarchies.
-		if not prev_line.empty and prev_line.indent_level < item.indent_level - 1 then
+		local result = predicate(prev_line)
+		if result == true then
+			return prev_line
+		elseif result == false then
 			return nil
 		end
+		::continue::
 	end
 
 	return nil
+end
+
+--- @param item MarkdownListItem
+--- @param ctx Context
+--- @return MarkdownListItem | nil
+local function find_parent_checklist_item(item, ctx)
+	return find_ancestor(item, function(ancestor)
+		if ancestor.type == 'list_item' and ancestor.has_checkbox and ancestor.indent_level == item.indent_level - 1 then
+			return true
+		end
+		if ancestor.indent_level < item.indent_level - 1 then
+			return false
+		end
+		return nil
+	end, ctx) --[[@as MarkdownListItem | nil]]
+end
+
+--- Finds the closest list item above `line` with strictly lower indent.
+--- Walks all the way to indent 0 before giving up — non-list interruptions
+--- (fenced code blocks, prose) at any indent don't break the search.
+---
+--- @param line MarkdownLine | MarkdownListItem
+--- @param ctx Context
+--- @return MarkdownListItem | nil
+local function find_owning_list_item(line, ctx)
+	return find_ancestor(line, function(ancestor)
+		if ancestor.type == 'list_item' and ancestor.indent_level < line.indent_level then
+			return true
+		end
+		return nil
+	end, ctx) --[[@as MarkdownListItem | nil]]
 end
 
 --- @param parent_item MarkdownListItem
@@ -488,7 +524,7 @@ local function handle_checkbox_status(item, new_status, ctx)
 	end
 
 	-- Try to update parent status according to sub-item status
-	local parent = find_parent_list_item(item, ctx)
+	local parent = find_parent_checklist_item(item, ctx)
 
 	if not parent then
 		return nil
@@ -558,21 +594,23 @@ M.toggle_checkbox = function(status)
 	local _, row_end = unpack(vim.fn.getpos('v'))
 
 	if row_start > row_end then
-		local old_start = row_start
-		row_start = row_end
-		row_end = old_start
+		row_start, row_end = row_end, row_start
 	end
 
-	for i = row_start, row_end, 1 do
-		local item = get_markdown_line(i, ctx)
-
-		if not item then
-			return
+	local i = row_end
+	while i >= row_start do
+		local line = get_markdown_line(i, ctx)
+		if not line then
+			break
 		end
 
-		if item.type == 'list_item' then
-			set_item_status(item, status, ctx)
+		local target = line.type == 'list_item' and line or find_owning_list_item(line, ctx)
+
+		if target then
+			set_item_status(target, status, ctx)
+			i = target.row
 		end
+		i = i - 1
 	end
 end
 

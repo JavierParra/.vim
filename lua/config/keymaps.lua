@@ -143,7 +143,8 @@ local remaps = {
 			"<Leader>fp",
 			"Copy current [F]ile's [P]ath",
 			function()
-				fn.system("echo " .. fn.expand("%") .. " | pbcopy")
+				local path_utils = require("custom.path_utils")
+				fn.system("echo " .. path_utils.normalize_to_cwd(fn.expand("%")) .. " | pbcopy")
 			end,
 		},
 
@@ -248,7 +249,15 @@ local remaps = {
 
 		-- Telescope and ALE fix
 		{ "<C-]>", "Go to definition", cmd("Telescope coc definitions") },
-		{ "<Leader>pw", "Fix linting ([P]rettier [W]rite)", cmd("ALEFix") },
+
+		{
+			"<Leader>pw",
+			"Fix linting ([P]rettier [W]rite)",
+			function()
+				vim.fn["CocAction"]("format")
+			end,
+		},
+		-- { "<Leader>pw", "Fix linting ([P]rettier [W]rite)", cmd("ALEFix") },
 		-- { "<Leader>pw", "Fix linting ([P]rettier [W]rite)", cmd("call CocActionAsync('format')") },
 
 		-- Open terminal
