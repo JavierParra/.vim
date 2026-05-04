@@ -1,6 +1,7 @@
 {
 	"coc.preferences.messageLevel": "more",
 	"coc.preferences.messageDialogKind": "menu",
+	"coc.preferences.formatOnSave": true,
 	"diagnostic.enableMessage": "always",
 	"tsserver.locale": "en",
 	"diagnostic.level": "warning",
@@ -22,16 +23,9 @@
 	"Lua.workspace.checkThirdParty": false,
 	"snippets.ultisnips.pythonPrompt": false,
 	"prettier.onlyUseLocalVersion": true,
-	"eslint.format.enable": true,
-	"languageserver": {
-		"biome": {
-			"enable": true,
-			"command": "yarn",
-			"args": ["biome", "lsp-proxy"],
-			"filetypes": ["javascript", "typescript", "javascriptreact", "typescriptreact", "json", "jsonc"],
-			"rootPatterns": ["biome.json", "biome.jsonc"],
-			"requireRootPattern": true,
-			"formatterPriority": 10
-		}
-	}
+	"oxc.oxfmt.enable": true,
+	"javascript.format.enable": false,
+	"typescript.format.enable": false,
+	// "prettier.enable": false
+	"eslint.format.enable": true
 }
