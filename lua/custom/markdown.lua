@@ -1,22 +1,22 @@
 local M = {}
 
 local tokens = {
-	whitespace = { [' '] = true, ['\t'] = true },
-	list_marker = { ['-'] = true, ['*'] = true, ['+'] = true },
+	whitespace = { [" "] = true, ["\t"] = true },
+	list_marker = { ["-"] = true, ["*"] = true, ["+"] = true },
 	numeric = {
-		['0'] = true,
-		['1'] = true,
-		['2'] = true,
-		['3'] = true,
-		['4'] = true,
-		['5'] = true,
-		['6'] = true,
-		['7'] = true,
-		['8'] = true,
-		['9'] = true,
+		["0"] = true,
+		["1"] = true,
+		["2"] = true,
+		["3"] = true,
+		["4"] = true,
+		["5"] = true,
+		["6"] = true,
+		["7"] = true,
+		["8"] = true,
+		["9"] = true,
 	},
-	open_bracket = { ['['] = true },
-	close_bracket = { [']'] = true },
+	open_bracket = { ["["] = true },
+	close_bracket = { ["]"] = true },
 }
 --- @param char string
 --- @return boolean
@@ -65,7 +65,7 @@ end
 --- @field ix integer
 --- @field len integer
 local LineReader = {
-	line = '',
+	line = "",
 	ix = 1,
 	len = 0,
 }
@@ -94,7 +94,7 @@ end
 --- @return string
 function LineReader:next()
 	if self:done() then
-		return ''
+		return ""
 	end
 
 	self.ix = self.ix + 1
@@ -112,7 +112,7 @@ end
 ---@param matcher CharacterMatcher
 ---@return string
 function LineReader:consume(matcher)
-	local chunk = ''
+	local chunk = ""
 	while not self:done() and matcher(self:peek()) do
 		chunk = chunk .. self:next()
 	end
@@ -165,8 +165,8 @@ end
 local MarkdownLine = {
 	row = 0,
 	indent_level = 0,
-	type = 'plain',
-	empty = false
+	type = "plain",
+	empty = false,
 }
 
 MarkdownLine.__index = MarkdownLine
@@ -197,13 +197,13 @@ end
 local MarkdownListItem = {
 	row = 0,
 	indent_level = 0,
-	type = 'list_item',
+	type = "list_item",
 	empty = false,
-	marker = '-',
+	marker = "-",
 	is_ordered = false,
 	has_checkbox = false,
 	checkbox_status = nil,
-	content = '',
+	content = "",
 
 	marker_index = 0,
 	content_index = 0,
@@ -222,15 +222,15 @@ function MarkdownListItem:new(row)
 end
 
 local mark_to_status = {
-	['x'] = 1,
-	['-'] = 0.5,
-	[' '] = 0,
+	["x"] = 1,
+	["-"] = 0.5,
+	[" "] = 0,
 }
 
 local status_to_mark = {
-	[0] = ' ',
-	[0.5] = '-',
-	[1] = 'x',
+	[0] = " ",
+	[0.5] = "-",
+	[1] = "x",
 }
 
 ---@param reader LineReader
@@ -267,7 +267,7 @@ local function get_indent_level_from_whitespace(whitespace, ctx)
 	local whitespace_count = string.len(whitespace)
 	local level = 0
 
-	if first == '\t' then
+	if first == "\t" then
 		level = whitespace_count
 	else
 		level = math.floor(whitespace_count / ctx.shiftwidth)
@@ -286,7 +286,6 @@ local function parse_list_item(row, line, ctx)
 	local list_item = MarkdownListItem:new(row)
 	list_item.indent_level = get_indent_level_from_whitespace(leading_whitespace, ctx)
 
-
 	if is_unordered_list_character(reader:peek()) then
 		list_item.is_ordered = false
 		list_item.marker_index = reader.ix
@@ -296,7 +295,7 @@ local function parse_list_item(row, line, ctx)
 		list_item.is_ordered = true
 		list_item.marker = consume_numeric(reader)
 
-		if reader:peek() ~= '.' then
+		if reader:peek() ~= "." then
 			return false
 		end
 
@@ -314,7 +313,9 @@ local function parse_list_item(row, line, ctx)
 	parse_checkbox(reader, list_item)
 
 	list_item.content_index = reader.ix
-	list_item.content = reader:consume(function() return true end)
+	list_item.content = reader:consume(function()
+		return true
+	end)
 	return list_item
 end
 
@@ -405,7 +406,7 @@ end
 --- @return MarkdownListItem | nil
 local function find_parent_checklist_item(item, ctx)
 	return find_ancestor(item, function(ancestor)
-		if ancestor.type == 'list_item' and ancestor.has_checkbox and ancestor.indent_level == item.indent_level - 1 then
+		if ancestor.type == "list_item" and ancestor.has_checkbox and ancestor.indent_level == item.indent_level - 1 then
 			return true
 		end
 		if ancestor.indent_level < item.indent_level - 1 then
@@ -424,7 +425,7 @@ end
 --- @return MarkdownListItem | nil
 local function find_owning_list_item(line, ctx)
 	return find_ancestor(line, function(ancestor)
-		if ancestor.type == 'list_item' and ancestor.indent_level < line.indent_level then
+		if ancestor.type == "list_item" and ancestor.indent_level < line.indent_level then
 			return true
 		end
 		return nil
@@ -447,9 +448,9 @@ local function find_sub_issues(parent_item, ctx)
 		end
 
 		if
-				next_line.type == 'list_item'
-				and next_line.indent_level == parent_item.indent_level + 1
-				and next_line.has_checkbox
+			next_line.type == "list_item"
+			and next_line.indent_level == parent_item.indent_level + 1
+			and next_line.has_checkbox
 		then
 			table.insert(issues, next_line)
 		end
@@ -473,9 +474,9 @@ end
 --- @return integer
 local function derive_parent_status(parent, ctx)
 	local status_collection = {
-		[0]   = 0,
+		[0] = 0,
 		[0.5] = 0,
-		[1]   = 0,
+		[1] = 0,
 	}
 
 	local sub_issues = find_sub_issues(parent, ctx)
@@ -504,7 +505,7 @@ end
 --- @param ctx Context
 --- @return nil
 local function handle_checkbox_status(item, new_status, ctx)
-	assert(item.has_checkbox, 'Cannot update item without checkbox')
+	assert(item.has_checkbox, "Cannot update item without checkbox")
 
 	local checkmark_index = item.checkbox_index + 1
 	local row = item.row
@@ -513,14 +514,7 @@ local function handle_checkbox_status(item, new_status, ctx)
 	if item.checkbox_status ~= new_status then
 		item.checkbox_status = new_status
 
-		vim.api.nvim_buf_set_text(
-			0,
-			row - 1,
-			checkmark_index,
-			row - 1,
-			checkmark_index + 1,
-			{ status_to_mark[new_status] }
-		)
+		vim.api.nvim_buf_set_text(0, row - 1, checkmark_index, row - 1, checkmark_index + 1, { status_to_mark[new_status] })
 	end
 
 	-- Try to update parent status according to sub-item status
@@ -538,9 +532,9 @@ end
 --- @param ctx Context
 local function set_item_status(item, new_status, ctx)
 	local status_pairs = {
-		[0]   = 1,
+		[0] = 1,
 		[0.5] = 1,
-		[1]   = 0,
+		[1] = 0,
 	}
 
 	if not item.has_checkbox then
@@ -550,18 +544,11 @@ local function set_item_status(item, new_status, ctx)
 
 		local ix_start = item.marker_index + string.len(item.marker) + 1
 		local ix_end = ix_start
-		local tpl = '[' .. status_to_mark[new_status] .. '] '
+		local tpl = "[" .. status_to_mark[new_status] .. "] "
 		local len = string.len(tpl)
 
 		-- table.unpack complains at runtime
-		local target_text = unpack(vim.api.nvim_buf_get_text(
-			0,
-			item.row - 1,
-			ix_start,
-			item.row - 1,
-			ix_start + len,
-			{}
-		))
+		local target_text = unpack(vim.api.nvim_buf_get_text(0, item.row - 1, ix_start, item.row - 1, ix_start + len, {}))
 
 		local reader = LineReader:new(target_text)
 		local whitespace_count = string.len(consume_whitespace(reader))
@@ -572,14 +559,7 @@ local function set_item_status(item, new_status, ctx)
 		item.content_index = item.content_index + ix_end - ix_start
 		item.checkbox_status = new_status
 
-		vim.api.nvim_buf_set_text(
-			0,
-			item.row - 1,
-			ix_start,
-			item.row - 1,
-			ix_end,
-			{ tpl }
-		)
+		vim.api.nvim_buf_set_text(0, item.row - 1, ix_start, item.row - 1, ix_end, { tpl })
 	elseif new_status == nil then
 		new_status = status_pairs[item.checkbox_status]
 	end
@@ -590,8 +570,8 @@ end
 --- @param status number | nil
 M.toggle_checkbox = function(status)
 	local ctx = Context:new()
-	local _, row_start = unpack(vim.fn.getpos('.'))
-	local _, row_end = unpack(vim.fn.getpos('v'))
+	local _, row_start = unpack(vim.fn.getpos("."))
+	local _, row_end = unpack(vim.fn.getpos("v"))
 
 	if row_start > row_end then
 		row_start, row_end = row_end, row_start
@@ -604,7 +584,7 @@ M.toggle_checkbox = function(status)
 			break
 		end
 
-		local target = line.type == 'list_item' and line or find_owning_list_item(line, ctx)
+		local target = line.type == "list_item" and line or find_owning_list_item(line, ctx)
 
 		if target then
 			set_item_status(target, status, ctx)
