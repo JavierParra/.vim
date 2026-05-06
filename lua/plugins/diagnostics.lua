@@ -36,32 +36,29 @@ local function configALE()
 	g.ale_disable_lsp = 1
 	g.ale_sign_error = DIAGNOSTICS_SIGNS.ERROR
 	g.ale_sign_warning = DIAGNOSTICS_SIGNS.WARN
-	g.ale_set_highlights = 0            -- Disable ALE highlights
+	g.ale_set_highlights = 0 -- Disable ALE highlights
 	g.ale_use_neovim_diagnostics_api = 1 -- Render using native diagnostics
-	g.ale_fix_on_save = 0               -- Disable fix on save. ftplugins will enable if needed (good idea in theory, very annoying in practice)
+	g.ale_fix_on_save = 1 -- Disable fix on save. ftplugins will enable if needed (good idea in theory, very annoying in practice)
 
 	-- Add these lines to disable ALE's own display methods
-	g.ale_echo_cursor = 0                -- Disable echoing messages at cursor position
-	g.ale_cursor_detail = 0              -- Disable detailed error information
-	g.ale_echo_msg_format = ""           -- Empty format string to disable echo messages
+	g.ale_echo_cursor = 0 -- Disable echoing messages at cursor position
+	g.ale_cursor_detail = 0 -- Disable detailed error information
+	g.ale_echo_msg_format = "" -- Empty format string to disable echo messages
 	g.ale_virtualtext_cursor = "disabled" -- Disable ALE's virtual text
 
 	g.ale_fixers = {
 		["*"] = { "remove_trailing_lines", "trim_whitespace" },
 		typescript = {
 			"eslint",
-			-- "oxc",
-			-- "prettier",
+			"prettier",
 		},
 		typescriptreact = {
 			"eslint",
-			-- "oxc",
-			-- "prettier",
+			"prettier",
 		},
 		javascript = {
 			"eslint",
-			-- "oxc",
-			-- "prettier",
+			"prettier",
 		},
 		jsonc = {
 			-- "biome",
@@ -129,15 +126,12 @@ local function configCoc()
 		end
 	end
 
-	-- vim.g.coc_node_args = { "--nolazy", "--inspect=6045" }
-
 	vim.g.coc_global_extensions = {
 		"coc-json",
 		"coc-sql",
 		-- "coc-biome",
 		"coc-eslint",
-		-- "coc-prettier",
-		"coc-oxc",
+		"coc-prettier",
 		"coc-lua",
 		"coc-snippets",
 		"coc-tsserver",
@@ -165,6 +159,13 @@ local function configCoc()
 	setKey("n", "<C-h>", help)
 	setKey("n", "<Leader>cr", function()
 		vim.cmd("CocRestart")
+	end)
+
+	setKey("n", "<Leader>cf", function()
+		vim.cmd("CocCommand tsserver.executeAutofix")
+	end)
+	setKey("i", "<C-a>", function()
+		vim.cmd("CocCommand tsserver.executeAutofix")
 	end)
 end
 
