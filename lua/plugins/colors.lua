@@ -61,7 +61,7 @@ return {
 				colorscheme = "catppuccino",
 				transparency = true,
 				integrations = {
-					coc = true,
+					coc = false,
 					nvimtree = {
 						enabled = true,
 						show_root = true,

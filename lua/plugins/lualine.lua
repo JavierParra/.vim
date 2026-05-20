@@ -76,7 +76,7 @@ local function inVisual()
 		return true
 	end
 
-	if m == '' then
+	if m == '' then
 		return true
 	end
 
@@ -195,19 +195,9 @@ return {
 				lualine_x = {
 					{
 						function()
-							local coc_status = vim.g.coc_status
-
-							if coc_status == nil then
-								return ""
-							end
-
-							local char = vim.fn.strcharpart(vim.g.coc_status, 1, 1)
-
-							if string.match(char, "%w") then
-								return ""
-							end
-
-							return char
+							local clients = vim.lsp.get_clients({ bufnr = 0 })
+							if #clients == 0 then return "" end
+							return table.concat(vim.tbl_map(function(c) return c.name end, clients), " ")
 						end,
 						separator = ""
 					},
@@ -215,7 +205,7 @@ return {
 						"filetype",
 					},
 				},
-				lualine_y = { {'FugitiveHead', icon = ''} },
+				lualine_y = { {'FugitiveHead', icon = ''} },
 				lualine_z = {
 					{ "location",
 						separator = "",

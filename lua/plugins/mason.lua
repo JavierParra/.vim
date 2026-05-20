@@ -102,12 +102,18 @@ local M = {
 	cmd = { "Mason", "MasonInstall", "MasonUpdate" },
 	opts = {
 		ensure_installed = {
+			-- formatters / linters / tools
 			"stylua",
 			"prettier",
 			"biome",
 			"oxfmt",
 			"oxlint",
-			"tree-sitter-cli"
+			"tree-sitter-cli",
+			-- LSP servers
+			"typescript-language-server",
+			"lua-language-server",
+			"json-lsp",
+			"eslint-lsp",
 		},
 	},
 

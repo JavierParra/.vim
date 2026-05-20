@@ -241,24 +241,18 @@ local remaps = {
 				vim.diagnostic.jump({ count = -1, wrap = false })
 			end,
 		},
-		{ "<Leader>ed", "Show [E]rror [D]etail", cmd("ALEDetail") },
 
 		-- Make marks more usable
 		{ "M", "Add mark", "m" },
 		{ "m", "Goto mark", "'" },
 
-		-- Telescope and ALE fix
-		{ "<C-]>", "Go to definition", cmd("Telescope coc definitions") },
-
 		{
 			"<Leader>pw",
 			"Fix linting ([P]rettier [W]rite)",
 			function()
-				vim.fn["CocAction"]("format")
+				require("conform").format({ async = true })
 			end,
 		},
-		-- { "<Leader>pw", "Fix linting ([P]rettier [W]rite)", cmd("ALEFix") },
-		-- { "<Leader>pw", "Fix linting ([P]rettier [W]rite)", cmd("call CocActionAsync('format')") },
 
 		-- Open terminal
 		{ "<Leader><", "Open terminal", cmd({ "botright split", "resize 20", "terminal zsh" }) },

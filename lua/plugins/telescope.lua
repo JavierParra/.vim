@@ -2,7 +2,6 @@ local M = {
 	"nvim-telescope/telescope.nvim",
 	dependencies = {
 		"danielfalk/smart-open.nvim",
-		"fannheyward/telescope-coc.nvim",
 		"nvim-lua/plenary.nvim",
 	},
 	lazy = false,
@@ -11,7 +10,6 @@ local M = {
 		local actions = require("telescope.actions")
 
 		telescope.load_extension("smart_open")
-		telescope.load_extension("coc")
 
 		local telescopeConfig = {
 			pickers = {
@@ -81,23 +79,13 @@ local M = {
 		{ "<Leader>dh", "<cmd>Telescope command_history<CR>", desc = "Show command history" },
 		{ "<Leader>d/", "<cmd>Telescope live_grep<CR>", desc = "Find across workspace" },
 		{ "<Leader>dn", "<cmd>Telescope resume initial_mode=normal<CR>", desc = "Resume telescope" },
-		{ "<Leader>do", "<cmd>Telescope coc document_symbols<CR>", desc = "List document's symbols" },
+		{ "<Leader>do", "<cmd>Telescope lsp_document_symbols<CR>", desc = "List document's symbols" },
 		{ "<Leader>/", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Find in file" },
 		-- Find references
 		{
 			"<leader>fr",
-			"<cmd>Telescope coc references initial_mode=normal theme=cursor<CR>",
+			"<cmd>Telescope lsp_references initial_mode=normal theme=cursor<CR>",
 			desc = "Find symbol's references",
-		},
-		{
-			"<leader>fl",
-			"<cmd>Telescope coc line_code_actions initial_mode=normal theme=cursor<CR>",
-			desc = "[F]ix Line with coc",
-		},
-		{
-			"<leader>cl",
-			"<cmd>Telescope coc commands initial_mode=normal theme=dropdown<CR>",
-			desc = "List coc's commands",
 		},
 	},
 }

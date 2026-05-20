@@ -1,9 +1,10 @@
 return {
 	{
-		"nvim-treesitter/nvim-treesitter",
+		"neovim-treesitter/nvim-treesitter",
 		lazy = false,
 		branch = "main",
 		build = ":TSUpdate",
+		dependencies = { "neovim-treesitter/treesitter-parser-registry" },
 		config = function()
 			local parsers = {
 				"bash",
