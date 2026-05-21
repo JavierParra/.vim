@@ -9,6 +9,7 @@ return {
 			local parsers = {
 				"bash",
 				"comment",
+				"diff",
 				"dockerfile",
 				"go",
 				"graphql",
@@ -22,6 +23,7 @@ return {
 				"lua",
 				"markdown",
 				"markdown_inline",
+				"python",
 				"php",
 				"prisma",
 				"query",
