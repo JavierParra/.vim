@@ -144,6 +144,46 @@ local M = {
 				mode = { "n" },
 				desc = "[W]indow [C]lose",
 			},
+			{
+				"<Leader>gf",
+				function()
+					local v = vim.api
+
+					local cur_filetype = vim.bo.filetype
+					if vim.tbl_contains(ignoredFileTypes, cur_filetype) then
+						return
+					end
+
+					local src_win = v.nvim_get_current_win()
+					local src_buf = v.nvim_win_get_buf(src_win)
+					local src_cursor = v.nvim_win_get_cursor(src_win)
+
+					local ok = pcall(vim.cmd, "keepjumps normal! gf")
+					if not ok then
+						return
+					end
+
+					local target_buf = v.nvim_win_get_buf(src_win)
+					if target_buf == src_buf then
+						return
+					end
+					local target_cursor = v.nvim_win_get_cursor(src_win)
+
+					v.nvim_win_set_buf(src_win, src_buf)
+					v.nvim_win_set_cursor(src_win, src_cursor)
+
+					local picked_window_id = require("window-picker").pick_window()
+					if picked_window_id == nil then
+						return
+					end
+
+					v.nvim_win_set_buf(picked_window_id, target_buf)
+					v.nvim_win_set_cursor(picked_window_id, target_cursor)
+					v.nvim_set_current_win(picked_window_id)
+				end,
+				mode = { "n" },
+				desc = "[G]oto [F]ile in picked window",
+			},
 		},
 	},
 }
