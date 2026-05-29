@@ -7,6 +7,8 @@ local function init()
 	vim.keymap.set({ "n", "x" }, "<CS-Space>", function()
 		require("custom.markdown").toggle_checkbox(0.5)
 	end, { buffer = true })
+
+	vim.opt.foldmethod = "manual"
 end
 
 init()
