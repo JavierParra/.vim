@@ -36,6 +36,7 @@ return {
 				javascriptreact = js_formatters,
 				json = json_formatters,
 				jsonc = json_formatters,
+				html = { "prettier" },
 			},
 		},
 	},
