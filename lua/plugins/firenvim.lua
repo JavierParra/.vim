@@ -26,6 +26,9 @@ if vim.g.started_by_firenvim == true then
 					["^https?:\\/\\/(www\\.)?notion\\.so\\/"] = {
 						takeover = "never",
 					},
+					["^https?:\\/\\/(app\\.)?notion\\.com\\/"] = {
+						takeover = "never",
+					},
 					["^about:blank$"] = {
 						takeover = "never",
 					},
