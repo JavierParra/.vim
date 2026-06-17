@@ -45,7 +45,7 @@ if vim.g.started_by_firenvim == true then
 						-- selector = 'textarea:not(#pull_request_review_body, #read-only-cursor-text-area)',
 						selector = 'textarea[name="comment[body]"], textarea[name="pull_request[body]"]',
 					},
-					["^https?:\\/\\/localhost:3000"] = {
+					["^https?:\\/\\/localhost:[0-9]{2,4}"] = {
 						takeover = "never",
 					},
 					["^https?:\\/\\/app.retrium.com"] = {
