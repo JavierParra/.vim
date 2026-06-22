@@ -52,6 +52,38 @@ local M = {
 				desc = "[B]uffer [S]wap",
 			},
 			{
+				"<Leader>bS",
+				function()
+					local v = vim.api
+
+					local cur_filetype = v.nvim_buf_get_option(0, "filetype")
+					if vim.tbl_contains(ignoredFileTypes, cur_filetype) then
+						return
+					end
+
+					local picked_window_id = require("window-picker").pick_window()
+
+					if picked_window_id == nil then
+						return
+					end
+
+					local cur_buf = v.nvim_win_get_buf(0)
+					local cur_cursor = v.nvim_win_get_cursor(0)
+
+					local picked_buf = v.nvim_win_get_buf(picked_window_id)
+					local picked_cursor = v.nvim_win_get_cursor(picked_window_id)
+
+					v.nvim_win_set_buf(picked_window_id, cur_buf)
+					v.nvim_win_set_cursor(picked_window_id, cur_cursor)
+
+					v.nvim_win_set_buf(0, picked_buf)
+					v.nvim_win_set_cursor(0, picked_cursor)
+					v.nvim_set_current_win(picked_window_id)
+				end,
+				mode = { "n" },
+				desc = "[B]uffer [S]wap and follow",
+			},
+			{
 				"<Leader>bd",
 				function()
 					local v = vim.api
