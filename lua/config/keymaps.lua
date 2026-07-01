@@ -136,7 +136,7 @@ local remaps = {
 			"<Leader>fn",
 			"Copy current [F]ile's [N]ame",
 			function()
-				fn.system("echo -n " .. fn.expand("%:t:r") .. " | pbcopy")
+				fn.system({ "pbcopy" }, fn.expand("%:t:r"))
 			end,
 		},
 		{
@@ -144,7 +144,7 @@ local remaps = {
 			"Copy current [F]ile's [P]ath",
 			function()
 				local path_utils = require("custom.path_utils")
-				fn.system("echo " .. path_utils.normalize_to_cwd(fn.expand("%")) .. " | pbcopy")
+				fn.system({ "pbcopy" }, path_utils.normalize_to_cwd(fn.expand("%")))
 			end,
 		},
 
