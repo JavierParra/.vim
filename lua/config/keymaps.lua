@@ -303,6 +303,13 @@ local remaps = {
 	},
 }
 
+-- Neovim's built-in defaults now bind "an"/"in" (x/o mode) to treesitter node
+-- selection. Those are exact, unambiguous mappings, so they swallow the "n"
+-- keystroke before targets.vim ever sees it, breaking things like "cin(".
+-- Remove them to restore targets.vim's "next"/"last" text objects.
+pcall(vim.keymap.del, { "x", "o" }, "an")
+pcall(vim.keymap.del, { "x", "o" }, "in")
+
 -- Apply all the mappings
 for mode, mappings in pairs(remaps) do
 	for _, mapping in ipairs(mappings) do
