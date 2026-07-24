@@ -255,15 +255,20 @@ M.rollback_to_stable = function()
 	local bob_path = find_bob_directory_blocking()
 	local bin_subpath = "bin/nvim"
 
-	local version_path = function(version)
-		return bob_path .. "/" .. version
+	local version_path = function(version, custom)
+		return bob_path .. "/" .. version .. (custom and "-custom" or "")
 	end
 
 	-- Fork for nightly and release versions
 	if stable_version:match("^nightly-") then
+		local is_custom_path = false
 		-- If the tagged version is not already installed by bob, give up.
 		-- TODO Install by commit instead of giving up
 		if vim.fn.getftype(version_path(stable_version)) ~= "dir" then
+			is_custom_path = true
+		end
+
+		if is_custom_path and vim.fn.getftype(version_path(stable_version, true)) ~= "dir" then
 			vim.notify(string.format("Version %s not found in bob", stable_version), vim.log.levels.ERROR)
 			return
 		end
@@ -275,14 +280,14 @@ M.rollback_to_stable = function()
 			local nightly_version = format_bob_version(parse_nvim_version(res.stdout))
 
 			-- If we don't already have a rollback version, create it
-			if vim.fn.getftype(bob_path .. "/" .. nightly_version) ~= "dir" then
-				vim.system({ "cp", "-r", version_path("nightly"), version_path(nightly_version) }):wait()
+			if vim.fn.getftype(version_path(nightly_version, true)) ~= "dir" then
+				vim.system({ "cp", "-r", version_path("nightly"), version_path(nightly_version, true) }):wait()
 			end
 			-- Remove the nightly version so we can replace it with the stable one
 			vim.system({ "rm", "-rf", version_path("nightly") }):wait()
 		end
 
-		vim.system({ "cp", "-r", version_path(stable_version), version_path("nightly") }):wait()
+		vim.system({ "cp", "-r", version_path(stable_version, true), version_path("nightly") }):wait()
 		-- When updating nightly, bob tries to make the rollback version and dies if it already exists.
 		-- yeaaaah bob only does this sometimes
 		-- vim.system({ "mv", version_path(stable_version), version_path("nightly") }):wait()
