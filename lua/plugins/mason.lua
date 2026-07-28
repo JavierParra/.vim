@@ -128,6 +128,7 @@ local M = {
 			"lua-language-server",
 			"json-lsp",
 			"eslint-lsp",
+			"markdown-oxide",
 		},
 	},
 

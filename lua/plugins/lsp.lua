@@ -58,6 +58,19 @@ return {
 			})
 			vim.lsp.enable("biome")
 
+			vim.lsp.config("markdown_oxide", {
+				capabilities = {
+					workspace = {
+						didChangeWatchedFiles = {
+							-- markdown-oxide needs this to resolve completions
+							-- for unindexed blocks and unresolved files
+							dynamicRegistration = true,
+						},
+					},
+				},
+			})
+			vim.lsp.enable("markdown_oxide")
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("LspKeymaps", { clear = true }),
 				callback = function(args)
