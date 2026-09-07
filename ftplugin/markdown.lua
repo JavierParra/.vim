@@ -8,7 +8,7 @@ local function init()
 		require("custom.markdown").toggle_checkbox(0.5)
 	end, { buffer = true })
 
-	vim.o.foldmethod = "manual"
+	vim.opt_local.foldmethod = "manual"
 end
 
 init()
