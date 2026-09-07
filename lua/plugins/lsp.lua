@@ -71,6 +71,15 @@ return {
 			})
 			vim.lsp.enable("markdown_oxide")
 
+			vim.lsp.config("rust_analyzer", {
+				settings = {
+					["rust-analyzer"] = {
+						check = { command = "clippy" },
+					},
+				},
+			})
+			vim.lsp.enable("rust_analyzer")
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("LspKeymaps", { clear = true }),
 				callback = function(args)

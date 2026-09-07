@@ -28,6 +28,7 @@ return {
 				"prisma",
 				"query",
 				"regex",
+				"rust",
 				"scss",
 				"scheme",
 				"sql",

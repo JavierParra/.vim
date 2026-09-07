@@ -129,6 +129,7 @@ local M = {
 			"json-lsp",
 			"eslint-lsp",
 			"markdown-oxide",
+			"rust-analyzer",
 		},
 	},
 
