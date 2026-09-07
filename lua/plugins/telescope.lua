@@ -84,7 +84,12 @@ local M = {
 		-- Find references
 		{
 			"<leader>fr",
-			"<cmd>Telescope lsp_references initial_mode=normal theme=cursor<CR>",
+			function()
+				require("telescope.builtin").lsp_references(require("telescope.themes").get_cursor({
+					initial_mode = "normal",
+					file_ignore_patterns = require("custom.lsp_filters").ignore_patterns,
+				}))
+			end,
 			desc = "Find symbol's references",
 		},
 	},

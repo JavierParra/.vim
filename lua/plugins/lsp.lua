@@ -80,6 +80,31 @@ return {
 			})
 			vim.lsp.enable("rust_analyzer")
 
+			local lsp_filters = require("custom.lsp_filters")
+
+			local function goto_definition()
+				vim.lsp.buf.definition({
+					on_list = function(options)
+						local filtered = vim.tbl_filter(function(item)
+							return not lsp_filters.is_ignored(item.filename)
+						end, options.items)
+
+						-- if every result is in an ignored file, keep the
+						-- originals so we can still jump somewhere
+						if #filtered > 0 then
+							options.items = filtered
+						end
+
+						vim.fn.setloclist(0, {}, " ", options)
+						if #options.items == 1 then
+							vim.cmd.lfirst()
+						else
+							vim.cmd.lopen()
+						end
+					end,
+				})
+			end
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("LspKeymaps", { clear = true }),
 				callback = function(args)
@@ -88,7 +113,7 @@ return {
 						vim.keymap.set("n", lhs, rhs, { buffer = buf, silent = true, desc = desc })
 					end
 
-					map("<C-]>", vim.lsp.buf.definition, "Go to definition")
+					map("<C-]>", goto_definition, "Go to definition")
 					map("<C-h>", vim.lsp.buf.hover, "Hover documentation")
 					map("<Leader>rn", vim.lsp.buf.rename, "Rename symbol")
 					map("<Leader>rf", function()
