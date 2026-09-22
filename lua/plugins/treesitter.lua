@@ -9,6 +9,7 @@ return {
 			local parsers = {
 				"bash",
 				"comment",
+				"css",
 				"diff",
 				"dockerfile",
 				"go",
@@ -32,6 +33,7 @@ return {
 				"scss",
 				"scheme",
 				"sql",
+				"styled",
 				"swift",
 				"tsx",
 				"typescript",
