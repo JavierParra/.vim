@@ -84,9 +84,14 @@ local function sync_mason_packages(ensure_installed)
 		if #to_install > 0 then
 			for _, pkg_name in ipairs(to_install) do
 				local pkg = mr.get_package(pkg_name)
-				pkg:install({}, function()
+				pkg:install({}, function(success, err)
 					remaining_operations = remaining_operations - 1
-					nt("Installed: " .. pkg_name)
+					if success then
+						nt("Installed: " .. pkg_name)
+					else
+						nt("Failed: " .. pkg_name)
+						vim.notify("Mason failed to install " .. pkg_name .. ": " .. tostring(err), vim.log.levels.ERROR)
+					end
 				end)
 			end
 		end
