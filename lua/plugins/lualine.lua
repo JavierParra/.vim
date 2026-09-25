@@ -18,6 +18,13 @@ local function cwd()
 	return path_utils.normalize_to_home(vim.fn.getcwd())
 end
 
+local is_ssh = vim.env.SSH_CONNECTION ~= nil or vim.env.SSH_TTY ~= nil
+local hostname_str = vim.fn.hostname():gsub("%..*$", "")
+
+local function hostname()
+	return "󰒋 " .. hostname_str
+end
+
 local function relativeFile()
 	local path = path_utils.normalize_to_cwd(vim.fn.expand("%"))
 
@@ -191,7 +198,10 @@ return {
 						sections = { "error", "warn" },
 					},
 				},
-				lualine_c = { cwd },
+				lualine_c = {
+					{ hostname, cond = function() return is_ssh end },
+					cwd,
+				},
 				lualine_x = {
 					{
 						function()
