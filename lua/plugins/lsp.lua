@@ -13,16 +13,12 @@ return {
 
 			vim.lsp.config("ts_ls", {
 				before_init = function(params)
-					local root = params.rootPath
-						or (params.rootUri and vim.uri_to_fname(params.rootUri) or "")
+					local root = params.rootPath or (params.rootUri and vim.uri_to_fname(params.rootUri) or "")
 					if root ~= "" then
 						local local_tsdk = root .. "/node_modules/typescript/lib"
 						if vim.fn.isdirectory(local_tsdk) == 1 then
-							params.initializationOptions = vim.tbl_deep_extend(
-								"force",
-								params.initializationOptions or {},
-								{ tsserver = { path = local_tsdk } }
-							)
+							params.initializationOptions =
+								vim.tbl_deep_extend("force", params.initializationOptions or {}, { tsserver = { path = local_tsdk } })
 						end
 					end
 				end,
@@ -46,9 +42,16 @@ return {
 
 			vim.lsp.config("eslint", {
 				root_markers = {
-					".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.mjs",
-					".eslintrc.json", ".eslintrc.yaml", ".eslintrc.yml",
-					"eslint.config.js", "eslint.config.mjs", "eslint.config.cjs",
+					".eslintrc",
+					".eslintrc.js",
+					".eslintrc.cjs",
+					".eslintrc.mjs",
+					".eslintrc.json",
+					".eslintrc.yaml",
+					".eslintrc.yml",
+					"eslint.config.js",
+					"eslint.config.mjs",
+					"eslint.config.cjs",
 				},
 			})
 			vim.lsp.enable("eslint")
@@ -57,6 +60,7 @@ return {
 				root_markers = { "biome.json", "biome.jsonc" },
 			})
 			vim.lsp.enable("biome")
+			vim.lsp.enable("sourcekit")
 
 			vim.lsp.config("markdown_oxide", {
 				capabilities = {

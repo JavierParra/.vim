@@ -25,7 +25,15 @@ return {
 	-- "tpope/vim-rsi",
 	"tpope/vim-sleuth",
 	"tpope/vim-surround",
-	"dhruvasagar/vim-table-mode",
+	{
+		"dhruvasagar/vim-table-mode",
+		config = function()
+			vim.g.table_mode_motion_up_map = "<Leader>tk"
+			vim.g.table_mode_motion_down_map = "<Leader>tj"
+			vim.g.table_mode_motion_left_map = "<Leader>th"
+			vim.g.table_mode_motion_right_map = "<Leader>tl"
+		end,
+	},
 	{
 		"folke/which-key.nvim",
 		enabled = false,
@@ -48,49 +56,49 @@ return {
 			{
 				"<Leader>bc",
 				function()
-					require('nvim-breadcrumbs').toggle()
-				end
+					require("nvim-breadcrumbs").toggle()
+				end,
 			},
 			{
 				"<Leader>bp",
 				function()
-					require('nvim-breadcrumbs').parent()
-				end
-			}
+					require("nvim-breadcrumbs").parent()
+				end,
+			},
 		},
 		opts = {
 			debug = true,
 			processors = {
 				prisma = function()
-					return function (push_crumb)
+					return function(push_crumb)
 						--- @param node TSNode
-						return function (node)
+						return function(node)
 							local type = node:type()
-							if type == 'model_declaration' then
+							if type == "model_declaration" then
 								local first_child = node:child(0)
 								local name_node = node:named_child(0)
 								local nodes = {}
 
-								if first_child and first_child:type() == 'model' then
+								if first_child and first_child:type() == "model" then
 									table.insert(nodes, first_child)
-									table.insert(nodes, ' ')
+									table.insert(nodes, " ")
 								end
-								if name_node and name_node:type() == 'identifier' then
+								if name_node and name_node:type() == "identifier" then
 									table.insert(nodes, name_node)
 									push_crumb(nodes)
 								end
 							end
 
-							if type == 'column_declaration' then
+							if type == "column_declaration" then
 								local name_node = node:named_child(0)
-								if name_node and name_node:type() == 'identifier' then
+								if name_node and name_node:type() == "identifier" then
 									push_crumb({ name_node })
 								end
 							end
 						end
 					end
-				end
-			}
+				end,
+			},
 		},
 		dev = true,
 	},
