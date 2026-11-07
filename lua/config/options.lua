@@ -5,6 +5,20 @@
 -- Leader keys
 vim.g.mapleader = " "
 
+-- Use the local machine's clipboard through the terminal when in SSH
+if vim.env.SSH_TTY then
+	local osc52 = require("vim.ui.clipboard.osc52")
+	local function unnamed_paste()
+		return { vim.fn.split(vim.fn.getreg('"'), "\n"), vim.fn.getregtype('"') }
+	end
+	vim.g.clipboard = {
+		name = "OSC 52",
+		copy = { ["+"] = osc52.copy("+"), ["*"] = osc52.copy("*") },
+		paste = { ["+"] = osc52.paste("+"), ["*"] = osc52.paste("*") },
+		-- paste = { ["+"] = unnamed_paste, ["*"] = unnamed_paste },
+	}
+end
+
 local options_set = {
 	-- General Settings
 	-- Do not redraw during macros
